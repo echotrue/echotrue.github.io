@@ -12,19 +12,19 @@
     <title>Golang Select :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1599545505" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1599545505" rel="stylesheet">
-    <link href="/css/hybrid.css?1599545505" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1599545505" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1599545505" rel="stylesheet">
-    <link href="/css/auto-complete.css?1599545505" rel="stylesheet">
-    <link href="/css/one-dark.css?1599545505" rel="stylesheet">
-    <link href="/css/theme.css?1599545505" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1599545505" rel="stylesheet">
+    <link href="/css/nucleus.css?1599546750" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1599546750" rel="stylesheet">
+    <link href="/css/hybrid.css?1599546750" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1599546750" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1599546750" rel="stylesheet">
+    <link href="/css/auto-complete.css?1599546750" rel="stylesheet">
+    <link href="/css/atom-one-dark.css?1599546750" rel="stylesheet">
+    <link href="/css/theme.css?1599546750" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1599546750" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1599545505"></script>
+    <script src="/js/jquery-3.3.1.min.js?1599546750"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -89,14 +89,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1599545505"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1599545505"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1599546750"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1599546750"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1599545505"></script>
+<script type="text/javascript" src="/js/search.js?1599546750"></script>
 
     
   </div>
@@ -1268,12 +1268,12 @@ goroutine <span style="color:#ae81ff">1</span> <span style="color:#f92672">[</sp
 main.main<span style="color:#f92672">(</span><span style="color:#f92672">)</span>
     /tmp/sandbox416567824/main.go:6 +0x80
 </code></pre></div><p>如果存在默认<code>case</code>，则不会发生此死锁，因为在没有其他<code>case</code>准备就绪时将执行默认<code>case</code>。上面的程序可以重写。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-django" data-lang="django">func main() {
-    ch := make(chan string)
-    select {
-    case &lt;-ch:
-    default:
-        fmt.Println(&#34;default case executed&#34;)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">ch</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">chan</span> <span style="color:#66d9ef">string</span>)
+    <span style="color:#66d9ef">select</span> {
+    <span style="color:#66d9ef">case</span> <span style="color:#f92672">&lt;-</span><span style="color:#a6e22e">ch</span>:
+    <span style="color:#66d9ef">default</span>:
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;default case executed&#34;</span>)
     }
 }
 </code></pre></div><p>输出，</p>
@@ -1945,19 +1945,19 @@ main.main<span style="color:#f92672">(</span><span style="color:#f92672">)</span
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1599545505"></script>
-    <script src="/js/perfect-scrollbar.min.js?1599545505"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1599545505"></script>
-    <script src="/js/jquery.sticky.js?1599545505"></script>
-    <script src="/js/featherlight.min.js?1599545505"></script>
-    <script src="/js/highlight.pack.js?1599545505"></script>
+    <script src="/js/clipboard.min.js?1599546750"></script>
+    <script src="/js/perfect-scrollbar.min.js?1599546750"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1599546750"></script>
+    <script src="/js/jquery.sticky.js?1599546750"></script>
+    <script src="/js/featherlight.min.js?1599546750"></script>
+    <script src="/js/highlight.pack.js?1599546750"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1599545505"></script>
-    <script src="/js/learn.js?1599545505"></script>
-    <script src="/js/hugo-learn.js?1599545505"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1599546750"></script>
+    <script src="/js/learn.js?1599546750"></script>
+    <script src="/js/hugo-learn.js?1599546750"></script>
 
-    <link href="/mermaid/mermaid.css?1599545505" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1599545505"></script>
+    <link href="/mermaid/mermaid.css?1599546750" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1599546750"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
