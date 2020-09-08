@@ -3,78 +3,78 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/zh/basics/</loc>
+    <loc>http://echotrue.github.io/zh/basics/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/basics/"
+                href="http://echotrue.github.io/basics/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="http://example.org/fr/basics/"
+                href="http://echotrue.github.io/fr/basics/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://example.org/zh/basics/"
+                href="http://echotrue.github.io/zh/basics/"
                 />
   </url>
   
   <url>
-    <loc>http://example.org/zh/categories/</loc>
+    <loc>http://echotrue.github.io/zh/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/categories/"
+                href="http://echotrue.github.io/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="http://example.org/fr/categories/"
+                href="http://echotrue.github.io/fr/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://example.org/zh/categories/"
+                href="http://echotrue.github.io/zh/categories/"
                 />
   </url>
   
   <url>
-    <loc>http://example.org/zh/</loc>
+    <loc>http://echotrue.github.io/zh/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/"
+                href="http://echotrue.github.io/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="http://example.org/fr/"
+                href="http://echotrue.github.io/fr/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://example.org/zh/"
+                href="http://echotrue.github.io/zh/"
                 />
   </url>
   
   <url>
-    <loc>http://example.org/zh/tags/</loc>
+    <loc>http://echotrue.github.io/zh/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://example.org/tags/"
+                href="http://echotrue.github.io/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="http://example.org/fr/tags/"
+                href="http://echotrue.github.io/fr/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://example.org/zh/tags/"
+                href="http://echotrue.github.io/zh/tags/"
                 />
   </url>
   

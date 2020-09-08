@@ -2,12 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>page 1-1-1-1 on Documentation du thème Hugo Learn</title>
-    <link>http://example.org/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/</link>
+    <link>http://echotrue.github.io/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/</link>
     <description>Recent content in page 1-1-1-1 on Documentation du thème Hugo Learn</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en-US</language>
+    <copyright>©2020 my name.</copyright>
     
-	<atom:link href="http://example.org/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://echotrue.github.io/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

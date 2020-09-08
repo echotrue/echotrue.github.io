@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Documentation for Hugo Learn Theme</title>
-    <link>http://example.org/tags/</link>
-    <description>Recent content in Tags on Documentation for Hugo Learn Theme</description>
+    <title>Tags on Axlrose&#39;s blog</title>
+    <link>http://echotrue.github.io/tags/</link>
+    <description>Recent content in Tags on Axlrose&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 29 Nov 2018 08:41:44 +0100</lastBuildDate>
+    <language>en-US</language>
+    <copyright>©2020 my name.</copyright>
+    <lastBuildDate>Fri, 09 Aug 2019 15:55:02 +0800</lastBuildDate>
     
-	<atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://echotrue.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Go</title>
+      <link>http://echotrue.github.io/tags/go/</link>
+      <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>panic</title>
+      <link>http://echotrue.github.io/tags/panic/</link>
+      <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/panic/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>documentation</title>
-      <link>http://example.org/tags/documentation/</link>
+      <link>http://echotrue.github.io/tags/documentation/</link>
       <pubDate>Thu, 29 Nov 2018 08:41:44 +0100</pubDate>
       
-      <guid>http://example.org/tags/documentation/</guid>
+      <guid>http://echotrue.github.io/tags/documentation/</guid>
       <description></description>
     </item>
     
     <item>
       <title>tutorial</title>
-      <link>http://example.org/tags/tutorial/</link>
+      <link>http://echotrue.github.io/tags/tutorial/</link>
       <pubDate>Thu, 29 Nov 2018 08:41:44 +0100</pubDate>
       
-      <guid>http://example.org/tags/tutorial/</guid>
+      <guid>http://echotrue.github.io/tags/tutorial/</guid>
       <description></description>
     </item>
     
