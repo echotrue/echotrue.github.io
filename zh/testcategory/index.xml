@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Testcategories on Hugo 主题的 Learn 文档</title>
+    <link>http://echotrue.github.io/zh/testcategory/</link>
+    <description>Recent content in Testcategories on Hugo 主题的 Learn 文档</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>©2020 my name.</copyright>
+    
+	<atom:link href="http://echotrue.github.io/zh/testcategory/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>post one</title>
+      <link>http://echotrue.github.io/zh/testcategory/blog/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/zh/testcategory/blog/</guid>
+      <description>Post example Discover what this Hugo theme is all about and the core-concepts behind it.
+code fmt.Println(&amp;#34;hello world&amp;#34;)</description>
+    </item>
+    
+  </channel>
+</rss>

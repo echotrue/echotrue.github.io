@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on Axlrose&#39;s blog</title>
+    <link>http://echotrue.github.io/blog/</link>
+    <description>Recent content in Blog on Axlrose&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>©2020 my name.</copyright>
+    <lastBuildDate>Fri, 09 Aug 2019 15:55:02 +0800</lastBuildDate>
+    
+	<atom:link href="http://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Panic and Recover</title>
+      <link>http://echotrue.github.io/blog/panic-and-recover/</link>
+      <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/blog/panic-and-recover/</guid>
+      <description>panic  Golang中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
+ panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。
+func main() {var user = os.Getenv(&amp;#34;USER_&amp;#34;)go func() {defer func() {fmt.Println(&amp;#34;defer 1&amp;#34;)}()if user == &amp;#34;&amp;#34;{panic(&amp;#34;should set user env.&amp;#34;)}}()time.Sleep(1*time.Second)fmt.Println(&amp;#34;get result&amp;#34;)} 上述代码输出：
+defer 1panic: should set user env.goroutine 19 [running]:main.main.func1(0x0, 0x0)D:/gopath/src/race_condition/index.go:16 +0x86created by main.mainD:/gopath/src/race_condition/index.go:11 +0x59Process finished with exit code 2说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行
+recover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil</description>
+    </item>
+    
+    <item>
+      <title>Golang Select</title>
+      <link>http://echotrue.github.io/blog/golang-select/</link>
+      <pubDate>Tue, 30 Jul 2019 19:04:35 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/blog/golang-select/</guid>
+      <description>什么是select select语句用于从多个发送/接收channel中进行选择的操作。 select语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于switch，只是每个case语句被一个channel操作取代了。让我们深入研究一些代码，以便更好地理解
+func server1(ch chan string) {time.Sleep(6 * time.Second)ch &amp;lt;- &amp;#34;from server1&amp;#34;}func server2(ch chan string) {time.Sleep(3 * time.Second)ch &amp;lt;- &amp;#34;from server2&amp;#34;}func main() {output1 := make(chan string)output2 := make(chan string)go server1(output1)go server2(output2)select {case s1 := &amp;lt;-output1:fmt.Println(s1)case s2 := &amp;lt;-output2:fmt.Println(s2)}}在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
+main函数在 20 和 21 行分别调用server1和server2。</description>
+    </item>
+    
+  </channel>
+</rss>
