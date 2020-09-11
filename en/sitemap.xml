@@ -42,6 +42,10 @@
   </url>
   
   <url>
+    <loc>http://echotrue.github.io/other/</loc>
+  </url>
+  
+  <url>
     <loc>http://echotrue.github.io/cont/</loc>
     <lastmod>2020-06-01T13:31:12+01:00</lastmod>
     <xhtml:link
@@ -263,12 +267,12 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/categories/panic/</loc>
+    <loc>http://echotrue.github.io/tags/panic/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/tags/panic/</loc>
+    <loc>http://echotrue.github.io/categories/panic/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
   </url>
   
@@ -347,6 +351,10 @@
   </url>
   
   <url>
+    <loc>http://echotrue.github.io/blog/block-forever-in-go/</loc>
+  </url>
+  
+  <url>
     <loc>http://echotrue.github.io/shortcodes/button/</loc>
     <xhtml:link
                 rel="alternate"
@@ -386,6 +394,22 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/expand/"
                 />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/blog/channel/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/kindle/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/categories/kindle/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/other/kindle-voyage%E5%BC%80%E7%AE%B1/</loc>
   </url>
   
   <url>
@@ -554,6 +578,14 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-2/test3/"
                 />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/read/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/categories/read/</loc>
   </url>
   
   <url>

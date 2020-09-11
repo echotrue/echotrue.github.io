@@ -89,9 +89,9 @@ List all the tags In the config.toml file you can add a shortcut to display all 
       <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
       
       <guid>http://echotrue.github.io/blog/panic-and-recover/</guid>
-      <description>panic  Golang中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
+      <description>panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。
-func main() {var user = os.Getenv(&amp;#34;USER_&amp;#34;)go func() {defer func() {fmt.Println(&amp;#34;defer 1&amp;#34;)}()if user == &amp;#34;&amp;#34;{panic(&amp;#34;should set user env.&amp;#34;)}}()time.Sleep(1*time.Second)fmt.Println(&amp;#34;get result&amp;#34;)} 上述代码输出：
+func main() {var user = os.Getenv(&amp;quot;USER_&amp;quot;)go func() {defer func() {fmt.Println(&amp;quot;defer 1&amp;quot;)}()if user == &amp;quot;&amp;quot;{panic(&amp;quot;should set user env.&amp;quot;)}}()time.Sleep(1*time.Second)fmt.Println(&amp;quot;get result&amp;quot;)} 上述代码输出：
 defer 1panic: should set user env.goroutine 19 [running]:main.main.func1(0x0, 0x0)D:/gopath/src/race_condition/index.go:16 +0x86created by main.mainD:/gopath/src/race_condition/index.go:11 +0x59Process finished with exit code 2说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行
 recover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil</description>
     </item>
@@ -103,7 +103,7 @@ recover  有时候不希望因为panic导致整个进程终止，因此需要�
       
       <guid>http://echotrue.github.io/blog/golang-select/</guid>
       <description>什么是select select语句用于从多个发送/接收channel中进行选择的操作。 select语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于switch，只是每个case语句被一个channel操作取代了。让我们深入研究一些代码，以便更好地理解
-func server1(ch chan string) {time.Sleep(6 * time.Second)ch &amp;lt;- &amp;#34;from server1&amp;#34;}func server2(ch chan string) {time.Sleep(3 * time.Second)ch &amp;lt;- &amp;#34;from server2&amp;#34;}func main() {output1 := make(chan string)output2 := make(chan string)go server1(output1)go server2(output2)select {case s1 := &amp;lt;-output1:fmt.Println(s1)case s2 := &amp;lt;-output2:fmt.Println(s2)}}在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
+func server1(ch chan string) {time.Sleep(6 * time.Second)ch &amp;lt;- &amp;quot;from server1&amp;quot;}func server2(ch chan string) {time.Sleep(3 * time.Second)ch &amp;lt;- &amp;quot;from server2&amp;quot;}func main() {output1 := make(chan string)output2 := make(chan string)go server1(output1)go server2(output2)select {case s1 := &amp;lt;-output1:fmt.Println(s1)case s2 := &amp;lt;-output2:fmt.Println(s2)}}在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
 main函数在 20 和 21 行分别调用server1和server2。</description>
     </item>
     
@@ -116,6 +116,16 @@ main函数在 20 和 21 行分别调用server1和server2。</description>
       <description>The Attachments shortcode displays a list of files attached to a page.
 AttachmentsBachGavotteShort.mp3(357 ko)Carroll_AliceAuPaysDesMerveilles.pdf(175 ko)adivorciarsetoca00cape.pdf(361 ko)hugo.png(17 ko)movieselectricsheep-flock-244-32500-2.mp4(340 ko)Usage The shortcurt lists files found in a specific folder. Currently, it support two implementations for pages
   If your page is a markdown file, attachements must be place in a folder named like your page and ending with .</description>
+    </item>
+    
+    <item>
+      <title>Block forever in go</title>
+      <link>http://echotrue.github.io/blog/block-forever-in-go/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/blog/block-forever-in-go/</guid>
+      <description>Golang中永久阻塞的不同方法 The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling os.Exit or by returning from the main() function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.
+1. Using sync.</description>
     </item>
     
     <item>
@@ -136,6 +146,27 @@ main函数在 20 和 21 行分别调用server1和server2。</description>
       <guid>http://echotrue.github.io/shortcodes/expand/</guid>
       <description>The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example
 Expand me...Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</description>
+    </item>
+    
+    <item>
+      <title>Golang channel</title>
+      <link>http://echotrue.github.io/blog/channel/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/blog/channel/</guid>
+      <description>概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色
+ Do not communicate by sharing memory; instead, share memory by communicating.
+ Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
+ Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string)go func() {ch &amp;lt;- &amp;quot;hello&amp;quot;}()msg := &amp;lt;-chfmt.Println(msg) 以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description>
+    </item>
+    
+    <item>
+      <title>Kindle Voyage 开箱</title>
+      <link>http://echotrue.github.io/other/kindle-voyage%E5%BC%80%E7%AE%B1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/other/kindle-voyage%E5%BC%80%E7%AE%B1/</guid>
+      <description></description>
     </item>
     
     <item>

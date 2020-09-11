@@ -48,5 +48,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>kindle</title>
+      <link>http://echotrue.github.io/tags/kindle/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/kindle/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>read</title>
+      <link>http://echotrue.github.io/tags/read/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/read/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
