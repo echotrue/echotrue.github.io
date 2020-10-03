@@ -12,21 +12,21 @@
     <title>Context :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1601716383" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1601716383" rel="stylesheet">
-    <link href="/css/hybrid.css?1601716383" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1601716383" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1601716383" rel="stylesheet">
-    <link href="/css/auto-complete.css?1601716383" rel="stylesheet">
-    <link href="/css/atom-one-dark.css?1601716383" rel="stylesheet">
-    <link href="/css/theme.css?1601716383" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1601716383" rel="stylesheet">
+    <link href="/css/nucleus.css?1601718043" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1601718043" rel="stylesheet">
+    <link href="/css/hybrid.css?1601718043" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1601718043" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1601718043" rel="stylesheet">
+    <link href="/css/auto-complete.css?1601718043" rel="stylesheet">
+    <link href="/css/atom-one-dark.css?1601718043" rel="stylesheet">
+    <link href="/css/theme.css?1601718043" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1601718043" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1601716383" rel="stylesheet">
+    <link href="/css/theme-blue.css?1601718043" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1601716383"></script>
+    <script src="/js/jquery-3.3.1.min.js?1601718043"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1601716383"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1601716383"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1601718043"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1601718043"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1601716383"></script>
+<script type="text/javascript" src="/js/search.js?1601718043"></script>
 
     
   </div>
@@ -1505,7 +1505,41 @@ func main() {
     wg.Wait()
 }
 </code></pre><h5 id="heading4">超时取消</h5>
+<pre><code>func func1(ctx context.Context) {
+    hctx, hcancel := context.WithTimeout(ctx, time.Second*4)
+    defer hcancel()
+    
+    resp := make(chan struct{}, 1)
+    
+    go func() {
+        // 处理耗时操作
+        time.Sleep(time.Second * 10)
+        resp &lt;- struct{}{}
+    }()
+    
+    select {
+    // case &lt;-ctx.Done():
+    // 	fmt.Println(&quot;ctx timeout&quot;)
+    // 	fmt.Println(&quot;退出&quot;,ctx.Err())
+    case &lt;-hctx.Done():
+        fmt.Println(&quot;hctx timeout&quot;)
+        fmt.Println(hctx.Err())
+    case v := &lt;-resp:
+        fmt.Println(&quot;test2 function handle done&quot;)
+        fmt.Printf(&quot;result:%v\n&quot;, v)
+    }
+    fmt.Println(&quot;test2 finish&quot;)
+    fmt.Println(time.Now().Unix())
+    return
+}
 
+func main() {
+    fmt.Println(time.Now().Unix())
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
+    defer cancel()
+    func1(ctx)
+}
+</code></pre>
 
 <footer class="footline">
 	
@@ -2250,19 +2284,19 @@ func main() {
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1601716383"></script>
-    <script src="/js/perfect-scrollbar.min.js?1601716383"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1601716383"></script>
-    <script src="/js/jquery.sticky.js?1601716383"></script>
-    <script src="/js/featherlight.min.js?1601716383"></script>
-    <script src="/js/highlight.pack.js?1601716383"></script>
+    <script src="/js/clipboard.min.js?1601718043"></script>
+    <script src="/js/perfect-scrollbar.min.js?1601718043"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1601718043"></script>
+    <script src="/js/jquery.sticky.js?1601718043"></script>
+    <script src="/js/featherlight.min.js?1601718043"></script>
+    <script src="/js/highlight.pack.js?1601718043"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1601716383"></script>
-    <script src="/js/learn.js?1601716383"></script>
-    <script src="/js/hugo-learn.js?1601716383"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1601718043"></script>
+    <script src="/js/learn.js?1601718043"></script>
+    <script src="/js/hugo-learn.js?1601718043"></script>
 
-    <link href="/mermaid/mermaid.css?1601716383" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1601716383"></script>
+    <link href="/mermaid/mermaid.css?1601718043" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1601718043"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
