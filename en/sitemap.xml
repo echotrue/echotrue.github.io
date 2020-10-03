@@ -8,6 +8,14 @@
   </url>
   
   <url>
+    <loc>http://echotrue.github.io/blog/context/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/algorithm/</loc>
+  </url>
+  
+  <url>
     <loc>http://echotrue.github.io/cont/pages/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -267,12 +275,12 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/tags/panic/</loc>
+    <loc>http://echotrue.github.io/categories/panic/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/categories/panic/</loc>
+    <loc>http://echotrue.github.io/tags/panic/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
   </url>
   
@@ -383,6 +391,10 @@
   </url>
   
   <url>
+    <loc>http://echotrue.github.io/tags/context/</loc>
+  </url>
+  
+  <url>
     <loc>http://echotrue.github.io/shortcodes/expand/</loc>
     <xhtml:link
                 rel="alternate"
@@ -401,11 +413,19 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/tags/kindle/</loc>
+    <loc>http://echotrue.github.io/blog/data-races/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/algorithm/golang-search-slice/</loc>
   </url>
   
   <url>
     <loc>http://echotrue.github.io/categories/kindle/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/kindle/</loc>
   </url>
   
   <url>
@@ -614,6 +634,22 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/siteparam/"
                 />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/slice/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/%E4%B8%8A%E4%B8%8B%E6%96%87/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/</loc>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/</loc>
   </url>
   
 </urlset>

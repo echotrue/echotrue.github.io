@@ -4,7 +4,21 @@
 	"title": "Blog",
 	"tags": [],
 	"description": "",
-	"content": "Post list Blog articles fmt.Println(\u0026#34;hello world\u0026#34;)\rDiscover what this Hugo theme is all about and the core-concepts behind it.\n"
+	"content": "Post list Blog articles \rContext\r\r\rPanic and Recover\r\r\rGolang Select\r\r\rBlock forever in go\r\r\rGolang channel\r\r\rGolang Data Races\r\r\r"
+},
+{
+	"uri": "http://echotrue.github.io/blog/context/",
+	"title": "Context",
+	"tags": ["Go", "context", "上下文"],
+	"description": "",
+	"content": "引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一个实际的例子是：\n 在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序可能还需要创建额外的goroutine去访问其他资源，比如：数据库， RPC服务等。由于这些goroutine都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token ，请求截止时间等。当请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们来取消掉所有 的goroutine\n Context定义 context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据， 之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构， 根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。\ncontext包的核心是interface Context ,声明如下：\ntype Context interface { Deadline() (deadline time.Time, ok bool) Done() \u0026lt;-chan struct{} Err() error Value(key interface{}) interface{} } Context定义很简单，一共四个方法：\n Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求； 第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。 Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取， 则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。 Err方法返回取消的错误原因，因为什么Context被取消。 Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。  Context的实现方法 Context 虽然是个接口，但是并不需要使用方实现，golang内置的context 包，已经帮我们实现了2个方法，一般在代码中， 开始上下文的时候都是以这两个作为最顶层的parent context，然后再衍生出子context。这些 Context 对象形成一棵树： 当一个 Context 对象被取消时，继承自它的所有 Context 都会被取消。两个实现如下：\nvar ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Context { return background } func TODO() Context { return todo }  一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。 一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。 他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。  type emptyCtx int func (*emptyCtx) Deadline() (deadline time.Time, ok bool) { return } func (*emptyCtx) Done() \u0026lt;-chan struct{} { return nil } func (*emptyCtx) Err() error { return nil } func (*emptyCtx) Value(key interface{}) interface{} { return nil } Context的继承 有了如上的根Context，那么是如何衍生更多的子Context的呢？这就要靠context包为我们提供的With系列的函数了。\nfunc WithCancel(parent Context) (ctx Context, cancel CancelFunc) func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc) func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc) func WithValue(parent Context, key, val interface{}) Context 通过这些函数，就创建了一颗Context树，树的每个节点都可以有任意多个子节点，节点层级可以有任意多个。\n WithCancel函数，传递一个父Context作为参数，返回子Context，以及一个取消函数用来取消Context。 WithDeadline函数，和WithCancel差不多，它会多传递一个截止时间参数，意味着到了这个时间点，会自动取消Context，当然我们也可以不等到这个时候，可以提前通过取消函数进行取消。 WithTimeout和WithDeadline基本上一样，这个表示是超时自动取消，是多少时间后自动取消Context的意思。 WithValue函数和取消Context无关，它是为了生成一个绑定了一个键值对数据的Context，这个绑定的数据可以通过Context.Value方法访问到，这是我们实际用经常要用到的技巧，一般我们想要通过上下文来传递数据时，可以通过这个方法，如我们需要tarce追踪系统调用栈的时候。  Context使用技巧和原则  不要把Context放在结构体中，要以参数的方式传递，parent Context一般为Background 应该要把Context作为第一个参数传递给入口请求和出口请求链路上的每一个函数，放在第一位，变量名建议都统一，如ctx。 给一个函数方法传递Context的时候，不要传递nil，否则在tarce追踪的时候，就会断了连接 Context的Value相关方法应该传递必须的数据，不要什么数据都使用这个传递 Context是线程安全的，可以放心的在多个goroutine中传递 可以把一个 Context 对象传递给任意个数的 gorotuine，对它执行 取消 操作时，所有 goroutine 都会接收到取消信号。  Context使用示例 请求链路传值 func func1(ctx context.Context) { ctx = context.WithValue(ctx, \u0026quot;k1\u0026quot;, \u0026quot;v1\u0026quot;) func2(ctx) } func func2(ctx context.Context) { fmt.Println(ctx.Value(\u0026quot;k1\u0026quot;).(string)) } func main() { ctx := context.Background() func1(ctx) } 我们在func1通过WithValue(parent Context, key, val interface{}) Context，赋值k1为v1， 在其下层函数func2通过ctx.Value(key interface{}) interface{}获取k1的值，比较简单。这里有个疑问，如果我是在func2里赋值， 在func1里面能够拿到这个值吗？答案是不能，context只能自上而下携带值，这个是要注意的一点。\n取消耗时操作，及时释放资源 主动取消 func func1(ctx context.Context, wg *sync.WaitGroup) error { defer wg.Done() respC := make(chan int) // 处理逻辑 go func() { time.Sleep(time.Second * 5) respC \u0026lt;- 10 }() // 取消机制 select { case \u0026lt;-ctx.Done(): fmt.Println(\u0026quot;cancel.\u0026quot;) return errors.New(\u0026quot;cancel\u0026quot;) case r := \u0026lt;-respC: fmt.Println(r) return nil } } func main() { wg := new(sync.WaitGroup) ctx, cancel := context.WithCancel(context.Background()) wg.Add(1) go func1(ctx, wg) time.Sleep(time.Second * 2) cancel() wg.Wait() } 超时取消 "
+},
+{
+	"uri": "http://echotrue.github.io/algorithm/",
+	"title": "Algorithm",
+	"tags": [],
+	"description": "",
+	"content": "Algorithm list \rGolang Search Slice\r\r\r"
 },
 {
 	"uri": "http://echotrue.github.io/cont/pages/",
@@ -147,14 +161,14 @@
 	"content": ""
 },
 {
-	"uri": "http://echotrue.github.io/tags/panic/",
+	"uri": "http://echotrue.github.io/categories/panic/",
 	"title": "panic",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "http://echotrue.github.io/categories/panic/",
+	"uri": "http://echotrue.github.io/tags/panic/",
 	"title": "panic",
 	"tags": [],
 	"description": "",
@@ -224,6 +238,13 @@
 	"content": "Use the children shortcode to list the child pages of a page and the further descendants (children's children). By default, the shortcode displays links to the child pages.\nUsage    Parameter Default Description     page current Specify the page name (section name) to display children for   style \u0026ldquo;li\u0026rdquo; Choose the style used to display descendants. It could be any HTML tag name   showhidden \u0026ldquo;false\u0026rdquo; When true, child pages hidden from the menu will be displayed   description \u0026ldquo;false\u0026rdquo; Allows you to include a short text under each page in the list.when no description exists for the page, children shortcode takes the first 70 words of your content. read more info about summaries on gohugo.io   depth 1 Enter a number to specify the depth of descendants to display. For example, if the value is 2, the shortcode will display 2 levels of child pages. Tips: set 999 to get all descendants   sort none Sort Children ByWeight- to sort on menu orderName- to sort alphabetically on menu labelIdentifier- to sort alphabetically on identifier set in frontmatterURL- URL    Demo {{% children %}}\r \rpage 1\r\r\rpage 2\r\r\rpage 3\r\r\rpage test\r\r\r{{% children description=\u0026quot;true\u0026quot; %}}\r "
 },
 {
+	"uri": "http://echotrue.github.io/tags/context/",
+	"title": "context",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "http://echotrue.github.io/shortcodes/expand/",
 	"title": "Expand",
 	"tags": [],
@@ -238,14 +259,28 @@
 	"content": "概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色\n Do not communicate by sharing memory; instead, share memory by communicating.\n Channel类型 readOnlyCh := make(\u0026lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。\rwriteOnlyCh := make(chan\u0026lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据\rreadWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据\r阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。\n Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string)\rgo func() {\rch \u0026lt;- \u0026quot;hello\u0026quot;\r}()\rmsg := \u0026lt;-ch\rfmt.Println(msg)\r 以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。\n利用Channel实现并发的同步  基本用法中的代码片段使用阻塞接收的方式，实现了主goroutine等待子goroutine完成。最终达到了两个goroutine的同步。使用WaitGroup同样能达到多个goroutine的同步，尤其是需要等待多个协程的情况下，WaitGroup会是更好的选择。\nfunc worker(i int, wg *sync.WaitGroup) {\rdefer wg.Done()\rtime.Sleep(time.Second)\rfmt.Printf(\u0026quot;worker %d stared\\n\u0026quot;, i)\r}\rfunc main() {\rvar wg sync.WaitGroup\rfor i := 1; i \u0026lt;= 5; i++ {\rwg.Add(1)\rgo worker(i, \u0026amp;wg)\r}\rwg.Wait()\r}\r执行结果：\nworker 1 stared\rworker 5 stared\rworker 4 stared\rworker 3 stared\rworker 2 stared\rChannel 选择器  select语句主要用在从多个读或者写channel的操作中进行选择。select语句会一直阻塞直到，有至少一个读或者写channel操作就绪。如果同时有多个操作准备就绪，select语句会随机选择其中一个执行。select语法类似switch，每个case相当于一个通道操作。\nc1 := make(chan string)\rc2 := make(chan string)\rgo func() {\rtime.Sleep(1 * time.Second)\rc1 \u0026lt;- \u0026quot;one\u0026quot;\r}()\rgo func() {\rtime.Sleep(1 * time.Second)\rc2 \u0026lt;- \u0026quot;two\u0026quot;\r}()\rfor i := 0; i \u0026lt; 2; i++ {\rselect {\rcase msg1 := \u0026lt;-c1:\rfmt.Printf(\u0026quot;接到消息：%s\\n\u0026quot;, msg1)\rcase msg2 := \u0026lt;-c2:\rfmt.Printf(\u0026quot;接到消息：%s\\n\u0026quot;, msg2)\r}\r}\r以上代码会输出：接到消息one，接到消息two。\nChannel遍历 for...range可以用来遍历通道，它会反复从通道接收数据直到通道关闭。\nqueue := make(chan string, 2)\rqueue \u0026lt;- \u0026quot;one\u0026quot;\rqueue \u0026lt;- \u0026quot;two\u0026quot;\rclose(queue)\rfor elem := range queue {\rfmt.Println(elem)\r}\rChannel 的关闭  内置函数close()可以用来关闭channel`,close()`函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。\nch := make(chan string) //可以关闭的通道\rch := make(chan\u0026lt;- string) //可以关闭的通道\rch := make(\u0026lt;-chan string) //不能关闭的通道\r1、关闭 一个通道意味着不能再向这个通道发送值了。 该特性可以向通道的接收方传达工作已经完成的信息。\nmsg := make(chan string)\rdone := make(chan bool)\rgo func() {\rfor {\rselect {\rcase m, ok := \u0026lt;-msg:\rif ok {\rfmt.Printf(m)\r} else {\rfmt.Println(\u0026quot;All message has received.\u0026quot;)\rdone \u0026lt;- true\rreturn\r}\r}\r}\r}()\rfor i := 1; i \u0026lt; 4; i++ {\rmsg \u0026lt;- fmt.Sprintf(\u0026quot;Message %d\\n\u0026quot;, i)\r}\rclose(msg)\r\u0026lt;-done\r2、向一个已经关闭的channel发送数据会panic\n3、从一个已经关闭的通道中读数据，依然可以读到数据。读到的内容是通道元素类型所对应的的零值。（例如：int类型channel读到的是0）。\nch := make(chan int)\rdataCh := make(chan string)\rgo func() {\rdataCh \u0026lt;- \u0026quot;str one\u0026quot;\rdataCh \u0026lt;- \u0026quot;str two\u0026quot;\rclose(dataCh)\r}()\rgo func() {\rfor {\rtime.Sleep(time.Millisecond * 500)\rselect {\rcase str := \u0026lt;-dataCh:\rfmt.Println(\u0026quot;--\u0026gt;\u0026quot;,str)\r}\r}\r}()\r\u0026lt;-ch\r//输出：\r--\u0026gt; str one\r--\u0026gt; str two\r--\u0026gt; --\u0026gt; 4、当发送者关闭通道后，通道接收器可以通过向接收表达式分配第二个参数来判断通道是否关闭。c,ok := \u0026lt;-ch，如果没有更多的值要接受且通道已经关闭，ok为false\nch := make(chan int)\rdataCh := make(chan string)\rgo func() {\rdataCh \u0026lt;- \u0026quot;str one\u0026quot;\rdataCh \u0026lt;- \u0026quot;str two\u0026quot;\rclose(dataCh)\r}()\rgo func() {\rfor {\rtime.Sleep(time.Millisecond * 500)\rselect {\rcase str, ok := \u0026lt;-dataCh:\rif ok {\rfmt.Println(\u0026quot;--\u0026gt;\u0026quot;, str)\r} else {\rfmt.Println(\u0026quot;通道已关闭\u0026quot;)\rch \u0026lt;- 1\rreturn\r}\r}\r}\r}()\r\u0026lt;-ch\rchannel的基本操作和注意事项 channel存在3种状态：\n nil，未初始化的状态，只进行了声明，或者手动赋值为nil active，正常的channel，可读或者可写 closed，已关闭，千万不要误认为关闭channel后，channel的值是nil  channel可进行3种操作：\n 读 写 关闭  把这3种操作和3种channel状态可以组合出9种情况：\n   操作 nil的channel 正常channel 已关闭channel     \u0026lt;- ch 阻塞 成功或阻塞 读到零值   ch \u0026lt;- 阻塞 成功或阻塞 panic   close(ch) panic 成功 panic    "
 },
 {
-	"uri": "http://echotrue.github.io/tags/kindle/",
+	"uri": "http://echotrue.github.io/blog/data-races/",
+	"title": "Golang Data Races",
+	"tags": ["Go", "并发", "数据竞争"],
+	"description": "",
+	"content": "什么是数据竞争 package main import ( \u0026quot;fmt\u0026quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：\n 变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。\n检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：\n$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.main() F:/go_project/api-service/test/core/main.go:12 +0x8f Goroutine 7 (running) created at: main.main() F:/go_project/api-service/test/core/main.go:9 +0x81 ================== Found 1 data race(s) exit status 66 0是打印结果，第一部分告诉我们在子goroutine中尝试写入的位置，第二部分告诉我们在主goroutine中，同时有一个读的操作。 第三部分描述了导致数据竞争的goroutine是在哪里创建。 除了go run名另外，go build和go test命令也支持使用-race标志。这个会使编译器创建的应用程序能够记录所有运行期 间对共享变量访问，并且会记录下每一个读或者写共享变量的goroutine的身份信息。\n竞争检查器会报告所有的已经发生的数据竞争。然而，它只能检测到运行时的竞争条件，并不能证明之后不会发生数据竞争。由于需要额外 的记录，因此构建时加了竞争检测的程序跑起来会慢一些，且需要更大的内存，即使是这样，这些代价对于很多生产环境的工作来说还是可 以接受的。对于一些偶发的竞争条件来说，使用附带竞争检查器的应用程序可以节省很多花在Debug上的时间。\n数据竞争解决方案 Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有： 使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。\n使用WaitGroup func main() { var i int var wg sync.WaitGroup wg.Add(1) // 通知程序有一个需要等待完成的任务 go func() { i = 5 wg.Done() // 告诉程序任务已经执行完成 }() wg.Wait() // 阻塞当前程序直到等待的任务执行完成 fmt.Println(i) } 使用通道 func main() { var i int wait := make(chan struct{}) go func() { i = 5 wait \u0026lt;- struct{}{} }() \u0026lt;-wait fmt.Println(i) } 使用Mutex 以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。 这种情况下我们应该考虑使用Mutex互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。\ntype SafeNumber struct { i int m sync.Mutex } func (sn *SafeNumber) Set(n int) { sn.m.Lock() defer sn.m.Unlock() sn.i = n } func (sn *SafeNumber) Get() int { sn.m.Lock() defer sn.m.Unlock() return sn.i } func main() { sn := new(SafeNumber) go func() { sn.Set(5) }() fmt.Println(sn.Get()) } "
+},
+{
+	"uri": "http://echotrue.github.io/algorithm/golang-search-slice/",
+	"title": "Golang Search Slice",
+	"tags": ["Go", "Slice"],
+	"description": "",
+	"content": "题目  假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]， 查找的目标值为345，如果切片中存在目标值程序输出:\u0026ldquo;Found it!\u0026ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未 找到目标值程序输出:\u0026ldquo;Timeout! Not Found\u0026rdquo;，同时立即取消仍在执行查找任务的goroutine。\n 首先题目里提到了在找到目标值或者超时后立刻结束所有goroutine的执行，完成这两个功能需要借助计时器、通道和context才行。 我能想到的第一点就是要用context.WithCancel创建一个上下文对象传递给每个执行任务的goroutine，外部在满足条件后（找到目标值或者已超时） 通过调用上下文的取消函数来通知所有goroutine停止工作。\n解法 package main import ( \u0026quot;context\u0026quot; \u0026quot;fmt\u0026quot; \u0026quot;os\u0026quot; \u0026quot;time\u0026quot; ) func main() { timer := time.NewTimer(time.Second * 5) data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96} dataLen := len(data) size := 3 target := 345 ctx, cancel := context.WithCancel(context.Background()) resultChan := make(chan bool) for i := 0; i \u0026lt; dataLen; i += size { end := i + size if end \u0026gt;= dataLen { end = dataLen - 1 } go SearchTarget(ctx, data[i:end], target, resultChan) } select { case \u0026lt;-timer.C: fmt.Fprintln(os.Stderr, \u0026quot;Timeout! Not Found\u0026quot;) cancel() case \u0026lt;-resultChan: fmt.Fprintf(os.Stdout, \u0026quot;Found it!\\n\u0026quot;) cancel() } time.Sleep(time.Second * 2) } func SearchTarget(ctx context.Context, data []int, target int, resultChan chan bool) { for _, v := range data { select { case \u0026lt;-ctx.Done(): fmt.Fprintf(os.Stdout, \u0026quot;Task cancelded! \\n\u0026quot;) return default: } // 模拟一个耗时查找，这里只是比对值，真实开发中可以是其他操作 fmt.Fprintf(os.Stdout, \u0026quot;v: %d \\n\u0026quot;, v) time.Sleep(time.Millisecond * 1500) if target == v { resultChan \u0026lt;- true return } } } "
+},
+{
+	"uri": "http://echotrue.github.io/categories/kindle/",
 	"title": "kindle",
 	"tags": [],
 	"description": "",
 	"content": ""
 },
 {
-	"uri": "http://echotrue.github.io/categories/kindle/",
+	"uri": "http://echotrue.github.io/tags/kindle/",
 	"title": "kindle",
 	"tags": [],
 	"description": "",
@@ -369,4 +404,32 @@
 	"tags": [],
 	"description": "Get value of site params variables in your page.",
 	"content": "siteparam shortcode is used to help you print values of site params.\nFor instance, in this current site, the editURL variable is used in config.toml\n[params]\reditURL = \u0026#34;https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/\u0026#34;\rUse the siteparam shortcode to display its value.\n`editURL` Value : {{% siteparam \u0026quot;editURL\u0026quot; %}}\ris displayed as\neditURL Value :\n"
+},
+{
+	"uri": "http://echotrue.github.io/tags/slice/",
+	"title": "Slice",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/tags/%E4%B8%8A%E4%B8%8B%E6%96%87/",
+	"title": "上下文",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/",
+	"title": "并发",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/",
+	"title": "数据竞争",
+	"tags": [],
+	"description": "",
+	"content": ""
 }]

@@ -13,6 +13,21 @@
     
     
     <item>
+      <title>Context</title>
+      <link>http://echotrue.github.io/blog/context/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/blog/context/</guid>
+      <description>引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一个实际的例子是：
+ 在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序可能还需要创建额外的goroutine去访问其他资源，比如：数据库， RPC服务等。由于这些goroutine都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token ，请求截止时间等。当请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们来取消掉所有 的goroutine
+ Context定义 context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据， 之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构， 根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。
+context包的核心是interface Context ,声明如下：
+type Context interface { Deadline() (deadline time.Time, ok bool) Done() &amp;lt;-chan struct{} Err() error Value(key interface{}) interface{} } Context定义很简单，一共四个方法：
+ Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求； 第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。 Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取， 则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。 Err方法返回取消的错误原因，因为什么Context被取消。 Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。  Context的实现方法 Context 虽然是个接口，但是并不需要使用方实现，golang内置的context 包，已经帮我们实现了2个方法，一般在代码中， 开始上下文的时候都是以这两个作为最顶层的parent context，然后再衍生出子context。这些 Context 对象形成一棵树： 当一个 Context 对象被取消时，继承自它的所有 Context 都会被取消。两个实现如下：
+var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Context { return background } func TODO() Context { return todo }  一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。 一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。 他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。  type emptyCtx int func (*emptyCtx) Deadline() (deadline time.</description>
+    </item>
+    
+    <item>
       <title>Archetypes</title>
       <link>http://echotrue.github.io/cont/archetypes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -158,6 +173,29 @@ main函数在 20 和 21 行分别调用server1和server2。</description>
  Do not communicate by sharing memory; instead, share memory by communicating.
  Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
  Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string)go func() {ch &amp;lt;- &amp;quot;hello&amp;quot;}()msg := &amp;lt;-chfmt.Println(msg) 以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description>
+    </item>
+    
+    <item>
+      <title>Golang Data Races</title>
+      <link>http://echotrue.github.io/blog/data-races/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/blog/data-races/</guid>
+      <description>什么是数据竞争 package main import ( &amp;quot;fmt&amp;quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：
+ 变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。
+检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：
+$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.main() F:/go_project/api-service/test/core/main.go:12 +0x8f Goroutine 7 (running) created at: main.main() F:/go_project/api-service/test/core/main.go:9 +0x81 ================== Found 1 data race(s) exit status 66 0是打印结果，第一部分告诉我们在子goroutine中尝试写入的位置，第二部分告诉我们在主goroutine中，同时有一个读的操作。 第三部分描述了导致数据竞争的goroutine是在哪里创建。 除了go run名另外，go build和go test命令也支持使用-race标志。这个会使编译器创建的应用程序能够记录所有运行期 间对共享变量访问，并且会记录下每一个读或者写共享变量的goroutine的身份信息。</description>
+    </item>
+    
+    <item>
+      <title>Golang Search Slice</title>
+      <link>http://echotrue.github.io/algorithm/golang-search-slice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/algorithm/golang-search-slice/</guid>
+      <description>题目  假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]， 查找的目标值为345，如果切片中存在目标值程序输出:&amp;ldquo;Found it!&amp;ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未 找到目标值程序输出:&amp;ldquo;Timeout! Not Found&amp;rdquo;，同时立即取消仍在执行查找任务的goroutine。
+ 首先题目里提到了在找到目标值或者超时后立刻结束所有goroutine的执行，完成这两个功能需要借助计时器、通道和context才行。 我能想到的第一点就是要用context.WithCancel创建一个上下文对象传递给每个执行任务的goroutine，外部在满足条件后（找到目标值或者已超时） 通过调用上下文的取消函数来通知所有goroutine停止工作。
+解法 package main import ( &amp;quot;context&amp;quot; &amp;quot;fmt&amp;quot; &amp;quot;os&amp;quot; &amp;quot;time&amp;quot; ) func main() { timer := time.NewTimer(time.Second * 5) data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96} dataLen := len(data) size := 3 target := 345 ctx, cancel := context.</description>
     </item>
     
     <item>
