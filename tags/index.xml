@@ -6,8 +6,8 @@
     <description>Recent content in Tags on Axlrose&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <copyright>©2020 my name.</copyright>
-    <lastBuildDate>Fri, 09 Aug 2019 15:55:02 +0800</lastBuildDate>
+    <copyright>Axlrose</copyright>
+    <lastBuildDate>Fri, 22 Jan 2021 14:56:40 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,9 +15,18 @@
     <item>
       <title>Go</title>
       <link>http://echotrue.github.io/tags/go/</link>
-      <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
+      <pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate>
       
       <guid>http://echotrue.github.io/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lock</title>
+      <link>http://echotrue.github.io/tags/lock/</link>
+      <pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/lock/</guid>
       <description></description>
     </item>
     
@@ -49,6 +58,24 @@
     </item>
     
     <item>
+      <title>array</title>
+      <link>http://echotrue.github.io/tags/array/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/array/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>concurrency-safety</title>
+      <link>http://echotrue.github.io/tags/concurrency-safety/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/concurrency-safety/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>context</title>
       <link>http://echotrue.github.io/tags/context/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -58,20 +85,11 @@
     </item>
     
     <item>
-      <title>kindle</title>
-      <link>http://echotrue.github.io/tags/kindle/</link>
+      <title>not concurrency-safety</title>
+      <link>http://echotrue.github.io/tags/not-concurrency-safety/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/tags/kindle/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>read</title>
-      <link>http://echotrue.github.io/tags/read/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/tags/read/</guid>
+      <guid>http://echotrue.github.io/tags/not-concurrency-safety/</guid>
       <description></description>
     </item>
     
@@ -94,6 +112,15 @@
     </item>
     
     <item>
+      <title>切片</title>
+      <link>http://echotrue.github.io/tags/%E5%88%87%E7%89%87/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/%E5%88%87%E7%89%87/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>并发</title>
       <link>http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -103,11 +130,29 @@
     </item>
     
     <item>
+      <title>并发安全</title>
+      <link>http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>数据竞争</title>
       <link>http://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数组</title>
+      <link>http://echotrue.github.io/tags/%E6%95%B0%E7%BB%84/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/tags/%E6%95%B0%E7%BB%84/</guid>
       <description></description>
     </item>
     

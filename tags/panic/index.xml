@@ -6,7 +6,7 @@
     <description>Recent content in panic on Axlrose&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <copyright>©2020 my name.</copyright>
+    <copyright>Axlrose</copyright>
     <lastBuildDate>Fri, 09 Aug 2019 15:55:02 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/tags/panic/index.xml" rel="self" type="application/rss+xml" />
@@ -14,10 +14,10 @@
     
     <item>
       <title>Panic and Recover</title>
-      <link>http://echotrue.github.io/blog/panic-and-recover/</link>
+      <link>http://echotrue.github.io/golang_post/panic-and-recover/</link>
       <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/blog/panic-and-recover/</guid>
+      <guid>http://echotrue.github.io/golang_post/panic-and-recover/</guid>
       <description>panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。
 func main() {var user = os.Getenv(&amp;quot;USER_&amp;quot;)go func() {defer func() {fmt.Println(&amp;quot;defer 1&amp;quot;)}()if user == &amp;quot;&amp;quot;{panic(&amp;quot;should set user env.&amp;quot;)}}()time.Sleep(1*time.Second)fmt.Println(&amp;quot;get result&amp;quot;)} 上述代码输出：

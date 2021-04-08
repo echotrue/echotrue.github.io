@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on Axlrose&#39;s blog</title>
+    <link>http://echotrue.github.io/golang_post/</link>
+    <description>Recent content in Golang on Axlrose&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Axlrose</copyright>
+    <lastBuildDate>Fri, 22 Jan 2021 14:56:40 +0800</lastBuildDate>
+    
+	<atom:link href="http://echotrue.github.io/golang_post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Context</title>
+      <link>http://echotrue.github.io/golang_post/context/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/context/</guid>
+      <description>引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一个实际的例子是：
+ 在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序可能还需要创建额外的goroutine去访问其他资源，比如：数据库， RPC服务等。由于这些goroutine都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token ，请求截止时间等。当请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们来取消掉所有 的goroutine
+ Context定义 context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据， 之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构， 根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。
+context包的核心是interface Context ,声明如下：
+type Context interface { Deadline() (deadline time.Time, ok bool) Done() &amp;lt;-chan struct{} Err() error Value(key interface{}) interface{} } Context定义很简单，一共四个方法：
+ Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求； 第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。 Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取， 则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。 Err方法返回取消的错误原因，因为什么Context被取消。 Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。  Context的实现方法 Context 虽然是个接口，但是并不需要使用方实现，golang内置的context 包，已经帮我们实现了2个方法，一般在代码中， 开始上下文的时候都是以这两个作为最顶层的parent context，然后再衍生出子context。这些 Context 对象形成一棵树： 当一个 Context 对象被取消时，继承自它的所有 Context 都会被取消。两个实现如下：
+var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Context { return background } func TODO() Context { return todo }  一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。 一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。 他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。  type emptyCtx int func (*emptyCtx) Deadline() (deadline time.</description>
+    </item>
+    
+    <item>
+      <title>Array And Slice</title>
+      <link>http://echotrue.github.io/golang_post/array-slice/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/array-slice/</guid>
+      <description>数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。
+var arr [4]int // 声明 fmt.Println(arr[1]) // 不需要显式的初始化 arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 数组的字面值 arr2 := [...]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 编译器统计数组字面值中的元素数量 fmt.Println(arr1, len(arr1), cap(arr1)) fmt.Println(arr2, len(arr2), cap(arr2)) Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）
+func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main() { arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} update(&amp;amp;arr1) fmt.Println(arr1) } 切片的创建和初始化 Golang中切片有三种初始化方式：
+ 通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片：  arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片  slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片  var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0  需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</description>
+    </item>
+    
+    <item>
+      <title>Lock</title>
+      <link>http://echotrue.github.io/golang_post/lock/</link>
+      <pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/lock/</guid>
+      <description>检测Go程序中按值传递的 locks </description>
+    </item>
+    
+    <item>
+      <title>Golang make and new</title>
+      <link>http://echotrue.github.io/golang_post/make-and-new/</link>
+      <pubDate>Wed, 28 Oct 2020 11:02:10 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/make-and-new/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Panic and Recover</title>
+      <link>http://echotrue.github.io/golang_post/panic-and-recover/</link>
+      <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/panic-and-recover/</guid>
+      <description>panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
+ panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。
+func main() {var user = os.Getenv(&amp;quot;USER_&amp;quot;)go func() {defer func() {fmt.Println(&amp;quot;defer 1&amp;quot;)}()if user == &amp;quot;&amp;quot;{panic(&amp;quot;should set user env.&amp;quot;)}}()time.Sleep(1*time.Second)fmt.Println(&amp;quot;get result&amp;quot;)} 上述代码输出：
+defer 1panic: should set user env.goroutine 19 [running]:main.main.func1(0x0, 0x0)D:/gopath/src/race_condition/index.go:16 +0x86created by main.mainD:/gopath/src/race_condition/index.go:11 +0x59Process finished with exit code 2说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行
+recover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil</description>
+    </item>
+    
+    <item>
+      <title>Golang Select</title>
+      <link>http://echotrue.github.io/golang_post/golang-select/</link>
+      <pubDate>Tue, 30 Jul 2019 19:04:35 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/golang-select/</guid>
+      <description>什么是select select语句用于从多个发送/接收channel中进行选择的操作。 select语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于switch，只是每个case语句被一个channel操作取代了。让我们深入研究一些代码，以便更好地理解
+func server1(ch chan string) {time.Sleep(6 * time.Second)ch &amp;lt;- &amp;quot;from server1&amp;quot;}func server2(ch chan string) {time.Sleep(3 * time.Second)ch &amp;lt;- &amp;quot;from server2&amp;quot;}func main() {output1 := make(chan string)output2 := make(chan string)go server1(output1)go server2(output2)select {case s1 := &amp;lt;-output1:fmt.Println(s1)case s2 := &amp;lt;-output2:fmt.Println(s2)}}在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
+main函数在 20 和 21 行分别调用server1和server2。</description>
+    </item>
+    
+    <item>
+      <title>Addressable and Unaddressable-Value</title>
+      <link>http://echotrue.github.io/golang_post/addressable/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/addressable/</guid>
+      <description>Addressable </description>
+    </item>
+    
+    <item>
+      <title>Block forever in go</title>
+      <link>http://echotrue.github.io/golang_post/block-forever-in-go/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/block-forever-in-go/</guid>
+      <description>Golang中永久阻塞的不同方法 The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling os.Exit or by returning from the main() function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.
+1. Using sync.</description>
+    </item>
+    
+    <item>
+      <title>Golang channel</title>
+      <link>http://echotrue.github.io/golang_post/channel/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/channel/</guid>
+      <description>概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色
+ Do not communicate by sharing memory; instead, share memory by communicating.
+ Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
+ Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string)go func() {ch &amp;lt;- &amp;quot;hello&amp;quot;}()msg := &amp;lt;-chfmt.Println(msg) 以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description>
+    </item>
+    
+    <item>
+      <title>Golang Data Races</title>
+      <link>http://echotrue.github.io/golang_post/data-races/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/data-races/</guid>
+      <description>关于Golang并发安全  谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong?  什么是数据竞争 package main import ( &amp;quot;fmt&amp;quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：
+ 变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。
+检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：
+$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.</description>
+    </item>
+    
+  </channel>
+</rss>

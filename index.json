@@ -1,13 +1,13 @@
 [
 {
-	"uri": "http://echotrue.github.io/blog/",
-	"title": "Blog",
+	"uri": "http://echotrue.github.io/golang_post/",
+	"title": "Golang",
 	"tags": [],
 	"description": "",
-	"content": "Post list Blog articles \rContext\r\r\rPanic and Recover\r\r\rGolang Select\r\r\rBlock forever in go\r\r\rGolang channel\r\r\rGolang Data Races\r\r\r"
+	"content": "Post list Blog articles \rContext\r\r\rArray And Slice\r\r\rLock\r\r\rGolang make and new\r\r\rPanic and Recover\r\r\rGolang Select\r\r\rAddressable and Unaddressable-Value\r\r\rBlock forever in go\r\r\rGolang channel\r\r\rGolang Data Races\r\r\r"
 },
 {
-	"uri": "http://echotrue.github.io/blog/context/",
+	"uri": "http://echotrue.github.io/golang_post/context/",
 	"title": "Context",
 	"tags": ["Go", "context", "上下文"],
 	"description": "",
@@ -19,6 +19,13 @@
 	"tags": [],
 	"description": "",
 	"content": "Algorithm list \rGolang Search Slice\r\r\r"
+},
+{
+	"uri": "http://echotrue.github.io/golang_post/array-slice/",
+	"title": "Array And Slice",
+	"tags": ["Go", "array", "slice", "数组", "切片"],
+	"description": "",
+	"content": "数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。\nvar arr [4]int // 声明 fmt.Println(arr[1]) // 不需要显式的初始化 arr1 := [2]string{\u0026quot;Penn\u0026quot;, \u0026quot;Teller\u0026quot;} // 数组的字面值 arr2 := [...]string{\u0026quot;Penn\u0026quot;, \u0026quot;Teller\u0026quot;} // 编译器统计数组字面值中的元素数量 fmt.Println(arr1, len(arr1), cap(arr1)) fmt.Println(arr2, len(arr2), cap(arr2)) Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）\nfunc update(arr *[2]string) { arr[1] = \u0026quot;axlrose\u0026quot; } func main() { arr1 := [2]string{\u0026quot;Penn\u0026quot;, \u0026quot;Teller\u0026quot;} update(\u0026amp;arr1) fmt.Println(arr1) } 切片的创建和初始化 Golang中切片有三种初始化方式：\n 通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片：  arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片  slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片  var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0  需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。\n 零值切片，nil切片和空切片  零切片：切片元素的值均是元素类型所对应的的0值切片  slice1 := make([]int, 10) fmt.Println(slice1) //[0 0 0 0 0 0 0 0 0 0] slice2 := make([]*int,10) fmt.Println(slice2) //[\u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt; \u0026lt;nil\u0026gt;] 切片追加和扩容 在分配内存空间之前需要先确定新的切片容量，Go 语言根据切片的当前容量选择不同的策略进行扩容：\n 如果期望容量大于当前容量的两倍就会使用期望容量； 如果当前切片的长度小于 1024 就会将容量翻倍； 如果当前切片的长度大于 1024 就会每次增加 25% 的容量，直到新容量大于期望容量；  "
 },
 {
 	"uri": "http://echotrue.github.io/cont/pages/",
@@ -33,13 +40,6 @@
 	"tags": [],
 	"description": "",
 	"content": "Chapter 1 Basics Discover what this Hugo theme is all about and the core-concepts behind it.\n"
-},
-{
-	"uri": "http://echotrue.github.io/other/",
-	"title": "Other",
-	"tags": [],
-	"description": "",
-	"content": "Other Blog articles "
 },
 {
 	"uri": "http://echotrue.github.io/cont/",
@@ -134,7 +134,7 @@
 },
 {
 	"uri": "http://echotrue.github.io/",
-	"title": "Learn Theme for Hugo",
+	"title": "Axlrose",
 	"tags": [],
 	"description": "",
 	"content": "Hugo learn theme Hugo-theme-learn is a theme for Hugo, a fast and modern static website engine written in Go. Where Hugo is often used for blogs, this multilingual-ready theme is fully designed for documentation.\nThis theme is a partial porting of the Learn theme of Grav, a modern flat-file CMS written in PHP.\nLearn theme works with a page tree structure to organize content : All contents are pages, which belong to other pages. read more about this\n\rMain features  Automatic Search Multilingual mode Unlimited menu levels Automatic next/prev buttons to navigate through menu entries Image resizing, shadow\u0026hellip; Attachments files List child pages Mermaid diagram (flowchart, sequence, gantt) Customizable look and feel and themes variants Buttons, Tip/Note/Info/Warning boxes, Expand  Contribute to this documentation Feel free to update this content, just click the Edit this page link displayed on top right of each page, and pullrequest it\nYour modification will be deployed automatically when merged.\n\rDocumentation website This current documentation has been statically generated with Hugo with a simple command : hugo -t hugo-theme-learn \u0026ndash; source code is available here at GitHub\nAutomatically published and hosted thanks to Netlify. Read more about Automated HUGO deployments with Netlify\n\r"
@@ -161,8 +161,43 @@
 	"content": ""
 },
 {
-	"uri": "http://echotrue.github.io/categories/panic/",
-	"title": "panic",
+	"uri": "http://echotrue.github.io/golang_post/lock/",
+	"title": "Lock",
+	"tags": ["Go", "lock"],
+	"description": "",
+	"content": "检测Go程序中按值传递的 locks "
+},
+{
+	"uri": "http://echotrue.github.io/tags/lock/",
+	"title": "lock",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/categories/lock/",
+	"title": "lock",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/tags/",
+	"title": "Tags",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/golang_post/make-and-new/",
+	"title": "Golang make and new",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/about/",
+	"title": "About",
 	"tags": [],
 	"description": "",
 	"content": ""
@@ -175,21 +210,21 @@
 	"content": ""
 },
 {
-	"uri": "http://echotrue.github.io/blog/panic-and-recover/",
+	"uri": "http://echotrue.github.io/categories/panic/",
+	"title": "panic",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/golang_post/panic-and-recover/",
 	"title": "Panic and Recover",
 	"tags": ["Go", "panic"],
 	"description": "",
 	"content": "panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。\n panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。\nfunc main() {\rvar user = os.Getenv(\u0026quot;USER_\u0026quot;)\rgo func() {\rdefer func() {\rfmt.Println(\u0026quot;defer 1\u0026quot;)\r}()\rif user == \u0026quot;\u0026quot;{\rpanic(\u0026quot;should set user env.\u0026quot;)\r}\r}()\rtime.Sleep(1*time.Second)\rfmt.Println(\u0026quot;get result\u0026quot;)\r}\r 上述代码输出：\ndefer 1\rpanic: should set user env.\rgoroutine 19 [running]:\rmain.main.func1(0x0, 0x0)\rD:/gopath/src/race_condition/index.go:16 +0x86\rcreated by main.main\rD:/gopath/src/race_condition/index.go:11 +0x59\rProcess finished with exit code 2\r说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行\nrecover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil\n"
 },
 {
-	"uri": "http://echotrue.github.io/tags/",
-	"title": "Tags",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
-	"uri": "http://echotrue.github.io/blog/golang-select/",
+	"uri": "http://echotrue.github.io/golang_post/golang-select/",
 	"title": "Golang Select",
 	"tags": ["Go"],
 	"description": "",
@@ -210,6 +245,20 @@
 	"content": ""
 },
 {
+	"uri": "http://echotrue.github.io/golang_post/addressable/",
+	"title": "Addressable and Unaddressable-Value",
+	"tags": ["Go"],
+	"description": "",
+	"content": "Addressable "
+},
+{
+	"uri": "http://echotrue.github.io/tags/array/",
+	"title": "array",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "http://echotrue.github.io/shortcodes/attachments/",
 	"title": "Attachments",
 	"tags": [],
@@ -217,7 +266,7 @@
 	"content": "The Attachments shortcode displays a list of files attached to a page.\n\r\rAttachments\r\r\rBachGavotteShort.mp3\r\r(357 ko)\r\r\rCarroll_AliceAuPaysDesMerveilles.pdf\r\r(175 ko)\r\r\radivorciarsetoca00cape.pdf\r\r(361 ko)\r\r\rhugo.png\r\r(17 ko)\r\r\rmovieselectricsheep-flock-244-32500-2.mp4\r\r(340 ko)\r\r\r\rUsage The shortcurt lists files found in a specific folder. Currently, it support two implementations for pages\n  If your page is a markdown file, attachements must be place in a folder named like your page and ending with .files.\n  content  _index.md page.files  attachment.pdf   page.md       If your page is a folder, attachements must be place in a nested \u0026lsquo;files\u0026rsquo; folder.\n  content  _index.md page  index.md files  attachment.pdf           Be aware that if you use a multilingual website, you will need to have as many folders as languages.\nThat's all !\nParameters    Parameter Default Description     title \u0026ldquo;Attachments\u0026rdquo; List's title   style \u0026quot;\u0026rdquo; Choose between \u0026ldquo;orange\u0026rdquo;, \u0026ldquo;grey\u0026rdquo;, \u0026ldquo;blue\u0026rdquo; and \u0026ldquo;green\u0026rdquo; for nice style   pattern \u0026ldquo;.*\u0026rdquo; A regular expressions, used to filter the attachments by file name. The pattern parameter value must be regular expressions.    For example:\n To match a file suffix of \u0026lsquo;jpg\u0026rsquo;, use *.jpg (not *.jpg). To match file names ending in \u0026lsquo;jpg\u0026rsquo; or \u0026lsquo;png\u0026rsquo;, use .*(jpg|png)  Examples List of attachments ending in pdf or mp4 {{%attachments title=\u0026quot;Related files\u0026quot; pattern=\u0026quot;.*(pdf|mp4)\u0026quot;/%}}\r renders as\n\r\rRelated files\r\r\rCarroll_AliceAuPaysDesMerveilles.pdf\r\r(175 ko)\r\r\radivorciarsetoca00cape.pdf\r\r(361 ko)\r\r\rmovieselectricsheep-flock-244-32500-2.mp4\r\r(340 ko)\r\r\r\rColored styled box {{%attachments style=\u0026quot;orange\u0026quot; /%}}\r renders as\n\r\rAttachments\r\r\rBachGavotteShort.mp3\r\r(357 ko)\r\r\rCarroll_AliceAuPaysDesMerveilles.pdf\r\r(175 ko)\r\r\radivorciarsetoca00cape.pdf\r\r(361 ko)\r\r\rhugo.png\r\r(17 ko)\r\r\rmovieselectricsheep-flock-244-32500-2.mp4\r\r(340 ko)\r\r\r\r{{%attachments style=\u0026quot;grey\u0026quot; /%}}\r renders as\n\r\rAttachments\r\r\rBachGavotteShort.mp3\r\r(357 ko)\r\r\rCarroll_AliceAuPaysDesMerveilles.pdf\r\r(175 ko)\r\r\radivorciarsetoca00cape.pdf\r\r(361 ko)\r\r\rhugo.png\r\r(17 ko)\r\r\rmovieselectricsheep-flock-244-32500-2.mp4\r\r(340 ko)\r\r\r\r{{%attachments style=\u0026quot;blue\u0026quot; /%}}\r renders as\n\r\rAttachments\r\r\rBachGavotteShort.mp3\r\r(357 ko)\r\r\rCarroll_AliceAuPaysDesMerveilles.pdf\r\r(175 ko)\r\r\radivorciarsetoca00cape.pdf\r\r(361 ko)\r\r\rhugo.png\r\r(17 ko)\r\r\rmovieselectricsheep-flock-244-32500-2.mp4\r\r(340 ko)\r\r\r\r{{%attachments style=\u0026quot;green\u0026quot; /%}}\r renders as\n\r\rAttachments\r\r\rBachGavotteShort.mp3\r\r(357 ko)\r\r\rCarroll_AliceAuPaysDesMerveilles.pdf\r\r(175 ko)\r\r\radivorciarsetoca00cape.pdf\r\r(361 ko)\r\r\rhugo.png\r\r(17 ko)\r\r\rmovieselectricsheep-flock-244-32500-2.mp4\r\r(340 ko)\r\r\r\r"
 },
 {
-	"uri": "http://echotrue.github.io/blog/block-forever-in-go/",
+	"uri": "http://echotrue.github.io/golang_post/block-forever-in-go/",
 	"title": "Block forever in go",
 	"tags": ["Go"],
 	"description": "",
@@ -238,6 +287,13 @@
 	"content": "Use the children shortcode to list the child pages of a page and the further descendants (children's children). By default, the shortcode displays links to the child pages.\nUsage    Parameter Default Description     page current Specify the page name (section name) to display children for   style \u0026ldquo;li\u0026rdquo; Choose the style used to display descendants. It could be any HTML tag name   showhidden \u0026ldquo;false\u0026rdquo; When true, child pages hidden from the menu will be displayed   description \u0026ldquo;false\u0026rdquo; Allows you to include a short text under each page in the list.when no description exists for the page, children shortcode takes the first 70 words of your content. read more info about summaries on gohugo.io   depth 1 Enter a number to specify the depth of descendants to display. For example, if the value is 2, the shortcode will display 2 levels of child pages. Tips: set 999 to get all descendants   sort none Sort Children ByWeight- to sort on menu orderName- to sort alphabetically on menu labelIdentifier- to sort alphabetically on identifier set in frontmatterURL- URL    Demo {{% children %}}\r \rpage 1\r\r\rpage 2\r\r\rpage 3\r\r\rpage test\r\r\r{{% children description=\u0026quot;true\u0026quot; %}}\r "
 },
 {
+	"uri": "http://echotrue.github.io/tags/concurrency-safety/",
+	"title": "concurrency-safety",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "http://echotrue.github.io/tags/context/",
 	"title": "context",
 	"tags": [],
@@ -252,18 +308,18 @@
 	"content": "The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example\n\r\rExpand me...\r\r\rLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\r Usage this shortcode takes exactly one optional parameter to define the text that appears next to the expand/collapse icon. (default is \u0026ldquo;Expand me\u0026hellip;\u0026quot;)\n{{%expand \u0026quot;Is this learn theme rocks ?\u0026quot; %}}Yes !.{{% /expand%}}\r \r\rIs this learn theme rocks ?\r\r\rYes !\r\r Demo {{%expand%}}\rLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\rtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\rquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\rconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\rcillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\rproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r{{% /expand%}}\r \r\rExpand me...\r\r\rLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\r "
 },
 {
-	"uri": "http://echotrue.github.io/blog/channel/",
+	"uri": "http://echotrue.github.io/golang_post/channel/",
 	"title": "Golang channel",
 	"tags": ["Go"],
 	"description": "",
 	"content": "概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色\n Do not communicate by sharing memory; instead, share memory by communicating.\n Channel类型 readOnlyCh := make(\u0026lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。\rwriteOnlyCh := make(chan\u0026lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据\rreadWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据\r阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。\n Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string)\rgo func() {\rch \u0026lt;- \u0026quot;hello\u0026quot;\r}()\rmsg := \u0026lt;-ch\rfmt.Println(msg)\r 以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。\n利用Channel实现并发的同步  基本用法中的代码片段使用阻塞接收的方式，实现了主goroutine等待子goroutine完成。最终达到了两个goroutine的同步。使用WaitGroup同样能达到多个goroutine的同步，尤其是需要等待多个协程的情况下，WaitGroup会是更好的选择。\nfunc worker(i int, wg *sync.WaitGroup) {\rdefer wg.Done()\rtime.Sleep(time.Second)\rfmt.Printf(\u0026quot;worker %d stared\\n\u0026quot;, i)\r}\rfunc main() {\rvar wg sync.WaitGroup\rfor i := 1; i \u0026lt;= 5; i++ {\rwg.Add(1)\rgo worker(i, \u0026amp;wg)\r}\rwg.Wait()\r}\r执行结果：\nworker 1 stared\rworker 5 stared\rworker 4 stared\rworker 3 stared\rworker 2 stared\rChannel 选择器  select语句主要用在从多个读或者写channel的操作中进行选择。select语句会一直阻塞直到，有至少一个读或者写channel操作就绪。如果同时有多个操作准备就绪，select语句会随机选择其中一个执行。select语法类似switch，每个case相当于一个通道操作。\nc1 := make(chan string)\rc2 := make(chan string)\rgo func() {\rtime.Sleep(1 * time.Second)\rc1 \u0026lt;- \u0026quot;one\u0026quot;\r}()\rgo func() {\rtime.Sleep(1 * time.Second)\rc2 \u0026lt;- \u0026quot;two\u0026quot;\r}()\rfor i := 0; i \u0026lt; 2; i++ {\rselect {\rcase msg1 := \u0026lt;-c1:\rfmt.Printf(\u0026quot;接到消息：%s\\n\u0026quot;, msg1)\rcase msg2 := \u0026lt;-c2:\rfmt.Printf(\u0026quot;接到消息：%s\\n\u0026quot;, msg2)\r}\r}\r以上代码会输出：接到消息one，接到消息two。\nChannel遍历 for...range可以用来遍历通道，它会反复从通道接收数据直到通道关闭。\nqueue := make(chan string, 2)\rqueue \u0026lt;- \u0026quot;one\u0026quot;\rqueue \u0026lt;- \u0026quot;two\u0026quot;\rclose(queue)\rfor elem := range queue {\rfmt.Println(elem)\r}\rChannel 的关闭  内置函数close()可以用来关闭channel`,close()`函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。\nch := make(chan string) //可以关闭的通道\rch := make(chan\u0026lt;- string) //可以关闭的通道\rch := make(\u0026lt;-chan string) //不能关闭的通道\r1、关闭 一个通道意味着不能再向这个通道发送值了。 该特性可以向通道的接收方传达工作已经完成的信息。\nmsg := make(chan string)\rdone := make(chan bool)\rgo func() {\rfor {\rselect {\rcase m, ok := \u0026lt;-msg:\rif ok {\rfmt.Printf(m)\r} else {\rfmt.Println(\u0026quot;All message has received.\u0026quot;)\rdone \u0026lt;- true\rreturn\r}\r}\r}\r}()\rfor i := 1; i \u0026lt; 4; i++ {\rmsg \u0026lt;- fmt.Sprintf(\u0026quot;Message %d\\n\u0026quot;, i)\r}\rclose(msg)\r\u0026lt;-done\r2、向一个已经关闭的channel发送数据会panic\n3、从一个已经关闭的通道中读数据，依然可以读到数据。读到的内容是通道元素类型所对应的的零值。（例如：int类型channel读到的是0）。\nch := make(chan int)\rdataCh := make(chan string)\rgo func() {\rdataCh \u0026lt;- \u0026quot;str one\u0026quot;\rdataCh \u0026lt;- \u0026quot;str two\u0026quot;\rclose(dataCh)\r}()\rgo func() {\rfor {\rtime.Sleep(time.Millisecond * 500)\rselect {\rcase str := \u0026lt;-dataCh:\rfmt.Println(\u0026quot;--\u0026gt;\u0026quot;,str)\r}\r}\r}()\r\u0026lt;-ch\r//输出：\r--\u0026gt; str one\r--\u0026gt; str two\r--\u0026gt; --\u0026gt; 4、当发送者关闭通道后，通道接收器可以通过向接收表达式分配第二个参数来判断通道是否关闭。c,ok := \u0026lt;-ch，如果没有更多的值要接受且通道已经关闭，ok为false\nch := make(chan int)\rdataCh := make(chan string)\rgo func() {\rdataCh \u0026lt;- \u0026quot;str one\u0026quot;\rdataCh \u0026lt;- \u0026quot;str two\u0026quot;\rclose(dataCh)\r}()\rgo func() {\rfor {\rtime.Sleep(time.Millisecond * 500)\rselect {\rcase str, ok := \u0026lt;-dataCh:\rif ok {\rfmt.Println(\u0026quot;--\u0026gt;\u0026quot;, str)\r} else {\rfmt.Println(\u0026quot;通道已关闭\u0026quot;)\rch \u0026lt;- 1\rreturn\r}\r}\r}\r}()\r\u0026lt;-ch\rchannel的基本操作和注意事项 channel存在3种状态：\n nil，未初始化的状态，只进行了声明，或者手动赋值为nil active，正常的channel，可读或者可写 closed，已关闭，千万不要误认为关闭channel后，channel的值是nil  channel可进行3种操作：\n 读 写 关闭  把这3种操作和3种channel状态可以组合出9种情况：\n   操作 nil的channel 正常channel 已关闭channel     \u0026lt;- ch 阻塞 成功或阻塞 读到零值   ch \u0026lt;- 阻塞 成功或阻塞 panic   close(ch) panic 成功 panic    "
 },
 {
-	"uri": "http://echotrue.github.io/blog/data-races/",
+	"uri": "http://echotrue.github.io/golang_post/data-races/",
 	"title": "Golang Data Races",
-	"tags": ["Go", "并发", "数据竞争"],
+	"tags": ["Go", "并发", "数据竞争", "并发安全", "not concurrency-safety", "concurrency-safety"],
 	"description": "",
-	"content": "什么是数据竞争 package main import ( \u0026quot;fmt\u0026quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：\n 变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。\n检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：\n$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.main() F:/go_project/api-service/test/core/main.go:12 +0x8f Goroutine 7 (running) created at: main.main() F:/go_project/api-service/test/core/main.go:9 +0x81 ================== Found 1 data race(s) exit status 66 0是打印结果，第一部分告诉我们在子goroutine中尝试写入的位置，第二部分告诉我们在主goroutine中，同时有一个读的操作。 第三部分描述了导致数据竞争的goroutine是在哪里创建。 除了go run名另外，go build和go test命令也支持使用-race标志。这个会使编译器创建的应用程序能够记录所有运行期 间对共享变量访问，并且会记录下每一个读或者写共享变量的goroutine的身份信息。\n竞争检查器会报告所有的已经发生的数据竞争。然而，它只能检测到运行时的竞争条件，并不能证明之后不会发生数据竞争。由于需要额外 的记录，因此构建时加了竞争检测的程序跑起来会慢一些，且需要更大的内存，即使是这样，这些代价对于很多生产环境的工作来说还是可 以接受的。对于一些偶发的竞争条件来说，使用附带竞争检查器的应用程序可以节省很多花在Debug上的时间。\n数据竞争解决方案 Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有： 使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。\n使用WaitGroup func main() { var i int var wg sync.WaitGroup wg.Add(1) // 通知程序有一个需要等待完成的任务 go func() { i = 5 wg.Done() // 告诉程序任务已经执行完成 }() wg.Wait() // 阻塞当前程序直到等待的任务执行完成 fmt.Println(i) } 使用通道 func main() { var i int wait := make(chan struct{}) go func() { i = 5 wait \u0026lt;- struct{}{} }() \u0026lt;-wait fmt.Println(i) } 使用Mutex 以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。 这种情况下我们应该考虑使用Mutex互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。\ntype SafeNumber struct { i int m sync.Mutex } func (sn *SafeNumber) Set(n int) { sn.m.Lock() defer sn.m.Unlock() sn.i = n } func (sn *SafeNumber) Get() int { sn.m.Lock() defer sn.m.Unlock() return sn.i } func main() { sn := new(SafeNumber) go func() { sn.Set(5) }() fmt.Println(sn.Get()) } "
+	"content": "关于Golang并发安全  谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong?  什么是数据竞争 package main import ( \u0026quot;fmt\u0026quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：\n 变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。\n检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：\n$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.main() F:/go_project/api-service/test/core/main.go:12 +0x8f Goroutine 7 (running) created at: main.main() F:/go_project/api-service/test/core/main.go:9 +0x81 ================== Found 1 data race(s) exit status 66 0是打印结果，第一部分告诉我们在子goroutine中尝试写入的位置，第二部分告诉我们在主goroutine中，同时有一个读的操作。 第三部分描述了导致数据竞争的goroutine是在哪里创建。 除了go run名另外，go build和go test命令也支持使用-race标志。这个会使编译器创建的应用程序能够记录所有运行期 间对共享变量访问，并且会记录下每一个读或者写共享变量的goroutine的身份信息。\n竞争检查器会报告所有的已经发生的数据竞争。然而，它只能检测到运行时的竞争条件，并不能证明之后不会发生数据竞争。由于需要额外 的记录，因此构建时加了竞争检测的程序跑起来会慢一些，且需要更大的内存，即使是这样，这些代价对于很多生产环境的工作来说还是可 以接受的。对于一些偶发的竞争条件来说，使用附带竞争检查器的应用程序可以节省很多花在Debug上的时间。\n数据竞争解决方案 Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有： 使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。\n使用WaitGroup func main() { var i int var wg sync.WaitGroup wg.Add(1) // 通知程序有一个需要等待完成的任务 go func() { i = 5 wg.Done() // 告诉程序任务已经执行完成 }() wg.Wait() // 阻塞当前程序直到等待的任务执行完成 fmt.Println(i) } 使用通道 func main() { var i int wait := make(chan struct{}) go func() { i = 5 wait \u0026lt;- struct{}{} }() \u0026lt;-wait fmt.Println(i) } 使用Mutex 以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。 这种情况下我们应该考虑使用Mutex互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。\ntype SafeNumber struct { i int m sync.Mutex } func (sn *SafeNumber) Set(n int) { sn.m.Lock() defer sn.m.Unlock() sn.i = n } func (sn *SafeNumber) Get() int { sn.m.Lock() defer sn.m.Unlock() return sn.i } func main() { sn := new(SafeNumber) go func() { sn.Set(5) }() fmt.Println(sn.Get()) } "
 },
 {
 	"uri": "http://echotrue.github.io/algorithm/golang-search-slice/",
@@ -273,32 +329,18 @@
 	"content": "题目  假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]， 查找的目标值为345，如果切片中存在目标值程序输出:\u0026ldquo;Found it!\u0026ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未 找到目标值程序输出:\u0026ldquo;Timeout! Not Found\u0026rdquo;，同时立即取消仍在执行查找任务的goroutine。\n 首先题目里提到了在找到目标值或者超时后立刻结束所有goroutine的执行，完成这两个功能需要借助计时器、通道和context才行。 我能想到的第一点就是要用context.WithCancel创建一个上下文对象传递给每个执行任务的goroutine，外部在满足条件后（找到目标值或者已超时） 通过调用上下文的取消函数来通知所有goroutine停止工作。\n解法 package main import ( \u0026quot;context\u0026quot; \u0026quot;fmt\u0026quot; \u0026quot;os\u0026quot; \u0026quot;time\u0026quot; ) func main() { timer := time.NewTimer(time.Second * 5) data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96} dataLen := len(data) size := 3 target := 345 ctx, cancel := context.WithCancel(context.Background()) resultChan := make(chan bool) for i := 0; i \u0026lt; dataLen; i += size { end := i + size if end \u0026gt;= dataLen { end = dataLen - 1 } go SearchTarget(ctx, data[i:end], target, resultChan) } select { case \u0026lt;-timer.C: fmt.Fprintln(os.Stderr, \u0026quot;Timeout! Not Found\u0026quot;) cancel() case \u0026lt;-resultChan: fmt.Fprintf(os.Stdout, \u0026quot;Found it!\\n\u0026quot;) cancel() } time.Sleep(time.Second * 2) } func SearchTarget(ctx context.Context, data []int, target int, resultChan chan bool) { for _, v := range data { select { case \u0026lt;-ctx.Done(): fmt.Fprintf(os.Stdout, \u0026quot;Task cancelded! \\n\u0026quot;) return default: } // 模拟一个耗时查找，这里只是比对值，真实开发中可以是其他操作 fmt.Fprintf(os.Stdout, \u0026quot;v: %d \\n\u0026quot;, v) time.Sleep(time.Millisecond * 1500) if target == v { resultChan \u0026lt;- true return } } } "
 },
 {
-	"uri": "http://echotrue.github.io/categories/kindle/",
-	"title": "kindle",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
-	"uri": "http://echotrue.github.io/tags/kindle/",
-	"title": "kindle",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
-	"uri": "http://echotrue.github.io/other/kindle-voyage%E5%BC%80%E7%AE%B1/",
-	"title": "Kindle Voyage 开箱",
-	"tags": ["kindle", "read"],
-	"description": "",
-	"content": ""
-},
-{
 	"uri": "http://echotrue.github.io/shortcodes/mermaid/",
 	"title": "Mermaid",
 	"tags": [],
 	"description": "Generation of diagram and flowchart from text in a similar manner as markdown",
 	"content": "Mermaid is a library helping you to generate diagram and flowcharts from text, in a similar manner as Markdown.\nJust insert your mermaid code in the mermaid shortcode and that's it.\nFlowchart example {{\u0026lt;mermaid align=\u0026quot;left\u0026quot;\u0026gt;}}\rgraph LR;\rA[Hard edge] --\u0026gt;|Link text| B(Round edge)\rB --\u0026gt; C{Decision}\rC --\u0026gt;|One| D[Result one]\rC --\u0026gt;|Two| E[Result two]\r{{\u0026lt; /mermaid \u0026gt;}}\r renders as\ngraph LR;\rA[Hard edge] --|Link text| B(Round edge)\rB -- C{Decision}\rC --|One| D[Result one]\rC --|Two| E[Result two]\r\ror you can use this alternative syntax:\nrenders as\ngraph LR;\rA[Hard edge] --\u0026gt;|Link text| B(Round edge)\rB --\u0026gt; C{Decision}\rC --\u0026gt;|One| D[Result one]\rC --\u0026gt;|Two| E[Result two]\rSequence example {{\u0026lt;mermaid\u0026gt;}}\rsequenceDiagram\rparticipant Alice\rparticipant Bob\rAlice-\u0026gt;\u0026gt;John: Hello John, how are you?\rloop Healthcheck\rJohn-\u0026gt;John: Fight against hypochondria\rend\rNote right of John: Rational thoughts \u0026lt;br/\u0026gt;prevail...\rJohn--\u0026gt;Alice: Great!\rJohn-\u0026gt;Bob: How about you?\rBob--\u0026gt;John: Jolly good!\r{{\u0026lt; /mermaid \u0026gt;}}\r renders as\nsequenceDiagram\rparticipant Alice\rparticipant Bob\rAlice-John: Hello John, how are you?\rloop Healthcheck\rJohn-John: Fight against hypochondria\rend\rNote right of John: Rational thoughts prevail...\rJohn--Alice: Great!\rJohn-Bob: How about you?\rBob--John: Jolly good!\r\ror you can use this alternative syntax:\nrenders as\nsequenceDiagram\rparticipant Alice\rparticipant Bob\rAlice-\u0026gt;\u0026gt;John: Hello John, how are you?\rloop Healthcheck\rJohn-\u0026gt;John: Fight against hypochondria\rend\rNote right of John: Rational thoughts \u0026lt;br/\u0026gt;prevail...\rJohn--\u0026gt;Alice: Great!\rJohn-\u0026gt;Bob: How about you?\rBob--\u0026gt;John: Jolly good!\rGANTT Example {{\u0026lt;mermaid\u0026gt;}}\rgantt\rdateFormat YYYY-MM-DD\rtitle Adding GANTT diagram functionality to mermaid\rsection A section\rCompleted task :done, des1, 2014-01-06,2014-01-08\rActive task :active, des2, 2014-01-09, 3d\rFuture task : des3, after des2, 5d\rFuture task2 : des4, after des3, 5d\rsection Critical tasks\rCompleted task in the critical line :crit, done, 2014-01-06,24h\rImplement parser and jison :crit, done, after des1, 2d\rCreate tests for parser :crit, active, 3d\rFuture task in critical line :crit, 5d\rCreate tests for renderer :2d\rAdd to mermaid :1d\r{{\u0026lt; /mermaid \u0026gt;}}\r renders as\ngantt\rdateFormat YYYY-MM-DD\rtitle Adding GANTT diagram functionality to mermaid\rsection A section\rCompleted task :done, des1, 2014-01-06,2014-01-08\rActive task :active, des2, 2014-01-09, 3d\rFuture task : des3, after des2, 5d\rFuture task2 : des4, after des3, 5d\rsection Critical tasks\rCompleted task in the critical line :crit, done, 2014-01-06,24h\rImplement parser and jison :crit, done, after des1, 2d\rCreate tests for parser :crit, active, 3d\rFuture task in critical line :crit, 5d\rCreate tests for renderer :2d\rAdd to mermaid :1d\r\ror you can use this alternative syntax:\nrenders as\ngantt\rdateFormat YYYY-MM-DD\rtitle Adding GANTT diagram functionality to mermaid\rsection A section\rCompleted task :done, des1, 2014-01-06,2014-01-08\rActive task :active, des2, 2014-01-09, 3d\rFuture task : des3, after des2, 5d\rFuture task2 : des4, after des3, 5d\rsection Critical tasks\rCompleted task in the critical line :crit, done, 2014-01-06,24h\rImplement parser and jison :crit, done, after des1, 2d\rCreate tests for parser :crit, active, 3d\rFuture task in critical line :crit, 5d\rCreate tests for renderer :2d\rAdd to mermaid :1d\rClass example renders as\nclassDiagram\rClass01 \u0026lt;|-- AveryLongClass : Cool\rClass03 *-- Class04\rClass05 o-- Class06\rClass07 .. Class08\rClass09 --\u0026gt; C2 : Where am i?\rClass09 --* C3\rClass09 --|\u0026gt; Class07\rClass07 : equals()\rClass07 : Object[] elementData\rClass01 : size()\rClass01 : int chimp\rClass01 : int gorilla\rClass08 \u0026lt;--\u0026gt; C2: Cool label\rGit example renders as\ngitGraph:\roptions\r{\r\u0026quot;nodeSpacing\u0026quot;: 150,\r\u0026quot;nodeRadius\u0026quot;: 10\r}\rend\rcommit\rbranch newbranch\rcheckout newbranch\rcommit\rcommit\rcheckout master\rcommit\rcommit\rmerge newbranch\r"
+},
+{
+	"uri": "http://echotrue.github.io/tags/not-concurrency-safety/",
+	"title": "not concurrency-safety",
+	"tags": [],
+	"description": "",
+	"content": ""
 },
 {
 	"uri": "http://echotrue.github.io/shortcodes/notice/",
@@ -378,20 +420,6 @@
 	"content": "This is a test 3 demo child page\n"
 },
 {
-	"uri": "http://echotrue.github.io/tags/read/",
-	"title": "read",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
-	"uri": "http://echotrue.github.io/categories/read/",
-	"title": "read",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
 	"uri": "http://echotrue.github.io/showcase/",
 	"title": "Showcase",
 	"tags": [],
@@ -420,6 +448,13 @@
 	"content": ""
 },
 {
+	"uri": "http://echotrue.github.io/tags/%E5%88%87%E7%89%87/",
+	"title": "切片",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/",
 	"title": "并发",
 	"tags": [],
@@ -427,8 +462,22 @@
 	"content": ""
 },
 {
+	"uri": "http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/",
+	"title": "并发安全",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
 	"uri": "http://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/",
 	"title": "数据竞争",
+	"tags": [],
+	"description": "",
+	"content": ""
+},
+{
+	"uri": "http://echotrue.github.io/tags/%E6%95%B0%E7%BB%84/",
+	"title": "数组",
 	"tags": [],
 	"description": "",
 	"content": ""
