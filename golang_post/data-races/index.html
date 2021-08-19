@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Golang Data Races :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1617867204" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1617867204" rel="stylesheet">
-    <link href="/css/hybrid.css?1617867204" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1617867204" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1617867204" rel="stylesheet">
-    <link href="/css/auto-complete.css?1617867204" rel="stylesheet">
-    <link href="/css/atom-one-dark.css?1617867204" rel="stylesheet">
-    <link href="/css/theme.css?1617867204" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1617867204" rel="stylesheet">
+    <link href="/css/nucleus.css?1629336314" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1629336314" rel="stylesheet">
+    <link href="/css/hybrid.css?1629336314" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1629336314" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1629336314" rel="stylesheet">
+    <link href="/css/auto-complete.css?1629336314" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1629336314" rel="stylesheet">
+    <link href="/css/theme.css?1629336314" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1629336314" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1617867204" rel="stylesheet">
+    <link href="/css/theme-blue.css?1629336314" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1617867204"></script>
+    <script src="/js/jquery-3.3.1.min.js?1629336314"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1617867204"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1617867204"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1629336314"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1629336314"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1617867204"></script>
+<script type="text/javascript" src="/js/search.js?1629336314"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang_post/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang_post/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/nano/" title="Nano" class="dd-item ">
+        <a href="/golang_post/nano/">
+        Nano
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -305,6 +326,27 @@
       <li data-nav-id="/golang_post/data-races/" title="Golang Data Races" class="dd-item active">
         <a href="/golang_post/data-races/">
         Golang Data Races
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/log/" title="Log" class="dd-item ">
+        <a href="/golang_post/log/">
+        Log
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -1357,13 +1399,13 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#golang">关于Golang并发安全</a></li>
-        <li><a href="#heading">什么是数据竞争</a></li>
-        <li><a href="#heading1">检测数据竞争</a></li>
-        <li><a href="#heading2">数据竞争解决方案</a></li>
-        <li><a href="#waitgroup">使用WaitGroup</a></li>
-        <li><a href="#heading3">使用通道</a></li>
-        <li><a href="#mutex">使用Mutex</a></li>
+        <li><a href="#关于golang并发安全">关于Golang并发安全</a></li>
+        <li><a href="#什么是数据竞争">什么是数据竞争</a></li>
+        <li><a href="#检测数据竞争">检测数据竞争</a></li>
+        <li><a href="#数据竞争解决方案">数据竞争解决方案</a></li>
+        <li><a href="#使用waitgroup">使用WaitGroup</a></li>
+        <li><a href="#使用通道">使用通道</a></li>
+        <li><a href="#使用mutex">使用Mutex</a></li>
       </ul>
     </li>
   </ul>
@@ -1406,12 +1448,12 @@
         
 
 
-<h3 id="golang">关于Golang并发安全</h3>
+<h3 id="关于golang并发安全">关于Golang并发安全</h3>
 <ol>
 <li><a href="http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html">谈谈go语言编程的并发安全</a></li>
 <li><a href="https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html">Benign Data Races: What Could Possibly Go Wrong?</a></li>
 </ol>
-<h3 id="heading">什么是数据竞争</h3>
+<h3 id="什么是数据竞争">什么是数据竞争</h3>
 <pre><code>package main
 
 import (
@@ -1432,7 +1474,7 @@ func main() {
 <li>打印i的值</li>
 </ul>
 <p>所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。</p>
-<h3 id="heading1">检测数据竞争</h3>
+<h3 id="检测数据竞争">检测数据竞争</h3>
 <p><code>Golang</code>有一个内置的数据竞争检测器，只需要在使用<code>Go</code>命令行工具的时候添加<code>-race</code>标志。例如：让我们尝试用<code>-race</code>标志来
 运行我们刚刚编写的程序：</p>
 <pre><code>$ go run -race main.go
@@ -1464,10 +1506,10 @@ exit status 66
 <p>竞争检查器会报告所有的已经发生的数据竞争。然而，它只能检测到运行时的竞争条件，并不能证明之后不会发生数据竞争。由于需要额外
 的记录，因此构建时加了竞争检测的程序跑起来会慢一些，且需要更大的内存，即使是这样，这些代价对于很多生产环境的工作来说还是可
 以接受的。对于一些偶发的竞争条件来说，使用附带竞争检查器的应用程序可以节省很多花在Debug上的时间。</p>
-<h3 id="heading2">数据竞争解决方案</h3>
+<h3 id="数据竞争解决方案">数据竞争解决方案</h3>
 <p>Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有：
 使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。</p>
-<h3 id="waitgroup">使用WaitGroup</h3>
+<h3 id="使用waitgroup">使用WaitGroup</h3>
 <pre><code>func main() {
     var i int
     var wg sync.WaitGroup
@@ -1479,7 +1521,7 @@ exit status 66
     wg.Wait() // 阻塞当前程序直到等待的任务执行完成
     fmt.Println(i)
 }
-</code></pre><h3 id="heading3">使用通道</h3>
+</code></pre><h3 id="使用通道">使用通道</h3>
 <pre><code>func main() {
     var i int
     wait := make(chan struct{})
@@ -1490,7 +1532,7 @@ exit status 66
     &lt;-wait
     fmt.Println(i)
 }
-</code></pre><h3 id="mutex">使用Mutex</h3>
+</code></pre><h3 id="使用mutex">使用Mutex</h3>
 <p>以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。
 这种情况下我们应该考虑使用<code>Mutex</code>互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。</p>
 <pre><code>type SafeNumber struct {
@@ -1714,6 +1756,41 @@ func main() {
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
                     
                 
                 
@@ -1733,9 +1810,6 @@ func main() {
             
             
                 
-                    
-                        
-                        
                     
                 
                 
@@ -2293,7 +2367,7 @@ func main() {
 			<a class="nav nav-prev" href="/golang_post/channel/" title="Golang channel"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/algorithm/" title="Algorithm" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/golang_post/log/" title="Log" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -2303,19 +2377,28 @@ func main() {
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1617867204"></script>
-    <script src="/js/jquery.sticky.js?1617867204"></script>
-    <script src="/js/featherlight.min.js?1617867204"></script>
-    <script src="/js/highlight.pack.js?1617867204"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1617867204"></script>
-    <script src="/js/learn.js?1617867204"></script>
-    <script src="/js/hugo-learn.js?1617867204"></script>
+    <script src="/js/clipboard.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1629336314"></script>
+    <script src="/js/jquery.sticky.js?1629336314"></script>
+    <script src="/js/featherlight.min.js?1629336314"></script>
+    <script src="/js/highlight.pack.js?1629336314"></script>
+    <script>
+        hljs.configure({
+            
+            tabReplace: '    ', 
+            
+            cssSelector: 'pre code',
+        });
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/modernizr.custom-3.6.0.js?1629336314"></script>
+    <script src="/js/learn.js?1629336314"></script>
+    <script src="/js/hugo-learn.js?1629336314"></script>
 
-    <link href="/mermaid/mermaid.css?1617867204" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1617867204"></script>
+    <link href="/mermaid/mermaid.css?1629336314" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1629336314"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

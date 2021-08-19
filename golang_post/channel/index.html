@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Golang channel :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1617867204" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1617867204" rel="stylesheet">
-    <link href="/css/hybrid.css?1617867204" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1617867204" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1617867204" rel="stylesheet">
-    <link href="/css/auto-complete.css?1617867204" rel="stylesheet">
-    <link href="/css/atom-one-dark.css?1617867204" rel="stylesheet">
-    <link href="/css/theme.css?1617867204" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1617867204" rel="stylesheet">
+    <link href="/css/nucleus.css?1629336314" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1629336314" rel="stylesheet">
+    <link href="/css/hybrid.css?1629336314" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1629336314" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1629336314" rel="stylesheet">
+    <link href="/css/auto-complete.css?1629336314" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1629336314" rel="stylesheet">
+    <link href="/css/theme.css?1629336314" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1629336314" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1617867204" rel="stylesheet">
+    <link href="/css/theme-blue.css?1629336314" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1617867204"></script>
+    <script src="/js/jquery-3.3.1.min.js?1629336314"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1617867204"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1617867204"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1629336314"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1629336314"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1617867204"></script>
+<script type="text/javascript" src="/js/search.js?1629336314"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang_post/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang_post/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/nano/" title="Nano" class="dd-item ">
+        <a href="/golang_post/nano/">
+        Nano
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -305,6 +326,27 @@
       <li data-nav-id="/golang_post/data-races/" title="Golang Data Races" class="dd-item ">
         <a href="/golang_post/data-races/">
         Golang Data Races
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/log/" title="Log" class="dd-item ">
+        <a href="/golang_post/log/">
+        Log
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -1357,15 +1399,15 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#heading">概念</a></li>
-        <li><a href="#channel">Channel类型</a></li>
-        <li><a href="#heading1">阻塞</a></li>
-        <li><a href="#a-idcode1a">基本用法</a></li>
-        <li><a href="#channel1">利用Channel实现并发的同步</a></li>
-        <li><a href="#channel-">Channel 选择器</a></li>
-        <li><a href="#channel2">Channel遍历</a></li>
-        <li><a href="#channel-1">Channel 的关闭</a></li>
-        <li><a href="#channel3">channel的基本操作和注意事项</a></li>
+        <li><a href="#概念">概念</a></li>
+        <li><a href="#channel类型">Channel类型</a></li>
+        <li><a href="#阻塞">阻塞</a></li>
+        <li><a href="#a-idcode1基本用法a"><!-- raw HTML omitted -->基本用法<!-- raw HTML omitted --></a></li>
+        <li><a href="#利用channel实现并发的同步">利用<code>Channel</code>实现并发的同步</a></li>
+        <li><a href="#channel-选择器">Channel 选择器</a></li>
+        <li><a href="#channel遍历">Channel遍历</a></li>
+        <li><a href="#channel-的关闭">Channel 的关闭</a></li>
+        <li><a href="#channel的基本操作和注意事项">channel的基本操作和注意事项</a></li>
       </ul>
     </li>
   </ul>
@@ -1398,16 +1440,16 @@
         
 
 
-<h3 id="heading">概念</h3>
+<h3 id="概念">概念</h3>
 <p>  从字面上看，<code>channel</code>的意思大概就是管道的意思。<code>channel</code>是一种<code>goroutine</code>用以接收或发送消息的安全的消息队列，<code>channel</code>就像两个<code>goroutine</code>之间的导管，来实现各种资源的同步。在官方<code>Effective go</code>文档中有一句非常著名的话可以说明<code>channel</code>在使用<code>Golang</code>进行并发编程的时候扮演了极为重要的角色</p>
 <blockquote>
 <p><em>Do not communicate by sharing memory; instead, share memory by communicating.</em></p>
 </blockquote>
-<h3 id="channel">Channel类型</h3>
+<h3 id="channel类型">Channel类型</h3>
 <pre><code>readOnlyCh  := make(&lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。
 writeOnlyCh := make(chan&lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据
 readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据
-</code></pre><h3 id="heading1">阻塞</h3>
+</code></pre><h3 id="阻塞">阻塞</h3>
 <p>  根据<code>Channel</code>缓冲区的大小，我们又可以将<code>Channel</code>分为<code>Unbuffered channels</code>与<code>Buffered channels</code>。其中，<code>Unbuffered channels</code>的缓冲区大小为0，这种<code>channel</code>的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个<code>goroutine</code>进行状态同步。<code>Buffered channels</code>拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用<a href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html">The Nature Of Channels In Go</a>中的两张图片来说明两种<code>channel</code>的特性。</p>
 <ul>
 <li><code>Unbuffered Channels</code></li>
@@ -1417,7 +1459,7 @@ readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型
 <li><code>Buffered Channels</code></li>
 </ul>
 <p><!-- raw HTML omitted --></p>
-<h3 id="a-idcode1a"><!-- raw HTML omitted -->基本用法<!-- raw HTML omitted --></h3>
+<h3 id="a-idcode1基本用法a"><!-- raw HTML omitted -->基本用法<!-- raw HTML omitted --></h3>
 <pre><code>ch := make(chan string)
 
 go func() {
@@ -1427,7 +1469,7 @@ go func() {
 msg := &lt;-ch
 fmt.Println(msg)
 </code></pre><p>  以上代码，利用不带缓冲的<code>channel</code>双向阻塞的特性。主<code>goroutine</code>(就是main函数)会阻塞直到接收到子<code>goroutine</code>向<code>ch</code>中写入的值。所以保证了<code>hello</code>一定会输出。</p>
-<h3 id="channel1">利用<code>Channel</code>实现并发的同步</h3>
+<h3 id="利用channel实现并发的同步">利用<code>Channel</code>实现并发的同步</h3>
 <p>  <a href="#code1">基本用法</a>中的代码片段使用阻塞接收的方式，实现了主<code>goroutine</code>等待子<code>goroutine</code>完成。最终达到了两个<code>goroutine</code>的同步。使用<code>WaitGroup</code>同样能达到多个<code>goroutine</code>的同步，尤其是需要等待多个协程的情况下，<code>WaitGroup</code>会是更好的选择。</p>
 <pre><code>func worker(i int, wg *sync.WaitGroup) {
 	defer wg.Done()
@@ -1448,7 +1490,7 @@ worker 5 stared
 worker 4 stared
 worker 3 stared
 worker 2 stared
-</code></pre><h3 id="channel-">Channel 选择器</h3>
+</code></pre><h3 id="channel-选择器">Channel 选择器</h3>
 <p>  <code>select</code>语句主要用在从多个读或者写<code>channel</code>的操作中进行选择。<code>select</code>语句会一直阻塞直到，有至少一个读或者写<code>channel</code>操作就绪。如果同时有多个操作准备就绪，<code>select</code>语句会随机选择其中一个执行。<code>select</code>语法类似<code>switch</code>，每个<code>case</code>相当于一个通道操作。</p>
 <pre><code>c1 := make(chan string)
 c2 := make(chan string)
@@ -1471,7 +1513,7 @@ for i := 0; i &lt; 2; i++ {
     }
 }
 </code></pre><p>以上代码会输出：接到消息one，接到消息two。</p>
-<h3 id="channel2">Channel遍历</h3>
+<h3 id="channel遍历">Channel遍历</h3>
 <p><code>for...range</code>可以用来遍历通道，它会反复从通道接收数据直到通道关闭。</p>
 <pre><code>queue := make(chan string, 2)
 queue &lt;- &quot;one&quot;
@@ -1481,8 +1523,8 @@ close(queue)
 for elem := range queue {
     fmt.Println(elem)
 }
-</code></pre><h3 id="channel-1">Channel 的关闭</h3>
-<p>  内置函数<code>close()</code>可以用来关闭<code>channel`,</code>close()`函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。</p>
+</code></pre><h3 id="channel-的关闭">Channel 的关闭</h3>
+<p>  内置函数<code>close()</code>可以用来关闭<code>channel</code>,<code>close()</code>函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。</p>
 <pre><code>ch := make(chan string) //可以关闭的通道
 ch := make(chan&lt;- string) //可以关闭的通道
 ch := make(&lt;-chan string) //不能关闭的通道
@@ -1565,7 +1607,7 @@ go func() {
     }
 }()
 &lt;-ch
-</code></pre><h3 id="channel3">channel的基本操作和注意事项</h3>
+</code></pre><h3 id="channel的基本操作和注意事项">channel的基本操作和注意事项</h3>
 <p>channel存在<code>3种状态</code>：</p>
 <ol>
 <li>nil，未初始化的状态，只进行了声明，或者手动赋值为<code>nil</code></li>
@@ -1791,6 +1833,22 @@ go func() {
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -1810,6 +1868,22 @@ go func() {
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -2396,19 +2470,28 @@ go func() {
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1617867204"></script>
-    <script src="/js/jquery.sticky.js?1617867204"></script>
-    <script src="/js/featherlight.min.js?1617867204"></script>
-    <script src="/js/highlight.pack.js?1617867204"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1617867204"></script>
-    <script src="/js/learn.js?1617867204"></script>
-    <script src="/js/hugo-learn.js?1617867204"></script>
+    <script src="/js/clipboard.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1629336314"></script>
+    <script src="/js/jquery.sticky.js?1629336314"></script>
+    <script src="/js/featherlight.min.js?1629336314"></script>
+    <script src="/js/highlight.pack.js?1629336314"></script>
+    <script>
+        hljs.configure({
+            
+            tabReplace: '    ', 
+            
+            cssSelector: 'pre code',
+        });
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/modernizr.custom-3.6.0.js?1629336314"></script>
+    <script src="/js/learn.js?1629336314"></script>
+    <script src="/js/hugo-learn.js?1629336314"></script>
 
-    <link href="/mermaid/mermaid.css?1617867204" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1617867204"></script>
+    <link href="/mermaid/mermaid.css?1629336314" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1629336314"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

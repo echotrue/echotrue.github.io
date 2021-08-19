@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Golang Search Slice :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1617867204" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1617867204" rel="stylesheet">
-    <link href="/css/hybrid.css?1617867204" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1617867204" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1617867204" rel="stylesheet">
-    <link href="/css/auto-complete.css?1617867204" rel="stylesheet">
-    <link href="/css/atom-one-dark.css?1617867204" rel="stylesheet">
-    <link href="/css/theme.css?1617867204" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1617867204" rel="stylesheet">
+    <link href="/css/nucleus.css?1629336314" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1629336314" rel="stylesheet">
+    <link href="/css/hybrid.css?1629336314" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1629336314" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1629336314" rel="stylesheet">
+    <link href="/css/auto-complete.css?1629336314" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1629336314" rel="stylesheet">
+    <link href="/css/theme.css?1629336314" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1629336314" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1617867204" rel="stylesheet">
+    <link href="/css/theme-blue.css?1629336314" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1617867204"></script>
+    <script src="/js/jquery-3.3.1.min.js?1629336314"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1617867204"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1617867204"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1629336314"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1629336314"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1617867204"></script>
+<script type="text/javascript" src="/js/search.js?1629336314"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang_post/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang_post/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/nano/" title="Nano" class="dd-item ">
+        <a href="/golang_post/nano/">
+        Nano
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -305,6 +326,27 @@
       <li data-nav-id="/golang_post/data-races/" title="Golang Data Races" class="dd-item ">
         <a href="/golang_post/data-races/">
         Golang Data Races
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/log/" title="Log" class="dd-item ">
+        <a href="/golang_post/log/">
+        Log
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -1355,9 +1397,9 @@
     <div class="wrapper">
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#heading">题目</a>
+    <li><a href="#题目">题目</a>
       <ul>
-        <li><a href="#heading1">解法</a></li>
+        <li><a href="#解法">解法</a></li>
       </ul>
     </li>
   </ul>
@@ -1392,7 +1434,7 @@
         
 
 
-<h2 id="heading">题目</h2>
+<h2 id="题目">题目</h2>
 <blockquote>
 <p>假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值，
 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]，
@@ -1402,7 +1444,7 @@
 <p>首先题目里提到了在找到目标值或者超时后立刻结束所有<code>goroutine</code>的执行，完成这两个功能需要借助计时器、通道和<code>context</code>才行。
 我能想到的第一点就是要用<code>context.WithCancel</code>创建一个上下文对象传递给每个执行任务的<code>goroutine</code>，外部在满足条件后（找到目标值或者已超时）
 通过调用上下文的取消函数来通知所有<code>goroutine</code>停止工作。</p>
-<h3 id="heading1">解法</h3>
+<h3 id="解法">解法</h3>
 <pre><code>package main
 
 import (
@@ -1504,6 +1546,38 @@ func SearchTarget(ctx context.Context, data []int, target int, resultChan chan b
                     
                     
 
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
                     
                         
             
@@ -2244,19 +2318,28 @@ func SearchTarget(ctx context.Context, data []int, target int, resultChan chan b
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1617867204"></script>
-    <script src="/js/jquery.sticky.js?1617867204"></script>
-    <script src="/js/featherlight.min.js?1617867204"></script>
-    <script src="/js/highlight.pack.js?1617867204"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1617867204"></script>
-    <script src="/js/learn.js?1617867204"></script>
-    <script src="/js/hugo-learn.js?1617867204"></script>
+    <script src="/js/clipboard.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1629336314"></script>
+    <script src="/js/jquery.sticky.js?1629336314"></script>
+    <script src="/js/featherlight.min.js?1629336314"></script>
+    <script src="/js/highlight.pack.js?1629336314"></script>
+    <script>
+        hljs.configure({
+            
+            tabReplace: '    ', 
+            
+            cssSelector: 'pre code',
+        });
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/modernizr.custom-3.6.0.js?1629336314"></script>
+    <script src="/js/learn.js?1629336314"></script>
+    <script src="/js/hugo-learn.js?1629336314"></script>
 
-    <link href="/mermaid/mermaid.css?1617867204" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1617867204"></script>
+    <link href="/mermaid/mermaid.css?1629336314" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1629336314"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

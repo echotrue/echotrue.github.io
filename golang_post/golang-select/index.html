@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Golang Select :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1617867204" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1617867204" rel="stylesheet">
-    <link href="/css/hybrid.css?1617867204" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1617867204" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1617867204" rel="stylesheet">
-    <link href="/css/auto-complete.css?1617867204" rel="stylesheet">
-    <link href="/css/atom-one-dark.css?1617867204" rel="stylesheet">
-    <link href="/css/theme.css?1617867204" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1617867204" rel="stylesheet">
+    <link href="/css/nucleus.css?1629336314" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1629336314" rel="stylesheet">
+    <link href="/css/hybrid.css?1629336314" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1629336314" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1629336314" rel="stylesheet">
+    <link href="/css/auto-complete.css?1629336314" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1629336314" rel="stylesheet">
+    <link href="/css/theme.css?1629336314" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1629336314" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1617867204" rel="stylesheet">
+    <link href="/css/theme-blue.css?1629336314" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1617867204"></script>
+    <script src="/js/jquery-3.3.1.min.js?1629336314"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1617867204"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1617867204"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1629336314"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1629336314"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1617867204"></script>
+<script type="text/javascript" src="/js/search.js?1629336314"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang_post/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang_post/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/nano/" title="Nano" class="dd-item ">
+        <a href="/golang_post/nano/">
+        Nano
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -305,6 +326,27 @@
       <li data-nav-id="/golang_post/data-races/" title="Golang Data Races" class="dd-item ">
         <a href="/golang_post/data-races/">
         Golang Data Races
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/log/" title="Log" class="dd-item ">
+        <a href="/golang_post/log/">
+        Log
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -1357,12 +1399,12 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#select">什么是select</a></li>
-        <li><a href="#select1">select的用途</a></li>
-        <li><a href="#case">默认case</a></li>
-        <li><a href="#case1">死锁和默认case</a></li>
-        <li><a href="#select2">select的随机性</a></li>
-        <li><a href="#select3">空select</a></li>
+        <li><a href="#什么是select">什么是select</a></li>
+        <li><a href="#select的用途">select的用途</a></li>
+        <li><a href="#默认case">默认case</a></li>
+        <li><a href="#死锁和默认case">死锁和默认case</a></li>
+        <li><a href="#select的随机性">select的随机性</a></li>
+        <li><a href="#空select">空select</a></li>
       </ul>
     </li>
   </ul>
@@ -1395,7 +1437,7 @@
         
 
 
-<h3 id="select">什么是select</h3>
+<h3 id="什么是select">什么是select</h3>
 <p><code>select</code>语句用于从多个发送/接收<code>channel</code>中进行选择的操作。 <code>select</code>语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于<code>switch</code>，只是每个<code>case</code>语句被一个<code>channel</code>操作取代了。让我们深入研究一些代码，以便更好地理解</p>
 <pre><code>func server1(ch chan string) {
     time.Sleep(6 * time.Second)
@@ -1423,10 +1465,10 @@ func main() {
 <p>在第 22 行，<code>select</code>语句将阻塞直到其中一个<code>case</code>准备就绪。在上面的程序中，<code>server1</code>在 6 秒后写入<code>output1 channel</code>，而<code>server2</code>在 3 秒后写入<code>output2 channel</code>。因此 select 语句将阻塞 3 秒并等待<code>server2</code>写入。 3 秒后，程序将打印，</p>
 <pre><code>from server2
 </code></pre><p>然后终止。</p>
-<h3 id="select1">select的用途</h3>
+<h3 id="select的用途">select的用途</h3>
 <p>将上述程序中的函数命名为<code>server1</code>和<code>server2</code>的原因是为了说明<code>select</code>的实际用途。</p>
 <p>让我们假设我们有一个关键任务的应用，我们需要尽快将输出返回给用户。该应用程序的数据库被复制并存储在世界各地的不同服务器中。假设函数<code>server1</code>和<code>server2</code>实际上与 2 个这样的服务器通信。每个服务器的响应时间取决于每个服务器的负载和网络延迟。我们将请求发送到两个服务器，然后使用<code>select</code>语句在相应的<code>channel</code>上等待响应。<code>select</code>会选择优先响应的服务器，其他响应被忽略。这样我们就可以向多个服务器发送相同的请求，并将最快的响应返回给用户:)。</p>
-<h3 id="case">默认case</h3>
+<h3 id="默认case">默认case</h3>
 <p>当其他<code>case</code>都没有准备就绪时，将会执行<code>select</code>语句中的默认<code>case</code>。这通常用于防止<code>select</code>语句阻塞。</p>
 <pre><code>func process(ch chan string) {
     time.Sleep(10500 * time.Millisecond)
@@ -1462,7 +1504,7 @@ no value received
 no value received
 no value received
 received value:  process successful
-</code></pre><h3 id="case1">死锁和默认case</h3>
+</code></pre><h3 id="死锁和默认case">死锁和默认case</h3>
 <pre><code>func main() {
     ch := make(chan string)
     select {
@@ -1499,7 +1541,7 @@ main.main()
 }
 </code></pre><p>在上面的程序中，<code>ch</code>是<code>nil</code>，我们试图用<code>select</code>从<code>ch</code>中读取。如果没有默认<code>case</code>，则<code>select</code>将一直被阻塞并导致死锁。由于我们在<code>select</code>中有一个默认的<code>case</code>，它将被执行并且程序将打印，</p>
 <pre><code>default case executed
-</code></pre><h3 id="select2">select的随机性</h3>
+</code></pre><h3 id="select的随机性">select的随机性</h3>
 <p>当<code>select</code>语句中的多个<code>case</code>准备就绪时，将会随机挑选一个执行。</p>
 <pre><code>func server1(ch chan string) {
     ch &lt;- &quot;from server1&quot;
@@ -1522,7 +1564,7 @@ func main() {
     }
 }
 </code></pre><p>在上面的程序中，<code>server1</code>和<code>server2</code> 协程在第 18 和 19 行分别被调用，然后<code>main</code>协程休眠 1 秒。当运行到<code>select</code>语句时，<code>server1</code>已将<code>from server1</code>写入<code>output1</code>，<code>server2</code>已将<code>from server2</code>写入<code>output2</code>，因此<code>select</code>语句中的两种情况都准备就绪。如果多次运行此程序，将会随机输出<code>from server1</code>或<code>from server2</code>。</p>
-<h3 id="select3">空select</h3>
+<h3 id="空select">空select</h3>
 <pre><code>func main() {
     select {}
 }
@@ -1667,6 +1709,22 @@ main.main()
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -1686,6 +1744,22 @@ main.main()
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -2320,19 +2394,28 @@ main.main()
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1617867204"></script>
-    <script src="/js/jquery.sticky.js?1617867204"></script>
-    <script src="/js/featherlight.min.js?1617867204"></script>
-    <script src="/js/highlight.pack.js?1617867204"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1617867204"></script>
-    <script src="/js/learn.js?1617867204"></script>
-    <script src="/js/hugo-learn.js?1617867204"></script>
+    <script src="/js/clipboard.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1629336314"></script>
+    <script src="/js/jquery.sticky.js?1629336314"></script>
+    <script src="/js/featherlight.min.js?1629336314"></script>
+    <script src="/js/highlight.pack.js?1629336314"></script>
+    <script>
+        hljs.configure({
+            
+            tabReplace: '    ', 
+            
+            cssSelector: 'pre code',
+        });
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/modernizr.custom-3.6.0.js?1629336314"></script>
+    <script src="/js/learn.js?1629336314"></script>
+    <script src="/js/hugo-learn.js?1629336314"></script>
 
-    <link href="/mermaid/mermaid.css?1617867204" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1617867204"></script>
+    <link href="/mermaid/mermaid.css?1629336314" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1629336314"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

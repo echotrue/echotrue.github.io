@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.60.1" />
+    <meta name="generator" content="Hugo 0.74.3" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Array And Slice :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1617867204" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1617867204" rel="stylesheet">
-    <link href="/css/hybrid.css?1617867204" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1617867204" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1617867204" rel="stylesheet">
-    <link href="/css/auto-complete.css?1617867204" rel="stylesheet">
-    <link href="/css/atom-one-dark.css?1617867204" rel="stylesheet">
-    <link href="/css/theme.css?1617867204" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1617867204" rel="stylesheet">
+    <link href="/css/nucleus.css?1629336314" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1629336314" rel="stylesheet">
+    <link href="/css/hybrid.css?1629336314" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1629336314" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1629336314" rel="stylesheet">
+    <link href="/css/auto-complete.css?1629336314" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1629336314" rel="stylesheet">
+    <link href="/css/theme.css?1629336314" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1629336314" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1617867204" rel="stylesheet">
+    <link href="/css/theme-blue.css?1629336314" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1617867204"></script>
+    <script src="/js/jquery-3.3.1.min.js?1629336314"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1617867204"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1617867204"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1629336314"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1629336314"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1617867204"></script>
+<script type="text/javascript" src="/js/search.js?1629336314"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang_post/array-slice/" title="Array And Slice" class="dd-item active">
         <a href="/golang_post/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/nano/" title="Nano" class="dd-item ">
+        <a href="/golang_post/nano/">
+        Nano
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -305,6 +326,27 @@
       <li data-nav-id="/golang_post/data-races/" title="Golang Data Races" class="dd-item ">
         <a href="/golang_post/data-races/">
         Golang Data Races
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang_post/log/" title="Log" class="dd-item ">
+        <a href="/golang_post/log/">
+        Log
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -1357,10 +1399,10 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#heading">数组</a></li>
-        <li><a href="#heading1">切片的创建和初始化</a></li>
-        <li><a href="#nil">零值切片，nil切片和空切片</a></li>
-        <li><a href="#heading2">切片追加和扩容</a></li>
+        <li><a href="#数组">数组</a></li>
+        <li><a href="#切片的创建和初始化">切片的创建和初始化</a></li>
+        <li><a href="#零值切片nil切片和空切片">零值切片，nil切片和空切片</a></li>
+        <li><a href="#切片追加和扩容">切片追加和扩容</a></li>
       </ul>
     </li>
   </ul>
@@ -1401,7 +1443,7 @@
         
 
 
-<h3 id="heading">数组</h3>
+<h3 id="数组">数组</h3>
 <p>数组类型定义了<code>长度</code>和<code>元素</code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。</p>
 <pre><code>var arr [4]int      // 声明
 fmt.Println(arr[1]) // 不需要显式的初始化
@@ -1418,7 +1460,7 @@ func main() {
     update(&amp;arr1)
     fmt.Println(arr1)
 }
-</code></pre><h3 id="heading1">切片的创建和初始化</h3>
+</code></pre><h3 id="切片的创建和初始化">切片的创建和初始化</h3>
 <p>Golang中切片有三种初始化方式：</p>
 <ul>
 <li>通过下标的方式获得数组或者切片的一部分；</li>
@@ -1436,16 +1478,16 @@ func main() {
 </span></code></pre></div><blockquote>
 <p>需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</p>
 </blockquote>
-<h3 id="nil">零值切片，nil切片和空切片</h3>
+<h3 id="零值切片nil切片和空切片">零值切片，nil切片和空切片</h3>
 <ul>
 <li>零切片：切片元素的值均是元素类型所对应的的0值切片</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">slice1 :<span style="color:#f92672">=</span> make<span style="color:#f92672">(</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span>int, 10<span style="color:#f92672">)</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">slice1 :<span style="color:#f92672">=</span> make<span style="color:#f92672">([]</span>int, 10<span style="color:#f92672">)</span>
 fmt.Println<span style="color:#f92672">(</span>slice1<span style="color:#f92672">)</span> //<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> 0<span style="color:#f92672">]</span>
 
-slice2 :<span style="color:#f92672">=</span> make<span style="color:#f92672">(</span><span style="color:#f92672">[</span><span style="color:#f92672">]</span>*int,10<span style="color:#f92672">)</span>
+slice2 :<span style="color:#f92672">=</span> make<span style="color:#f92672">([]</span>*int,10<span style="color:#f92672">)</span>
 fmt.Println<span style="color:#f92672">(</span>slice2<span style="color:#f92672">)</span>  //<span style="color:#f92672">[</span>&lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; &lt;nil&gt;<span style="color:#f92672">]</span>
-</code></pre></div><h3 id="heading2">切片追加和扩容</h3>
+</code></pre></div><h3 id="切片追加和扩容">切片追加和扩容</h3>
 <p>在分配内存空间之前需要先确定新的切片容量，Go 语言根据切片的当前容量选择不同的策略进行扩容：</p>
 <ul>
 <li>如果期望容量大于当前容量的两倍就会使用期望容量；</li>
@@ -1541,6 +1583,38 @@ fmt.Println<span style="color:#f92672">(</span>slice2<span style="color:#f92672"
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -2229,7 +2303,7 @@ fmt.Println<span style="color:#f92672">(</span>slice2<span style="color:#f92672"
 			<a class="nav nav-prev" href="/golang_post/context/" title="Context"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/golang_post/lock/" title="Lock" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/golang_post/nano/" title="Nano" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -2239,19 +2313,28 @@ fmt.Println<span style="color:#f92672">(</span>slice2<span style="color:#f92672"
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.min.js?1617867204"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1617867204"></script>
-    <script src="/js/jquery.sticky.js?1617867204"></script>
-    <script src="/js/featherlight.min.js?1617867204"></script>
-    <script src="/js/highlight.pack.js?1617867204"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/modernizr.custom-3.6.0.js?1617867204"></script>
-    <script src="/js/learn.js?1617867204"></script>
-    <script src="/js/hugo-learn.js?1617867204"></script>
+    <script src="/js/clipboard.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.min.js?1629336314"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1629336314"></script>
+    <script src="/js/jquery.sticky.js?1629336314"></script>
+    <script src="/js/featherlight.min.js?1629336314"></script>
+    <script src="/js/highlight.pack.js?1629336314"></script>
+    <script>
+        hljs.configure({
+            
+            tabReplace: '    ', 
+            
+            cssSelector: 'pre code',
+        });
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/modernizr.custom-3.6.0.js?1629336314"></script>
+    <script src="/js/learn.js?1629336314"></script>
+    <script src="/js/hugo-learn.js?1629336314"></script>
 
-    <link href="/mermaid/mermaid.css?1617867204" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1617867204"></script>
+    <link href="/mermaid/mermaid.css?1629336314" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1629336314"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

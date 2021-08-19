@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Fri, 22 Jan 2021 14:56:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Aug 2021 16:19:29 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/golang_post/index.xml" rel="self" type="application/rss+xml" />
     
@@ -37,6 +37,18 @@ var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Contex
 var arr [4]int // 声明 fmt.Println(arr[1]) // 不需要显式的初始化 arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 数组的字面值 arr2 := [...]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 编译器统计数组字面值中的元素数量 fmt.Println(arr1, len(arr1), cap(arr1)) fmt.Println(arr2, len(arr2), cap(arr2)) Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）
 func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main() { arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} update(&amp;amp;arr1) fmt.Println(arr1) } 切片的创建和初始化 Golang中切片有三种初始化方式：
  通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片：  arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片  slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片  var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0  需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</description>
+    </item>
+    
+    <item>
+      <title>Nano</title>
+      <link>http://echotrue.github.io/golang_post/nano/</link>
+      <pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/nano/</guid>
+      <description>cluster表示一个nano的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到gate网关，然后被发送到响应的节点
+type cluster struct { // If cluster is not large enough, use slice is OK 	currentNode *Node rpcClient *rpcClient mu sync.RWMutex members []*Member } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
+type Node struct { Options // 节点配置项  ServiceAddr string // 当前节点的服务地址，主要用于RPC通信  cluster *cluster handler *LocalHandler server *grpc.Server rpcClient *rpcClient mu sync.RWMutex sessions map[int64]*session.Session } Node.Options
+type Options struct { Pipeline pipeline.Pipeline IsMaster bool AdvertiseAddr string RetryInterval time.Duration ClientAddr string Components *component.Components Label string IsWebsocket bool TSLCertificate string TSLKey string } Start Node  初始化配置 设置集群的Options选项。其中Options.</description>
     </item>
     
     <item>
@@ -122,6 +134,15 @@ main函数在 20 和 21 行分别调用server1和server2。</description>
  变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。
 检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：
 $ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.</description>
+    </item>
+    
+    <item>
+      <title>Log</title>
+      <link>http://echotrue.github.io/golang_post/log/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/log/</guid>
+      <description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;) </description>
     </item>
     
   </channel>

@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Fri, 22 Jan 2021 14:56:40 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 14 Aug 2021 16:19:29 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -58,7 +58,7 @@ hugo new --kind chapter &amp;lt;name&amp;gt;/_index.</description>
       
       <guid>http://echotrue.github.io/cont/markdown/</guid>
       <description>This page is a shameful copy of the great Grav original page. Only difference is information about image customization (resizing, add CSS classes&amp;hellip;)
-Let&#39;s face it: Writing content for the Web is tiresome. WYSIWYG editors help alleviate this task, but they generally result in horrible code, or worse yet, ugly web pages.
+Let&amp;rsquo;s face it: Writing content for the Web is tiresome. WYSIWYG editors help alleviate this task, but they generally result in horrible code, or worse yet, ugly web pages.
 Markdown is a better way to write HTML, without all the complexities and ugliness that usually accompanies it.</description>
     </item>
     
@@ -70,8 +70,8 @@ Markdown is a better way to write HTML, without all the complexities and uglines
       <guid>http://echotrue.github.io/cont/syntaxhighlight/</guid>
       <description>Learn theme uses highlight.js to provide code syntax highlighting.
 Markdown syntax Wrap the code block with three backticks and the name of the language. Highlight will try to auto detect the language if one is not provided.
-```json[{&amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;,&amp;#34;count&amp;#34;: [12000, 20000],&amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;sensitive&amp;#34;: false}},{&amp;#34;title&amp;#34;: &amp;#34;oranges&amp;#34;,&amp;#34;count&amp;#34;: [17500, null],&amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;sensitive&amp;#34;: false}}]```Renders to:
-[{&amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;,&amp;#34;count&amp;#34;: [12000, 20000],&amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;.</description>
+```json [ { &amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;, &amp;#34;count&amp;#34;: [12000, 20000], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;sensitive&amp;#34;: false} }, { &amp;#34;title&amp;#34;: &amp;#34;oranges&amp;#34;, &amp;#34;count&amp;#34;: [17500, null], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;sensitive&amp;#34;: false} } ] ``` Renders to:
+[ { &amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;, &amp;#34;count&amp;#34;: [12000, 20000], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;.</description>
     </item>
     
     <item>
@@ -105,9 +105,21 @@ Once on the Font Awesome page for a specific icon, for example the page for the 
       <guid>http://echotrue.github.io/cont/tags/</guid>
       <description>Learn theme support one default taxonomy of gohugo: the tag feature.
 Configuration Just add tags to any page:
----date: 2018-11-29T08:41:44+01:00title: Theme tutorialweight: 15tags: [&amp;#34;tutorial&amp;#34;, &amp;#34;theme&amp;#34;] ---Behavior The tags are displayed at the top of the page, in their insertion order.
+--- date: 2018-11-29T08:41:44+01:00 title: Theme tutorial weight: 15 tags: [&amp;#34;tutorial&amp;#34;, &amp;#34;theme&amp;#34;] --- Behavior The tags are displayed at the top of the page, in their insertion order.
 Each tag is a link to a Taxonomy page displaying all the articles with the given tag.
 List all the tags In the config.toml file you can add a shortcut to display all the tags</description>
+    </item>
+    
+    <item>
+      <title>Nano</title>
+      <link>http://echotrue.github.io/golang_post/nano/</link>
+      <pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/nano/</guid>
+      <description>cluster表示一个nano的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到gate网关，然后被发送到响应的节点
+type cluster struct { // If cluster is not large enough, use slice is OK 	currentNode *Node rpcClient *rpcClient mu sync.RWMutex members []*Member } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
+type Node struct { Options // 节点配置项  ServiceAddr string // 当前节点的服务地址，主要用于RPC通信  cluster *cluster handler *LocalHandler server *grpc.Server rpcClient *rpcClient mu sync.RWMutex sessions map[int64]*session.Session } Node.Options
+type Options struct { Pipeline pipeline.Pipeline IsMaster bool AdvertiseAddr string RetryInterval time.Duration ClientAddr string Components *component.Components Label string IsWebsocket bool TSLCertificate string TSLKey string } Start Node  初始化配置 设置集群的Options选项。其中Options.</description>
     </item>
     
     <item>
@@ -243,7 +255,16 @@ $ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000
       <guid>http://echotrue.github.io/algorithm/golang-search-slice/</guid>
       <description>题目  假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]， 查找的目标值为345，如果切片中存在目标值程序输出:&amp;ldquo;Found it!&amp;ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未 找到目标值程序输出:&amp;ldquo;Timeout! Not Found&amp;rdquo;，同时立即取消仍在执行查找任务的goroutine。
  首先题目里提到了在找到目标值或者超时后立刻结束所有goroutine的执行，完成这两个功能需要借助计时器、通道和context才行。 我能想到的第一点就是要用context.WithCancel创建一个上下文对象传递给每个执行任务的goroutine，外部在满足条件后（找到目标值或者已超时） 通过调用上下文的取消函数来通知所有goroutine停止工作。
-解法 package main import ( &amp;quot;context&amp;quot; &amp;quot;fmt&amp;quot; &amp;quot;os&amp;quot; &amp;quot;time&amp;quot; ) func main() { timer := time.NewTimer(time.Second * 5) data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96} dataLen := len(data) size := 3 target := 345 ctx, cancel := context.</description>
+解法 package mainimport (&amp;quot;context&amp;quot;&amp;quot;fmt&amp;quot;&amp;quot;os&amp;quot;&amp;quot;time&amp;quot;)func main() {timer := time.NewTimer(time.Second * 5)data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96}dataLen := len(data)size := 3target := 345ctx, cancel := context.</description>
+    </item>
+    
+    <item>
+      <title>Log</title>
+      <link>http://echotrue.github.io/golang_post/log/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang_post/log/</guid>
+      <description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;) </description>
     </item>
     
     <item>
@@ -253,7 +274,7 @@ $ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000
       
       <guid>http://echotrue.github.io/shortcodes/mermaid/</guid>
       <description>Mermaid is a library helping you to generate diagram and flowcharts from text, in a similar manner as Markdown.
-Just insert your mermaid code in the mermaid shortcode and that&#39;s it.
+Just insert your mermaid code in the mermaid shortcode and that&amp;rsquo;s it.
 Flowchart example {{&amp;lt;mermaid align=&amp;quot;left&amp;quot;&amp;gt;}}graph LR;A[Hard edge] --&amp;gt;|Link text| B(Round edge)B --&amp;gt; C{Decision}C --&amp;gt;|One| D[Result one]C --&amp;gt;|Two| E[Result two]{{&amp;lt; /mermaid &amp;gt;}} renders as
 graph LR;A[Hard edge] --|Link text| B(Round edge)B -- C{Decision}C --|One| D[Result one]C --|Two| E[Result two]or you can use this alternative syntax:</description>
     </item>
@@ -309,7 +330,7 @@ A tip disclaimer
       <guid>http://echotrue.github.io/shortcodes/siteparam/</guid>
       <description>siteparam shortcode is used to help you print values of site params.
 For instance, in this current site, the editURL variable is used in config.toml
-[params]editURL = &amp;#34;https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/&amp;#34;Use the siteparam shortcode to display its value.
+[params] editURL = &amp;#34;https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/&amp;#34; Use the siteparam shortcode to display its value.
 `editURL` Value : {{% siteparam &amp;quot;editURL&amp;quot; %}}is displayed as
 editURL Value :</description>
     </item>

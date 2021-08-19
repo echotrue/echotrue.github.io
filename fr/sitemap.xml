@@ -3,22 +3,8 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://echotrue.github.io/fr/cont/pages/</loc>
-    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://echotrue.github.io/cont/pages/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="http://echotrue.github.io/fr/cont/pages/"
-                />
-  </url>
-  
-  <url>
     <loc>http://echotrue.github.io/fr/basics/</loc>
+    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -33,6 +19,21 @@
                 rel="alternate"
                 hreflang="fr"
                 href="http://echotrue.github.io/fr/basics/"
+                />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/fr/cont/pages/</loc>
+    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://echotrue.github.io/cont/pages/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="http://echotrue.github.io/fr/cont/pages/"
                 />
   </url>
   

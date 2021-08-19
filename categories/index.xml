@@ -39,5 +39,14 @@
       <description></description>
     </item>
     
+    <item>
+      <title>log</title>
+      <link>http://echotrue.github.io/categories/log/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/categories/log/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
