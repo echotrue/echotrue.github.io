@@ -1,0 +1,2834 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="description" content="gohper">
+<meta name="author" content="axlrose">
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>Golang Select :: Axlrose&#39;s blog</title>
+
+    
+    <link href="/css/nucleus.css?1637066863" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1637066863" rel="stylesheet">
+    <link href="/css/hybrid.css?1637066863" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1637066863" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1637066863" rel="stylesheet">
+    <link href="/css/auto-complete.css?1637066863" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1637066863" rel="stylesheet">
+    <link href="/css/theme.css?1637066863" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1637066863" rel="stylesheet">
+    
+    <link href="/css/theme-blue.css?1637066863" rel="stylesheet">
+    
+    
+
+    <script src="/js/jquery-3.3.1.min.js?1637066863"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/golang/golang-select/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="/">
+    <img src="/images/logo.png" height="40px">&emsp;<span style="font-size:36px;color: #ffffff">Axlrose</span>
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="/js/lunr.min.js?1637066863"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1637066863"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/echotrue.github.io\/";
+    
+</script>
+<script type="text/javascript" src="/js/search.js?1637066863"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/golang/" title="Golang" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="/golang/">
+          <b>1. </b>Golang
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/context/" title="Context" class="dd-item ">
+        <a href="/golang/context/">
+        Context
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/array-slice/" title="Array And Slice" class="dd-item ">
+        <a href="/golang/array-slice/">
+        Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/functional-programming-in-golang/" title="Functional Programming in Golang" class="dd-item ">
+        <a href="/golang/functional-programming-in-golang/">
+        Functional Programming in Golang
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/binary-an-bit-operation/" title="Binary an Bit Operation" class="dd-item ">
+        <a href="/golang/binary-an-bit-operation/">
+        Binary an Bit Operation
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/lock/" title="Lock" class="dd-item ">
+        <a href="/golang/lock/">
+        Lock
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/make-and-new/" title="Golang make and new" class="dd-item ">
+        <a href="/golang/make-and-new/">
+        Golang make and new
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/panic-and-recover/" title="Panic and Recover" class="dd-item ">
+        <a href="/golang/panic-and-recover/">
+        Panic and Recover
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/golang-select/" title="Golang Select" class="dd-item active">
+        <a href="/golang/golang-select/">
+        Golang Select
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/addressable/" title="Addressable and Unaddressable-Value" class="dd-item ">
+        <a href="/golang/addressable/">
+        Addressable and Unaddressable-Value
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/block-forever-in-go/" title="Block forever in go" class="dd-item ">
+        <a href="/golang/block-forever-in-go/">
+        Block forever in go
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/channel/" title="Golang channel" class="dd-item ">
+        <a href="/golang/channel/">
+        Golang channel
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/data-races/" title="Golang Data Races" class="dd-item ">
+        <a href="/golang/data-races/">
+        Golang Data Races
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/log/" title="Log" class="dd-item ">
+        <a href="/golang/log/">
+        Log
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/nano/" title="Nano" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/nano/">
+          <b>3. </b>Nano
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/nano/nano-start/" title="Nano Start" class="dd-item ">
+        <a href="/nano/nano-start/">
+        Nano Start
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/nano/one-nano-request/" title="One Nano Request" class="dd-item ">
+        <a href="/nano/one-nano-request/">
+        One Nano Request
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/nano/nano/" title="Nano" class="dd-item ">
+        <a href="/nano/nano/">
+        Nano
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/nano/nano-binary-protocol/" title="Nano Binary Protocol" class="dd-item ">
+        <a href="/nano/nano-binary-protocol/">
+        Nano Binary Protocol
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/algorithm/" title="Algorithm" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/algorithm/">
+          <b>2. </b>Algorithm
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/algorithm/golang-search-slice/" title="Golang Search Slice" class="dd-item ">
+        <a href="/algorithm/golang-search-slice/">
+        Golang Search Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/game/" title="Game" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/game/">
+          <b>X. </b>Game
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/game/combat-system/" title="Combat System" class="dd-item ">
+        <a href="/game/combat-system/">
+        Combat System
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/game/game-vocabulary-list/" title="Game Vocabulary List" class="dd-item ">
+        <a href="/game/game-vocabulary-list/">
+        Game Vocabulary List
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/game/turn-based-game-with-go/" title="Turn-Based Game With Go【译】" class="dd-item ">
+        <a href="/game/turn-based-game-with-go/">
+        Turn-Based Game With Go【译】
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/basics/" title="Basics" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/basics/">
+          <b>2. </b>Basics
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/basics/requirements/" title="Requirements" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/basics/requirements/">
+          Requirements
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/basics/installation/" title="Installation" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/basics/installation/">
+          Installation
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/basics/configuration/" title="Configuration" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/basics/configuration/">
+          Configuration
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/basics/style-customization/" title="Style customization" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/basics/style-customization/">
+          Style customization
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/cont/" title="Content" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/cont/">
+          <b>3. </b>Content
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/cont/pages/" title="Pages organization" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/cont/pages/">
+          Pages organization
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/cont/archetypes/" title="Archetypes" class="dd-item ">
+        <a href="/cont/archetypes/">
+        Archetypes
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/cont/markdown/" title="Markdown syntax" class="dd-item ">
+        <a href="/cont/markdown/">
+        Markdown syntax
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/cont/syntaxhighlight/" title="Code highlighting" class="dd-item ">
+        <a href="/cont/syntaxhighlight/">
+        Code highlighting
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/cont/menushortcuts/" title="Menu extra shortcuts" class="dd-item ">
+        <a href="/cont/menushortcuts/">
+        Menu extra shortcuts
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/cont/icons/" title="Icons and logos" class="dd-item ">
+        <a href="/cont/icons/">
+        Icons and logos
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/cont/i18n/" title="Multilingual and i18n" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/cont/i18n/">
+          Multilingual and i18n
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/cont/tags/" title="Tags" class="dd-item ">
+        <a href="/cont/tags/">
+        Tags
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/" title="Shortcodes" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/">
+          <b>3. </b>Shortcodes
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/attachments/" title="Attachments" class="dd-item ">
+        <a href="/shortcodes/attachments/">
+        Attachments
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/button/" title="Button" class="dd-item ">
+        <a href="/shortcodes/button/">
+        Button
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/" title="Children" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/">
+          Children
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-1/" title="page 1" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-1/">
+          page 1
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-1/children-1-1/" title="page 1-1" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-1/children-1-1/">
+          page 1-1
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-1/children-1-1/children-1-1-1/" title="page 1-1-1" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-1/children-1-1/children-1-1-1/">
+          page 1-1-1
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/" title="page 1-1-1-1" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/">
+          page 1-1-1-1
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/" title="page 1-1-1-1-1" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/">
+          page 1-1-1-1-1
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-2/" title="page 2" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-2/">
+          page 2
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/children/children-2/test3/" title="page test 3" class="dd-item ">
+        <a href="/shortcodes/children/children-2/test3/">
+        page test 3
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/shortcodes/children/children-3/" title="page 3" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/shortcodes/children/children-3/">
+          page 3
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+             
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/children/test/" title="page test" class="dd-item ">
+        <a href="/shortcodes/children/test/">
+        page test
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/expand/" title="Expand" class="dd-item ">
+        <a href="/shortcodes/expand/">
+        Expand
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/mermaid/" title="Mermaid" class="dd-item ">
+        <a href="/shortcodes/mermaid/">
+        Mermaid
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/notice/" title="Notice" class="dd-item ">
+        <a href="/shortcodes/notice/">
+        Notice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/shortcodes/siteparam/" title="Site param" class="dd-item ">
+        <a href="/shortcodes/siteparam/">
+        Site param
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="http://echotrue.github.io/tags"><i class='fas fa-tags'></i> Tags list</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="http://echotrue.github.io/about"><i class='fas fa-fw fa-camera'></i> About me</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/matcornic/hugo-theme-learn"><i class='fab fa-fw fa-github'></i> GitHub repo</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://gohugo.io/"><i class='fas fa-fw fa-bookmark'></i> Hugo Documentation</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <center>
+    <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    <p>Axlrose ©2012-<script>document.write((new Date()).getFullYear())</script></p>
+</center>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='/'>Axlrose</a> > <a href='/golang/'>Golang</a> > Golang Select
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#什么是select">什么是select</a></li>
+        <li><a href="#select的用途">select的用途</a></li>
+        <li><a href="#默认case">默认case</a></li>
+        <li><a href="#死锁和默认case">死锁和默认case</a></li>
+        <li><a href="#select的随机性">select的随机性</a></li>
+        <li><a href="#空select">空select</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+<div class="tags">
+
+  <a class="tag-link" href="/tags/go">Go</a>
+
+</div>
+
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Golang Select
+            </h1>
+          
+
+        
+
+
+<h3 id="什么是select">什么是select</h3>
+<p><code>select</code>语句用于从多个发送/接收<code>channel</code>中进行选择的操作。 <code>select</code>语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于<code>switch</code>，只是每个<code>case</code>语句被一个<code>channel</code>操作取代了。让我们深入研究一些代码，以便更好地理解</p>
+<pre><code>func server1(ch chan string) {
+    time.Sleep(6 * time.Second)
+    ch &lt;- &quot;from server1&quot;
+}
+func server2(ch chan string) {
+    time.Sleep(3 * time.Second)
+    ch &lt;- &quot;from server2&quot;
+
+}
+func main() {
+    output1 := make(chan string)
+    output2 := make(chan string)
+    go server1(output1)
+    go server2(output2)
+    select {
+    case s1 := &lt;-output1:
+        fmt.Println(s1)
+    case s2 := &lt;-output2:
+        fmt.Println(s2)
+    }
+}
+</code></pre><p>在上面的程序中，在第 8 行<code>server1</code>函数休眠 6 秒然后将文本从<code>server1</code>写入<code>channel ch</code>。第 12 行<code>server2</code>函数休眠 3 秒，然后从<code>server2</code>写入<code>channel ch</code>。</p>
+<p><code>main</code>函数在 20 和 21 行分别调用<code>server1</code>和<code>server2</code>。</p>
+<p>在第 22 行，<code>select</code>语句将阻塞直到其中一个<code>case</code>准备就绪。在上面的程序中，<code>server1</code>在 6 秒后写入<code>output1 channel</code>，而<code>server2</code>在 3 秒后写入<code>output2 channel</code>。因此 select 语句将阻塞 3 秒并等待<code>server2</code>写入。 3 秒后，程序将打印，</p>
+<pre><code>from server2
+</code></pre><p>然后终止。</p>
+<h3 id="select的用途">select的用途</h3>
+<p>将上述程序中的函数命名为<code>server1</code>和<code>server2</code>的原因是为了说明<code>select</code>的实际用途。</p>
+<p>让我们假设我们有一个关键任务的应用，我们需要尽快将输出返回给用户。该应用程序的数据库被复制并存储在世界各地的不同服务器中。假设函数<code>server1</code>和<code>server2</code>实际上与 2 个这样的服务器通信。每个服务器的响应时间取决于每个服务器的负载和网络延迟。我们将请求发送到两个服务器，然后使用<code>select</code>语句在相应的<code>channel</code>上等待响应。<code>select</code>会选择优先响应的服务器，其他响应被忽略。这样我们就可以向多个服务器发送相同的请求，并将最快的响应返回给用户:)。</p>
+<h3 id="默认case">默认case</h3>
+<p>当其他<code>case</code>都没有准备就绪时，将会执行<code>select</code>语句中的默认<code>case</code>。这通常用于防止<code>select</code>语句阻塞。</p>
+<pre><code>func process(ch chan string) {
+    time.Sleep(10500 * time.Millisecond)
+    ch &lt;- &quot;process successful&quot;
+}
+
+func main() {
+    ch := make(chan string)
+    go process(ch)
+    for {
+        time.Sleep(1000 * time.Millisecond)
+        select {
+        case v := &lt;-ch:
+            fmt.Println(&quot;received value: &quot;, v)
+            return
+        default:
+            fmt.Println(&quot;no value received&quot;)
+        }
+    }
+
+}
+</code></pre><p>在上面的程序中，在第 8 行<code>process</code>函数休眠 10500 毫秒（10.5 秒），然后将<code>process successful</code>写入<code>ch channel</code>。该函数在第 15 行被并发调用。</p>
+<p>在并发调用<code>process Goroutine</code>之后，<code>main Goroutine</code>中启动了无限循环。无限循环在每次迭代开始期间休眠 1000 毫秒（1 秒），并执行<code>select</code>操作。在前 10500 毫秒期间，<code>select</code>语句的第一种情况即<code>case v：= &lt;-ch：</code>将不会准备就绪，因为<code>process Goroutine</code>仅在 10500 毫秒后才写入<code>ch channel</code>。因此，在此期间将执行<code>defualt</code>分支，程序将会打印 10 次<code>no value received</code>。</p>
+<p>在 10.5 秒之后，<code>process Goroutine</code>将<code>process successful</code>写入<code>ch</code>。 现在将执行<code>select</code>语句的第一种情况，程序将打印<code>received value: process successful</code>然后程序终止。该程序将输出，</p>
+<pre><code>no value received
+no value received
+no value received
+no value received
+no value received
+no value received
+no value received
+no value received
+no value received
+no value received
+received value:  process successful
+</code></pre><h3 id="死锁和默认case">死锁和默认case</h3>
+<pre><code>func main() {
+    ch := make(chan string)
+    select {
+    case &lt;-ch:
+    }
+}
+</code></pre><p>在上面的程序中，我们在第一行创建了一个<code>channel ch</code>。我们尝试从选择的这个<code>channel</code>读取。而这个<code>select</code>语句将一直阻塞，因为没有其他<code>Goroutine</code>写入此<code>channel</code>，因此将导致死锁。该程序将在运行时产生<code>panic</code>同时打印，</p>
+<pre><code>fatal error: all goroutines are asleep - deadlock!
+
+goroutine 1 [chan receive]:
+main.main()
+    /tmp/sandbox416567824/main.go:6 +0x80
+</code></pre><p>如果存在默认<code>case</code>，则不会发生此死锁，因为在没有其他<code>case</code>准备就绪时将执行默认<code>case</code>。上面的程序可以重写。</p>
+<pre><code>func main() {
+    ch := make(chan string)
+    select {
+    case &lt;-ch:
+    default:
+        fmt.Println(&quot;default case executed&quot;)
+    }
+}
+</code></pre><p>输出，</p>
+<pre><code>default case executed
+</code></pre><p>类似地，当<code>select</code>只有一个<code>nil channel</code>，也会执行默认<code>case</code>。</p>
+<pre><code>func main() {
+    var ch chan string
+    select {
+    case v := &lt;-ch:
+        fmt.Println(&quot;received value&quot;, v)
+    default:
+        fmt.Println(&quot;default case executed&quot;)
+
+    }
+}
+</code></pre><p>在上面的程序中，<code>ch</code>是<code>nil</code>，我们试图用<code>select</code>从<code>ch</code>中读取。如果没有默认<code>case</code>，则<code>select</code>将一直被阻塞并导致死锁。由于我们在<code>select</code>中有一个默认的<code>case</code>，它将被执行并且程序将打印，</p>
+<pre><code>default case executed
+</code></pre><h3 id="select的随机性">select的随机性</h3>
+<p>当<code>select</code>语句中的多个<code>case</code>准备就绪时，将会随机挑选一个执行。</p>
+<pre><code>func server1(ch chan string) {
+    ch &lt;- &quot;from server1&quot;
+}
+func server2(ch chan string) {
+    ch &lt;- &quot;from server2&quot;
+
+}
+func main() {
+    output1 := make(chan string)
+    output2 := make(chan string)
+    go server1(output1)
+    go server2(output2)
+    time.Sleep(1 * time.Second)
+    select {
+    case s1 := &lt;-output1:
+        fmt.Println(s1)
+    case s2 := &lt;-output2:
+        fmt.Println(s2)
+    }
+}
+</code></pre><p>在上面的程序中，<code>server1</code>和<code>server2</code> 协程在第 18 和 19 行分别被调用，然后<code>main</code>协程休眠 1 秒。当运行到<code>select</code>语句时，<code>server1</code>已将<code>from server1</code>写入<code>output1</code>，<code>server2</code>已将<code>from server2</code>写入<code>output2</code>，因此<code>select</code>语句中的两种情况都准备就绪。如果多次运行此程序，将会随机输出<code>from server1</code>或<code>from server2</code>。</p>
+<h3 id="空select">空select</h3>
+<pre><code>func main() {
+    select {}
+}
+</code></pre><p>你认为上面的程序将会输出什么？</p>
+<p>我们知道<code>select</code>语句将被阻塞，直到执行其中一个<code>case</code>。在这种情况下，<code>select</code>语句没有任何<code>case</code>，因此它将一直阻塞导致死锁。这个程序将会产生<code>panic</code>，并输出，</p>
+<pre><code>fatal error: all goroutines are asleep - deadlock!
+
+goroutine 1 [select (no cases)]:
+main.main()
+    /tmp/sandbox299546399/main.go:4 +0x20
+</code></pre>
+
+<footer class="footline">
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/golang/panic-and-recover/" title="Panic and Recover"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/golang/addressable/" title="Addressable and Unaddressable-Value" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1637066863"></script>
+    <script src="/js/perfect-scrollbar.min.js?1637066863"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1637066863"></script>
+    <script src="/js/jquery.sticky.js?1637066863"></script>
+    <script src="/js/featherlight.min.js?1637066863"></script>
+    <script src="/js/highlight.pack.js?1637066863"></script>
+    <script>
+        hljs.configure({
+            
+            tabReplace: '    ', 
+            
+            cssSelector: 'pre code',
+        });
+        
+        hljs.initHighlightingOnLoad();
+    </script>
+    <script src="/js/modernizr.custom-3.6.0.js?1637066863"></script>
+    <script src="/js/learn.js?1637066863"></script>
+    <script src="/js/hugo-learn.js?1637066863"></script>
+
+    <link href="/mermaid/mermaid.css?1637066863" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1637066863"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105947713-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
+

@@ -7,17 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Sat, 14 Aug 2021 16:19:29 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 16 Nov 2021 16:22:06 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Nano Start</title>
+      <link>http://echotrue.github.io/nano/nano-start/</link>
+      <pubDate>Tue, 31 Aug 2021 16:54:27 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/nano/nano-start/</guid>
+      <description>基础概念 一个nano应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：node,cluster,component,service,handler等等。这里简单介绍各个单元的概念，并概述他们之间的关系。
+Cluster cluster表示一个nano的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到gate网关，然后被发送到响应的节点
+type cluster struct { // If cluster is not large enough, use slice is OK 	currentNode *Node //当前节点对象 	rpcClient *rpcClient // rpc客户端用于和其他节点通信  mu sync.RWMutex members []*Member //所有的节点成员，member包含了节点地址，节点下的服务，是否是主节点 } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
+type Node struct { Options // 节点配置项  ServiceAddr string // 当前节点的服务地址，主要用于RPC通信  cluster *cluster //集群对象  handler *LocalHandler //节点本地处理程序  server *grpc.Server //grpc 服务器  rpcClient *rpcClient //rpc 客户端用于和其他节点通信  mu sync.RWMutex sessions map[int64]*session.</description>
+    </item>
+    
+    <item>
       <title>Context</title>
-      <link>http://echotrue.github.io/golang_post/context/</link>
+      <link>http://echotrue.github.io/golang/context/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/context/</guid>
+      <guid>http://echotrue.github.io/golang/context/</guid>
       <description>引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一个实际的例子是：
  在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序可能还需要创建额外的goroutine去访问其他资源，比如：数据库， RPC服务等。由于这些goroutine都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token ，请求截止时间等。当请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们来取消掉所有 的goroutine
  Context定义 context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据， 之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构， 根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。
@@ -28,15 +40,46 @@ var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Contex
     </item>
     
     <item>
+      <title>One Nano Request</title>
+      <link>http://echotrue.github.io/nano/one-nano-request/</link>
+      <pubDate>Tue, 31 Aug 2021 16:57:22 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/nano/one-nano-request/</guid>
+      <description>Websocket request 一般由网关节点向外部暴露n.ClientAddr地址并监听，接收客户端发送的请求。以websocket请求为例。listenAndServeWS方法负责监听n.ClientAddr并接收ws请求。接收到请求后交给节点下的LocalHandler的handleWs()方法，handleWs()会对连接对象封装成wsConn类型，结构如下：
+type wsConn struct { conn *websocket.Conn typ int // message type 	reader io.Reader } 然后开辟一个新的goroutine（LocalHandler.handle()方法）从连接中持续读取数据。
+LocalHandler.handle() 实例化一个Agent对象，相当于User Agent。它对应一个用户代理，用来存储原始连接信息。
+agent struct { // regular agent member 	session *session.Session // session会话 	conn net.Conn // low-level conn fd 	lastMid uint64 // last message id 	state int32 // current agent state 	chDie chan struct{} // wait for close 	chSend chan pendingMessage // push message queue 	lastAt int64 // last heartbeat unix time stamp 	decoder *codec.</description>
+    </item>
+    
+    <item>
+      <title>Nano</title>
+      <link>http://echotrue.github.io/nano/nano/</link>
+      <pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/nano/nano/</guid>
+      <description>Scheduler todo 启动节点后，开启一个goroutine执行go scheduler.Sched().
+Pipeline todo </description>
+    </item>
+    
+    <item>
       <title>Array And Slice</title>
-      <link>http://echotrue.github.io/golang_post/array-slice/</link>
+      <link>http://echotrue.github.io/golang/array-slice/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/array-slice/</guid>
+      <guid>http://echotrue.github.io/golang/array-slice/</guid>
       <description>数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。
 var arr [4]int // 声明 fmt.Println(arr[1]) // 不需要显式的初始化 arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 数组的字面值 arr2 := [...]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 编译器统计数组字面值中的元素数量 fmt.Println(arr1, len(arr1), cap(arr1)) fmt.Println(arr2, len(arr2), cap(arr2)) Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）
 func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main() { arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} update(&amp;amp;arr1) fmt.Println(arr1) } 切片的创建和初始化 Golang中切片有三种初始化方式：
  通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片：  arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片  slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片  var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0  需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</description>
+    </item>
+    
+    <item>
+      <title>Nano Binary Protocol</title>
+      <link>http://echotrue.github.io/nano/nano-binary-protocol/</link>
+      <pubDate>Thu, 26 Aug 2021 10:40:25 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/nano/nano-binary-protocol/</guid>
+      <description>message.Encode func Encode(m *Message) ([]byte, error) { if invalidType(m.Type) { return nil, ErrWrongMessageType } buf := make([]byte, 0) // m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6 	flag := byte(m.Type) &amp;lt;&amp;lt; 1 // 如果路由压缩 flag|1 为1,3,5,7 	code, compressed := routes[m.Route] if compressed { flag |= msgRouteCompressMask } buf = append(buf, flag) if m.Type == Request || m.Type == Response { n := m.ID // variant length encode 	for { //b是n/128余数，然后n按位右移7,相当于n、128。 	//如果n为0，将b添加到buf， 	//如果n不为0，b+128 添加到buf，并继续执行相同的逻辑 	b := byte(n % 128) n &amp;gt;&amp;gt;= 7 if n !</description>
     </item>
     
     <item>
@@ -111,32 +154,80 @@ List all the tags In the config.toml file you can add a shortcut to display all 
     </item>
     
     <item>
-      <title>Nano</title>
-      <link>http://echotrue.github.io/golang_post/nano/</link>
-      <pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate>
+      <title>Functional Programming in Golang</title>
+      <link>http://echotrue.github.io/golang/functional-programming-in-golang/</link>
+      <pubDate>Tue, 16 Nov 2021 16:22:06 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/nano/</guid>
-      <description>cluster表示一个nano的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到gate网关，然后被发送到响应的节点
-type cluster struct { // If cluster is not large enough, use slice is OK 	currentNode *Node rpcClient *rpcClient mu sync.RWMutex members []*Member } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
-type Node struct { Options // 节点配置项  ServiceAddr string // 当前节点的服务地址，主要用于RPC通信  cluster *cluster handler *LocalHandler server *grpc.Server rpcClient *rpcClient mu sync.RWMutex sessions map[int64]*session.Session } Node.Options
-type Options struct { Pipeline pipeline.Pipeline IsMaster bool AdvertiseAddr string RetryInterval time.Duration ClientAddr string Components *component.Components Label string IsWebsocket bool TSLCertificate string TSLKey string } Start Node  初始化配置 设置集群的Options选项。其中Options.</description>
+      <guid>http://echotrue.github.io/golang/functional-programming-in-golang/</guid>
+      <description>Higher-order function Higher-order function又称为高阶函数.高阶函数至少支持以下特性之一:
+ 将一个或多个函数作为参数（即过程参数） 返回函数作为其结果  以下为一个使用高阶函数的限流器Demo:
+type Limiter interface { Limit(key string) bool } type ServerInterceptor func(ctx context.Context) (interface{}, error) func Interceptor(limiter Limiter) ServerInterceptor { return func(ctx context.Context) (interface{}, error) { if limiter.Limit(&amp;#34;k&amp;#34;) { return nil, errors.New(&amp;#34;请求过于频繁&amp;#34;) } return &amp;#34;ok&amp;#34;, nil } } Functional Options Pattern Functional Options Pattern又称函数式选项模式.由于Golang中不支持参数默认值,所以针对一些函数的可选参数没有合适的处理方式.我们可以通过这种方式来构造结构体对象.
+type Person struct { Name string Age uint8 Gender uint8 } type Option func(*Person) func SetName(n string) Option { return func(o *Person) { o.</description>
+    </item>
+    
+    <item>
+      <title>Combat System</title>
+      <link>http://echotrue.github.io/game/combat-system/</link>
+      <pubDate>Wed, 08 Sep 2021 14:24:16 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/game/combat-system/</guid>
+      <description>加载英雄,怪物,宠物等等到状态机的soldiers属性
+$this-&amp;gt;loader-&amp;gt;load(); 逐个初始化soldiers.挂载主动,被动技能效果并添加监听事件到observers属性. 保留原始属性
+触发EVENT_CREATED事件.事件id为1的技能效果将会被加载.该类型的技能效果是永久加成效果.observers的数据格式为:
+{&amp;#34;3&amp;#34;:[53102,53103,312],&amp;#34;9&amp;#34;:[53104],&amp;#34;4&amp;#34;:[53105],&amp;#34;5&amp;#34;:[53106]} 计算英雄被动属性差值diff_addition
+计算队伍加成属性,并赋值到soldier的addition属性.
+附加效果加成计算
+累加加成效果数据到soldier
+检查并削弱基础属性
+处理残血模式下血量
+处理蓝量
+保存属性值到英雄基础属性对象base</description>
+    </item>
+    
+    <item>
+      <title>Game Vocabulary List</title>
+      <link>http://echotrue.github.io/game/game-vocabulary-list/</link>
+      <pubDate>Tue, 07 Sep 2021 13:46:23 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/game/game-vocabulary-list/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Turn-Based Game With Go【译】</title>
+      <link>http://echotrue.github.io/game/turn-based-game-with-go/</link>
+      <pubDate>Mon, 06 Sep 2021 16:32:53 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/game/turn-based-game-with-go/</guid>
+      <description>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang
+ 今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的Interface,channels,concurrency等特性。
+ If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.</description>
+    </item>
+    
+    <item>
+      <title>Binary an Bit Operation</title>
+      <link>http://echotrue.github.io/golang/binary-an-bit-operation/</link>
+      <pubDate>Fri, 27 Aug 2021 10:34:44 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang/binary-an-bit-operation/</guid>
+      <description>fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 0, 0, 0&amp;lt;&amp;lt;1, 0&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 1, 1, 1&amp;lt;&amp;lt;1, 1&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 2, 2, 2&amp;lt;&amp;lt;1, 2&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 3, 3, 3&amp;lt;&amp;lt;1, 3&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 0, 0&amp;gt;&amp;gt;1, 0&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 1, 1&amp;gt;&amp;gt;1, 1&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 2, 2&amp;gt;&amp;gt;1, 2&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 3, 3&amp;gt;&amp;gt;1, 3&amp;gt;&amp;gt;2) </description>
     </item>
     
     <item>
       <title>Lock</title>
-      <link>http://echotrue.github.io/golang_post/lock/</link>
+      <link>http://echotrue.github.io/golang/lock/</link>
       <pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/lock/</guid>
+      <guid>http://echotrue.github.io/golang/lock/</guid>
       <description>检测Go程序中按值传递的 locks </description>
     </item>
     
     <item>
       <title>Golang make and new</title>
-      <link>http://echotrue.github.io/golang_post/make-and-new/</link>
+      <link>http://echotrue.github.io/golang/make-and-new/</link>
       <pubDate>Wed, 28 Oct 2020 11:02:10 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/make-and-new/</guid>
+      <guid>http://echotrue.github.io/golang/make-and-new/</guid>
       <description></description>
     </item>
     
@@ -151,34 +242,34 @@ type Options struct { Pipeline pipeline.Pipeline IsMaster bool AdvertiseAddr str
     
     <item>
       <title>Panic and Recover</title>
-      <link>http://echotrue.github.io/golang_post/panic-and-recover/</link>
+      <link>http://echotrue.github.io/golang/panic-and-recover/</link>
       <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/panic-and-recover/</guid>
+      <guid>http://echotrue.github.io/golang/panic-and-recover/</guid>
       <description>panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。
-func main() {var user = os.Getenv(&amp;quot;USER_&amp;quot;)go func() {defer func() {fmt.Println(&amp;quot;defer 1&amp;quot;)}()if user == &amp;quot;&amp;quot;{panic(&amp;quot;should set user env.&amp;quot;)}}()time.Sleep(1*time.Second)fmt.Println(&amp;quot;get result&amp;quot;)} 上述代码输出：
-defer 1panic: should set user env.goroutine 19 [running]:main.main.func1(0x0, 0x0)D:/gopath/src/race_condition/index.go:16 +0x86created by main.mainD:/gopath/src/race_condition/index.go:11 +0x59Process finished with exit code 2说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行
+func main() { var user = os.Getenv(&amp;quot;USER_&amp;quot;) go func() { defer func() { fmt.Println(&amp;quot;defer 1&amp;quot;) }() if user == &amp;quot;&amp;quot;{ panic(&amp;quot;should set user env.&amp;quot;) } }() time.Sleep(1*time.Second) fmt.Println(&amp;quot;get result&amp;quot;) }  上述代码输出：
+defer 1 panic: should set user env. goroutine 19 [running]: main.main.func1(0x0, 0x0) D:/gopath/src/race_condition/index.go:16 +0x86 created by main.main D:/gopath/src/race_condition/index.go:11 +0x59 Process finished with exit code 2 说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行
 recover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil</description>
     </item>
     
     <item>
       <title>Golang Select</title>
-      <link>http://echotrue.github.io/golang_post/golang-select/</link>
+      <link>http://echotrue.github.io/golang/golang-select/</link>
       <pubDate>Tue, 30 Jul 2019 19:04:35 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/golang-select/</guid>
+      <guid>http://echotrue.github.io/golang/golang-select/</guid>
       <description>什么是select select语句用于从多个发送/接收channel中进行选择的操作。 select语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于switch，只是每个case语句被一个channel操作取代了。让我们深入研究一些代码，以便更好地理解
-func server1(ch chan string) {time.Sleep(6 * time.Second)ch &amp;lt;- &amp;quot;from server1&amp;quot;}func server2(ch chan string) {time.Sleep(3 * time.Second)ch &amp;lt;- &amp;quot;from server2&amp;quot;}func main() {output1 := make(chan string)output2 := make(chan string)go server1(output1)go server2(output2)select {case s1 := &amp;lt;-output1:fmt.Println(s1)case s2 := &amp;lt;-output2:fmt.Println(s2)}}在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
+func server1(ch chan string) { time.Sleep(6 * time.Second) ch &amp;lt;- &amp;quot;from server1&amp;quot; } func server2(ch chan string) { time.Sleep(3 * time.Second) ch &amp;lt;- &amp;quot;from server2&amp;quot; } func main() { output1 := make(chan string) output2 := make(chan string) go server1(output1) go server2(output2) select { case s1 := &amp;lt;-output1: fmt.Println(s1) case s2 := &amp;lt;-output2: fmt.Println(s2) } } 在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
 main函数在 20 和 21 行分别调用server1和server2。</description>
     </item>
     
     <item>
       <title>Addressable and Unaddressable-Value</title>
-      <link>http://echotrue.github.io/golang_post/addressable/</link>
+      <link>http://echotrue.github.io/golang/addressable/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/addressable/</guid>
+      <guid>http://echotrue.github.io/golang/addressable/</guid>
       <description>Addressable </description>
     </item>
     
@@ -195,10 +286,10 @@ main函数在 20 和 21 行分别调用server1和server2。</description>
     
     <item>
       <title>Block forever in go</title>
-      <link>http://echotrue.github.io/golang_post/block-forever-in-go/</link>
+      <link>http://echotrue.github.io/golang/block-forever-in-go/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/block-forever-in-go/</guid>
+      <guid>http://echotrue.github.io/golang/block-forever-in-go/</guid>
       <description>Golang中永久阻塞的不同方法 The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling os.Exit or by returning from the main() function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.
 1. Using sync.</description>
     </item>
@@ -225,22 +316,22 @@ main函数在 20 和 21 行分别调用server1和server2。</description>
     
     <item>
       <title>Golang channel</title>
-      <link>http://echotrue.github.io/golang_post/channel/</link>
+      <link>http://echotrue.github.io/golang/channel/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/channel/</guid>
+      <guid>http://echotrue.github.io/golang/channel/</guid>
       <description>概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色
  Do not communicate by sharing memory; instead, share memory by communicating.
- Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
- Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string)go func() {ch &amp;lt;- &amp;quot;hello&amp;quot;}()msg := &amp;lt;-chfmt.Println(msg) 以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description>
+ Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。 writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据 readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据 阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
+ Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string) go func() { ch &amp;lt;- &amp;quot;hello&amp;quot; }() msg := &amp;lt;-ch fmt.Println(msg)  以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description>
     </item>
     
     <item>
       <title>Golang Data Races</title>
-      <link>http://echotrue.github.io/golang_post/data-races/</link>
+      <link>http://echotrue.github.io/golang/data-races/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/data-races/</guid>
+      <guid>http://echotrue.github.io/golang/data-races/</guid>
       <description>关于Golang并发安全  谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong?  什么是数据竞争 package main import ( &amp;quot;fmt&amp;quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：
  变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。
 检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：
@@ -260,10 +351,10 @@ $ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000
     
     <item>
       <title>Log</title>
-      <link>http://echotrue.github.io/golang_post/log/</link>
+      <link>http://echotrue.github.io/golang/log/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/log/</guid>
+      <guid>http://echotrue.github.io/golang/log/</guid>
       <description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;) </description>
     </item>
     

@@ -14,10 +14,10 @@
     
     <item>
       <title>Lock</title>
-      <link>http://echotrue.github.io/golang_post/lock/</link>
+      <link>http://echotrue.github.io/golang/lock/</link>
       <pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/lock/</guid>
+      <guid>http://echotrue.github.io/golang/lock/</guid>
       <description>检测Go程序中按值传递的 locks </description>
     </item>
     

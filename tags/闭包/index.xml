@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>闭包 on Axlrose&#39;s blog</title>
+    <link>http://echotrue.github.io/tags/%E9%97%AD%E5%8C%85/</link>
+    <description>Recent content in 闭包 on Axlrose&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Axlrose</copyright>
+    <lastBuildDate>Tue, 16 Nov 2021 16:22:06 +0800</lastBuildDate>
+    
+	<atom:link href="http://echotrue.github.io/tags/%E9%97%AD%E5%8C%85/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Functional Programming in Golang</title>
+      <link>http://echotrue.github.io/golang/functional-programming-in-golang/</link>
+      <pubDate>Tue, 16 Nov 2021 16:22:06 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang/functional-programming-in-golang/</guid>
+      <description>Higher-order function Higher-order function又称为高阶函数.高阶函数至少支持以下特性之一:
+ 将一个或多个函数作为参数（即过程参数） 返回函数作为其结果  以下为一个使用高阶函数的限流器Demo:
+type Limiter interface { Limit(key string) bool } type ServerInterceptor func(ctx context.Context) (interface{}, error) func Interceptor(limiter Limiter) ServerInterceptor { return func(ctx context.Context) (interface{}, error) { if limiter.Limit(&amp;#34;k&amp;#34;) { return nil, errors.New(&amp;#34;请求过于频繁&amp;#34;) } return &amp;#34;ok&amp;#34;, nil } } Functional Options Pattern Functional Options Pattern又称函数式选项模式.由于Golang中不支持参数默认值,所以针对一些函数的可选参数没有合适的处理方式.我们可以通过这种方式来构造结构体对象.
+type Person struct { Name string Age uint8 Gender uint8 } type Option func(*Person) func SetName(n string) Option { return func(o *Person) { o.</description>
+    </item>
+    
+  </channel>
+</rss>

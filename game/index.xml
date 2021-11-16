@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Game on Axlrose&#39;s blog</title>
+    <link>http://echotrue.github.io/game/</link>
+    <description>Recent content in Game on Axlrose&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Axlrose</copyright>
+    <lastBuildDate>Tue, 07 Sep 2021 13:46:08 +0800</lastBuildDate>
+    
+	<atom:link href="http://echotrue.github.io/game/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Combat System</title>
+      <link>http://echotrue.github.io/game/combat-system/</link>
+      <pubDate>Wed, 08 Sep 2021 14:24:16 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/game/combat-system/</guid>
+      <description>加载英雄,怪物,宠物等等到状态机的soldiers属性
+$this-&amp;gt;loader-&amp;gt;load(); 逐个初始化soldiers.挂载主动,被动技能效果并添加监听事件到observers属性. 保留原始属性
+触发EVENT_CREATED事件.事件id为1的技能效果将会被加载.该类型的技能效果是永久加成效果.observers的数据格式为:
+{&amp;#34;3&amp;#34;:[53102,53103,312],&amp;#34;9&amp;#34;:[53104],&amp;#34;4&amp;#34;:[53105],&amp;#34;5&amp;#34;:[53106]} 计算英雄被动属性差值diff_addition
+计算队伍加成属性,并赋值到soldier的addition属性.
+附加效果加成计算
+累加加成效果数据到soldier
+检查并削弱基础属性
+处理残血模式下血量
+处理蓝量
+保存属性值到英雄基础属性对象base</description>
+    </item>
+    
+    <item>
+      <title>Game Vocabulary List</title>
+      <link>http://echotrue.github.io/game/game-vocabulary-list/</link>
+      <pubDate>Tue, 07 Sep 2021 13:46:23 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/game/game-vocabulary-list/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Turn-Based Game With Go【译】</title>
+      <link>http://echotrue.github.io/game/turn-based-game-with-go/</link>
+      <pubDate>Mon, 06 Sep 2021 16:32:53 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/game/turn-based-game-with-go/</guid>
+      <description>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang
+ 今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的Interface,channels,concurrency等特性。
+ If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.</description>
+    </item>
+    
+  </channel>
+</rss>

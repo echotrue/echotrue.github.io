@@ -13,10 +13,10 @@
     
     <item>
       <title>Log</title>
-      <link>http://echotrue.github.io/golang_post/log/</link>
+      <link>http://echotrue.github.io/golang/log/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://echotrue.github.io/golang_post/log/</guid>
+      <guid>http://echotrue.github.io/golang/log/</guid>
       <description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;) </description>
     </item>
     
