@@ -7,17 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Tue, 16 Nov 2021 16:22:06 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 17 Nov 2021 11:45:22 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Nano Start</title>
-      <link>http://echotrue.github.io/nano/nano-start/</link>
+      <link>http://echotrue.github.io/game/nano/nano-start/</link>
       <pubDate>Tue, 31 Aug 2021 16:54:27 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/nano/nano-start/</guid>
+      <guid>http://echotrue.github.io/game/nano/nano-start/</guid>
       <description>基础概念 一个nano应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：node,cluster,component,service,handler等等。这里简单介绍各个单元的概念，并概述他们之间的关系。
 Cluster cluster表示一个nano的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到gate网关，然后被发送到响应的节点
 type cluster struct { // If cluster is not large enough, use slice is OK 	currentNode *Node //当前节点对象 	rpcClient *rpcClient // rpc客户端用于和其他节点通信  mu sync.RWMutex members []*Member //所有的节点成员，member包含了节点地址，节点下的服务，是否是主节点 } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
@@ -41,10 +41,10 @@ var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Contex
     
     <item>
       <title>One Nano Request</title>
-      <link>http://echotrue.github.io/nano/one-nano-request/</link>
+      <link>http://echotrue.github.io/game/nano/one-nano-request/</link>
       <pubDate>Tue, 31 Aug 2021 16:57:22 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/nano/one-nano-request/</guid>
+      <guid>http://echotrue.github.io/game/nano/one-nano-request/</guid>
       <description>Websocket request 一般由网关节点向外部暴露n.ClientAddr地址并监听，接收客户端发送的请求。以websocket请求为例。listenAndServeWS方法负责监听n.ClientAddr并接收ws请求。接收到请求后交给节点下的LocalHandler的handleWs()方法，handleWs()会对连接对象封装成wsConn类型，结构如下：
 type wsConn struct { conn *websocket.Conn typ int // message type 	reader io.Reader } 然后开辟一个新的goroutine（LocalHandler.handle()方法）从连接中持续读取数据。
 LocalHandler.handle() 实例化一个Agent对象，相当于User Agent。它对应一个用户代理，用来存储原始连接信息。
@@ -53,10 +53,10 @@ agent struct { // regular agent member 	session *session.Session // session会�
     
     <item>
       <title>Nano</title>
-      <link>http://echotrue.github.io/nano/nano/</link>
+      <link>http://echotrue.github.io/game/nano/nano/</link>
       <pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/nano/nano/</guid>
+      <guid>http://echotrue.github.io/game/nano/nano/</guid>
       <description>Scheduler todo 启动节点后，开启一个goroutine执行go scheduler.Sched().
 Pipeline todo </description>
     </item>
@@ -75,10 +75,10 @@ func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main()
     
     <item>
       <title>Nano Binary Protocol</title>
-      <link>http://echotrue.github.io/nano/nano-binary-protocol/</link>
+      <link>http://echotrue.github.io/game/nano/nano-binary-protocol/</link>
       <pubDate>Thu, 26 Aug 2021 10:40:25 +0800</pubDate>
       
-      <guid>http://echotrue.github.io/nano/nano-binary-protocol/</guid>
+      <guid>http://echotrue.github.io/game/nano/nano-binary-protocol/</guid>
       <description>message.Encode func Encode(m *Message) ([]byte, error) { if invalidType(m.Type) { return nil, ErrWrongMessageType } buf := make([]byte, 0) // m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6 	flag := byte(m.Type) &amp;lt;&amp;lt; 1 // 如果路由压缩 flag|1 为1,3,5,7 	code, compressed := routes[m.Route] if compressed { flag |= msgRouteCompressMask } buf = append(buf, flag) if m.Type == Request || m.Type == Response { n := m.ID // variant length encode 	for { //b是n/128余数，然后n按位右移7,相当于n、128。 	//如果n为0，将b添加到buf， 	//如果n不为0，b+128 添加到buf，并继续执行相同的逻辑 	b := byte(n % 128) n &amp;gt;&amp;gt;= 7 if n !</description>
     </item>
     
@@ -151,6 +151,15 @@ Configuration Just add tags to any page:
 --- date: 2018-11-29T08:41:44+01:00 title: Theme tutorial weight: 15 tags: [&amp;#34;tutorial&amp;#34;, &amp;#34;theme&amp;#34;] --- Behavior The tags are displayed at the top of the page, in their insertion order.
 Each tag is a link to a Taxonomy page displaying all the articles with the given tag.
 List all the tags In the config.toml file you can add a shortcut to display all the tags</description>
+    </item>
+    
+    <item>
+      <title>Tcp</title>
+      <link>http://echotrue.github.io/black-hat-go/tcp/</link>
+      <pubDate>Wed, 17 Nov 2021 11:45:22 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/black-hat-go/tcp/</guid>
+      <description></description>
     </item>
     
     <item>

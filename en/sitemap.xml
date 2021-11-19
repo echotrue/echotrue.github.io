@@ -8,7 +8,12 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/nano/nano-start/</loc>
+    <loc>http://echotrue.github.io/game/nano/</loc>
+    <lastmod>2021-08-31T16:57:22+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/game/nano/nano-start/</loc>
     <lastmod>2021-08-31T16:54:27+08:00</lastmod>
   </url>
   
@@ -17,13 +22,8 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/nano/one-nano-request/</loc>
+    <loc>http://echotrue.github.io/game/nano/one-nano-request/</loc>
     <lastmod>2021-08-31T16:57:22+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://echotrue.github.io/nano/</loc>
-    <lastmod>2021-08-26T10:31:16+08:00</lastmod>
   </url>
   
   <url>
@@ -31,7 +31,12 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/nano/nano/</loc>
+    <loc>http://echotrue.github.io/black-hat-go/</loc>
+    <lastmod>2021-11-17T10:41:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/game/nano/nano/</loc>
     <lastmod>2021-08-14T16:19:29+08:00</lastmod>
   </url>
   
@@ -40,33 +45,13 @@
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/nano/nano-binary-protocol/</loc>
-    <lastmod>2021-08-26T10:40:25+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://echotrue.github.io/game/</loc>
     <lastmod>2021-09-07T13:46:08+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://echotrue.github.io/basics/</loc>
-    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="http://echotrue.github.io/fr/basics/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://echotrue.github.io/zh/basics/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://echotrue.github.io/basics/"
-                />
+    <loc>http://echotrue.github.io/game/nano/nano-binary-protocol/</loc>
+    <lastmod>2021-08-26T10:40:25+08:00</lastmod>
   </url>
   
   <url>
@@ -81,21 +66,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="http://echotrue.github.io/cont/pages/"
-                />
-  </url>
-  
-  <url>
-    <loc>http://echotrue.github.io/cont/</loc>
-    <lastmod>2020-06-01T13:31:12+01:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="http://echotrue.github.io/fr/cont/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://echotrue.github.io/cont/"
                 />
   </url>
   
@@ -139,21 +109,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="http://echotrue.github.io/cont/markdown/"
-                />
-  </url>
-  
-  <url>
-    <loc>http://echotrue.github.io/shortcodes/</loc>
-    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="http://echotrue.github.io/fr/shortcodes/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://echotrue.github.io/shortcodes/"
                 />
   </url>
   
@@ -256,8 +211,58 @@
   </url>
   
   <url>
+    <loc>http://echotrue.github.io/basics/</loc>
+    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="http://echotrue.github.io/fr/basics/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="http://echotrue.github.io/zh/basics/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://echotrue.github.io/basics/"
+                />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/cont/</loc>
+    <lastmod>2020-06-01T13:31:12+01:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="http://echotrue.github.io/fr/cont/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://echotrue.github.io/cont/"
+                />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/shortcodes/</loc>
+    <lastmod>2016-04-09T16:50:16+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="http://echotrue.github.io/fr/shortcodes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://echotrue.github.io/shortcodes/"
+                />
+  </url>
+  
+  <url>
     <loc>http://echotrue.github.io/</loc>
-    <lastmod>2021-11-16T16:22:06+08:00</lastmod>
+    <lastmod>2021-11-17T11:45:22+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -273,6 +278,11 @@
                 hreflang="en"
                 href="http://echotrue.github.io/"
                 />
+  </url>
+  
+  <url>
+    <loc>http://echotrue.github.io/black-hat-go/tcp/</loc>
+    <lastmod>2021-11-17T11:45:22+08:00</lastmod>
   </url>
   
   <url>

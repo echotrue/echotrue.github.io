@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Black Hat Go on Axlrose&#39;s blog</title>
+    <link>http://echotrue.github.io/black-hat-go/</link>
+    <description>Recent content in Black Hat Go on Axlrose&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>Axlrose</copyright>
+    <lastBuildDate>Wed, 17 Nov 2021 10:41:33 +0800</lastBuildDate>
+    
+	<atom:link href="http://echotrue.github.io/black-hat-go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tcp</title>
+      <link>http://echotrue.github.io/black-hat-go/tcp/</link>
+      <pubDate>Wed, 17 Nov 2021 11:45:22 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/black-hat-go/tcp/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
