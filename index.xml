@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Mon, 18 Apr 2022 16:31:08 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 17 Nov 2021 11:45:22 +0800</lastBuildDate>
     
 	<atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -80,6 +80,15 @@ func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main()
       
       <guid>http://echotrue.github.io/game/nano/nano-binary-protocol/</guid>
       <description>message.Encode func Encode(m *Message) ([]byte, error) { if invalidType(m.Type) { return nil, ErrWrongMessageType } buf := make([]byte, 0) // m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6 	flag := byte(m.Type) &amp;lt;&amp;lt; 1 // 如果路由压缩 flag|1 为1,3,5,7 	code, compressed := routes[m.Route] if compressed { flag |= msgRouteCompressMask } buf = append(buf, flag) if m.Type == Request || m.Type == Response { n := m.ID // variant length encode 	for { //b是n/128余数，然后n按位右移7,相当于n、128。 	//如果n为0，将b添加到buf， 	//如果n不为0，b+128 添加到buf，并继续执行相同的逻辑 	b := byte(n % 128) n &amp;gt;&amp;gt;= 7 if n !</description>
+    </item>
+    
+    <item>
+      <title>Book</title>
+      <link>http://echotrue.github.io/book/</link>
+      <pubDate>Mon, 18 Apr 2022 16:31:08 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/book/</guid>
+      <description>Book ListProgramming in Lua 4th Edition.pdf(1203 ko)Turn-Based Game With Go.pdf(3275 ko)go-files-cheat-sheet.pdf(52 ko)golang-naming-conventions-cheat-sheet.pdf(78 ko)turn-based-game-with-go.pdf(8010 ko)</description>
     </item>
     
     <item>
