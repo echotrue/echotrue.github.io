@@ -88,7 +88,7 @@ func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main()
       <pubDate>Mon, 18 Apr 2022 16:31:08 +0800</pubDate>
       
       <guid>http://echotrue.github.io/book/</guid>
-      <description>Book ListProgramming in Lua 4th Edition.pdf(1203 ko)Turn-Based Game With Go.pdf(3275 ko)go-files-cheat-sheet.pdf(52 ko)golang-naming-conventions-cheat-sheet.pdf(78 ko)turn-based-game-with-go.pdf(8010 ko)</description>
+      <description>Book ListProgramming in Lua 4th Edition.pdf(1203 ko)Reading 16GB File in Seconds, Golang.pdf(53 ko)Turn-Based Game With Go.pdf(3275 ko)go-files-cheat-sheet.pdf(52 ko)golang-naming-conventions-cheat-sheet.pdf(78 ko)turn-based-game-with-go.pdf(8010 ko)</description>
     </item>
     
     <item>
