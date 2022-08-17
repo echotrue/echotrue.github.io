@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.88.0-DEV" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Functional Programming in Golang :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1653465635" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1653465635" rel="stylesheet">
-    <link href="/css/hybrid.css?1653465635" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1653465635" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1653465635" rel="stylesheet">
-    <link href="/css/auto-complete.css?1653465635" rel="stylesheet">
-    <link href="/css/atom-one-dark.min.css?1653465635" rel="stylesheet">
-    <link href="/css/theme.css?1653465635" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1653465635" rel="stylesheet">
+    <link href="/css/nucleus.css?1660740786" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1660740786" rel="stylesheet">
+    <link href="/css/hybrid.css?1660740786" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1660740786" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1660740786" rel="stylesheet">
+    <link href="/css/auto-complete.css?1660740786" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1660740786" rel="stylesheet">
+    <link href="/css/theme.css?1660740786" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1660740786" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1653465635" rel="stylesheet">
+    <link href="/css/theme-blue.css?1660740786" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1653465635"></script>
+    <script src="/js/jquery-3.3.1.min.js?1660740786"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1653465635"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1653465635"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1660740786"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1660740786"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1653465635"></script>
+<script type="text/javascript" src="/js/search.js?1660740786"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/uint-int/" title="Uint Int" class="dd-item ">
+        <a href="/golang/uint-int/">
+        Uint Int
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -368,6 +389,27 @@
       <li data-nav-id="/golang/log/" title="Log" class="dd-item ">
         <a href="/golang/log/">
         Log
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/sqlx/" title="Sqlx" class="dd-item ">
+        <a href="/golang/sqlx/">
+        Sqlx
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -716,6 +758,32 @@
           
         
         </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/sql/" title="Sql" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sql/">
+          <b>5. </b>Sql
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
               
     </li>
   
@@ -1753,7 +1821,7 @@
 <li>返回函数作为其结果</li>
 </ul>
 <p>以下为一个使用高阶函数的限流器Demo:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Limiter</span> <span style="color:#66d9ef">interface</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Limiter</span> <span style="color:#66d9ef">interface</span> {  
 	<span style="color:#a6e22e">Limit</span>(<span style="color:#a6e22e">key</span> <span style="color:#66d9ef">string</span>) <span style="color:#66d9ef">bool</span>  
 }  
 
@@ -1769,7 +1837,7 @@
 }
 </code></pre></div><h3 id="functional-options-pattern">Functional Options Pattern</h3>
 <p><code>Functional Options Pattern</code>又称函数式选项模式.由于Golang中不支持参数默认值,所以针对一些函数的可选参数没有合适的处理方式.我们可以通过这种方式来构造结构体对象.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Person</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Person</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>  
 	<span style="color:#a6e22e">Age</span> <span style="color:#66d9ef">uint8</span>  
 	<span style="color:#a6e22e">Gender</span> <span style="color:#66d9ef">uint8</span>  
@@ -1802,7 +1870,7 @@
 <li>函数变量的零值是nil. 这意味着它可以和nil进行比较.但两个函数变量之间不能比较</li>
 <li>调用nil的函数变量会导致报错</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>()
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>()
 
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">f</span>
@@ -1814,7 +1882,7 @@
 }
 </code></pre></div><h4 id="什么是闭包">什么是闭包</h4>
 <p>闭包是匿名函数与匿名函数所引用环境的组合。匿名函数有动态创建的特性，该特性使得匿名函数不用通过参数传递的方式，就可以直接引用外部的变量。这就类似于常规函数直接使用全局变量一样.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">incr</span>() <span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">int</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">incr</span>() <span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">int</span> {
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">x</span> <span style="color:#66d9ef">int</span>
 	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">func</span>() <span style="color:#66d9ef">int</span> {
 		<span style="color:#a6e22e">x</span><span style="color:#f92672">++</span>
@@ -1829,7 +1897,7 @@
 	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>())
 }
 </code></pre></div><p>通过<code>i:=incr()</code>把<code>incr</code>函数的返回值(<code>func() int 类型的函数</code>)赋值给<code>i</code>,<code>i</code>就是一个闭包.<code>i</code>中有着指向<code>x</code>地址的指针.所以调用<code>i()</code>会修改x的值.因此,以上代码会输出1,2,3</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 	<span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 	<span style="color:#66d9ef">func</span>() {
 		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">x</span>)
@@ -1838,7 +1906,7 @@
 }
 </code></pre></div><p>以上会输出<code>0xc00000a0b8,0xc00000a0b8</code>.这也再次证明了闭包中保存着外部变量的地址</p>
 <h4 id="循环中的闭包">循环中的闭包</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">dummy</span> [<span style="color:#ae81ff">3</span>]<span style="color:#66d9ef">int</span>
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>()
 	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; len(<span style="color:#a6e22e">dummy</span>); <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
@@ -1849,7 +1917,7 @@
 	<span style="color:#a6e22e">f</span>() <span style="color:#75715e">// 3
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p>以上代码输出3 . 由于闭包f可以访问<code>i</code>的引用,而<code>i</code>实际加到3的时候由于不满足<code>i &lt; len(dumy)</code>而结束循环 . 因此调用<code>f()</code>的时候通过解<code>i</code>的引用得到的值是3. 如果使用<code>for range</code> 则不会输出3</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">dummy</span> [<span style="color:#ae81ff">3</span>]<span style="color:#66d9ef">int</span>
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">f</span> <span style="color:#66d9ef">func</span>()
 	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">dummy</span>{
@@ -1860,7 +1928,7 @@
 	<span style="color:#a6e22e">f</span>() <span style="color:#75715e">// 3
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p>另外一个例子:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
 	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">funcSlice</span> []<span style="color:#66d9ef">func</span>()
 	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>; <span style="color:#a6e22e">i</span> &lt; <span style="color:#ae81ff">3</span>; <span style="color:#a6e22e">i</span><span style="color:#f92672">++</span> {
 		<span style="color:#a6e22e">funcSlice</span> = append(<span style="color:#a6e22e">funcSlice</span>, <span style="color:#66d9ef">func</span>() {
@@ -1875,27 +1943,27 @@
 <h3 id="匿名函数小知识点">匿名函数小知识点</h3>
 <h4 id="匿名函数的调用">匿名函数的调用</h4>
 <p>函数体后面的<code>()</code>表示直接执行当前函数</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 <span style="color:#a6e22e">f</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>() {
 	<span style="color:#a6e22e">i</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">2</span>
 }
 <span style="color:#a6e22e">f</span>()
 <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>)
 </code></pre></div><p>以上代码等同于</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 <span style="color:#66d9ef">func</span>() {
 	<span style="color:#a6e22e">i</span> <span style="color:#f92672">+=</span> <span style="color:#ae81ff">2</span>
 }()
 <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">i</span>)
 </code></pre></div><h4 id="匿名函数传参">匿名函数传参</h4>
 <p>将匿名函数赋值给变量使用时</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 <span style="color:#a6e22e">f</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) {
 	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">n</span>)
 }
 <span style="color:#a6e22e">f</span>(<span style="color:#a6e22e">i</span>)
 </code></pre></div><p>直接执行匿名函数时,这里的m,n为形参 . 2,2为实参</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">i</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
 <span style="color:#66d9ef">func</span>(<span style="color:#a6e22e">m</span>, <span style="color:#a6e22e">n</span> <span style="color:#66d9ef">int</span>) {
 	<span style="color:#a6e22e">i</span> = <span style="color:#a6e22e">i</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">m</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">n</span>
 }(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)
@@ -1986,6 +2054,22 @@
             
                 
                     
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
                     
                 
                 
@@ -2161,22 +2245,6 @@
             
         
                     
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
                         
             
             
@@ -2238,6 +2306,38 @@
 
                     
                     
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
                         
                     
                     
@@ -2370,6 +2470,22 @@
                     
             
         
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
             
         
@@ -2900,7 +3016,7 @@
 	 
 	 
 		
-			<a class="nav nav-prev" href="/golang/array-slice/" title="Array And Slice"> <i class="fa fa-chevron-left"></i></a>
+			<a class="nav nav-prev" href="/golang/uint-int/" title="Uint Int"> <i class="fa fa-chevron-left"></i></a>
 		
 		
 			<a class="nav nav-next" href="/golang/binary-an-bit-operation/" title="Binary an Bit Operation" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
@@ -2913,12 +3029,12 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1653465635"></script>
-    <script src="/js/jquery.sticky.js?1653465635"></script>
-    <script src="/js/featherlight.min.js?1653465635"></script>
-    <script src="/js/highlight.pack.js?1653465635"></script>
+    <script src="/js/clipboard.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1660740786"></script>
+    <script src="/js/jquery.sticky.js?1660740786"></script>
+    <script src="/js/featherlight.min.js?1660740786"></script>
+    <script src="/js/highlight.pack.js?1660740786"></script>
     <script>
         hljs.configure({
             
@@ -2929,12 +3045,12 @@
         
         hljs.initHighlightingOnLoad();
     </script>
-    <script src="/js/modernizr.custom-3.6.0.js?1653465635"></script>
-    <script src="/js/learn.js?1653465635"></script>
-    <script src="/js/hugo-learn.js?1653465635"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1660740786"></script>
+    <script src="/js/learn.js?1660740786"></script>
+    <script src="/js/hugo-learn.js?1660740786"></script>
 
-    <link href="/mermaid/mermaid.css?1653465635" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1653465635"></script>
+    <link href="/mermaid/mermaid.css?1660740786" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1660740786"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

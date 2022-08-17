@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.88.0-DEV" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>One Nano Request :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1653465635" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1653465635" rel="stylesheet">
-    <link href="/css/hybrid.css?1653465635" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1653465635" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1653465635" rel="stylesheet">
-    <link href="/css/auto-complete.css?1653465635" rel="stylesheet">
-    <link href="/css/atom-one-dark.min.css?1653465635" rel="stylesheet">
-    <link href="/css/theme.css?1653465635" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1653465635" rel="stylesheet">
+    <link href="/css/nucleus.css?1660740786" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1660740786" rel="stylesheet">
+    <link href="/css/hybrid.css?1660740786" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1660740786" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1660740786" rel="stylesheet">
+    <link href="/css/auto-complete.css?1660740786" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1660740786" rel="stylesheet">
+    <link href="/css/theme.css?1660740786" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1660740786" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1653465635" rel="stylesheet">
+    <link href="/css/theme-blue.css?1660740786" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1653465635"></script>
+    <script src="/js/jquery-3.3.1.min.js?1660740786"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1653465635"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1653465635"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1660740786"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1660740786"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1653465635"></script>
+<script type="text/javascript" src="/js/search.js?1660740786"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/uint-int/" title="Uint Int" class="dd-item ">
+        <a href="/golang/uint-int/">
+        Uint Int
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -368,6 +389,27 @@
       <li data-nav-id="/golang/log/" title="Log" class="dd-item ">
         <a href="/golang/log/">
         Log
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/sqlx/" title="Sqlx" class="dd-item ">
+        <a href="/golang/sqlx/">
+        Sqlx
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -716,6 +758,32 @@
           
         
         </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/sql/" title="Sql" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sql/">
+          <b>5. </b>Sql
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
               
     </li>
   
@@ -1740,7 +1808,7 @@
 
 <h2 id="websocket-request">Websocket request</h2>
 <p>一般由网关节点向外部暴露<code>n.ClientAddr</code>地址并监听，接收客户端发送的请求。以<code>websocket</code>请求为例。<code>listenAndServeWS</code>方法负责监听<code>n.ClientAddr</code>并接收<code>ws</code>请求。接收到请求后交给节点下的<code>LocalHandler</code>的<code>handleWs()</code>方法，<code>handleWs()</code>会对连接对象封装成<code>wsConn</code>类型，结构如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">wsConn</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">wsConn</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#a6e22e">conn</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">websocket</span>.<span style="color:#a6e22e">Conn</span>  
 	<span style="color:#a6e22e">typ</span> <span style="color:#66d9ef">int</span> <span style="color:#75715e">// message type  
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">reader</span> <span style="color:#a6e22e">io</span>.<span style="color:#a6e22e">Reader</span>  
@@ -1748,7 +1816,7 @@
 </code></pre></div><p>然后开辟一个新的<code>goroutine</code>（<code>LocalHandler.handle()</code>方法）从连接中持续读取数据。</p>
 <h3 id="localhandlerhandle">LocalHandler.handle()</h3>
 <p>实例化一个<code>Agent</code>对象，相当于<code>User Agent</code>。它对应一个用户代理，用来存储原始连接信息。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">agent</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">agent</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#75715e">// regular agent member 
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">session</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Session</span> <span style="color:#75715e">// session会话
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">conn</span> <span style="color:#a6e22e">net</span>.<span style="color:#a6e22e">Conn</span> <span style="color:#75715e">// low-level conn fd 
@@ -1767,7 +1835,7 @@
 <ul>
 <li><code>&lt;-ticker.C</code>类型。每隔30秒检测上一次心跳包的时间距离现在是否超过60秒，如果没超过则发送心跳包响应数据<code>hbd</code>到<code>chWrite</code>通道。反之，则<code>return</code>跳出当前<code>for...select</code>.进而执行<code>defer</code>延迟函数：</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">defer</span> <span style="color:#66d9ef">func</span>() {  
 	<span style="color:#a6e22e">ticker</span>.<span style="color:#a6e22e">Stop</span>()  <span style="color:#75715e">//停止心跳包检测定时器
 </span><span style="color:#75715e"></span>	close(<span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">chSend</span>)  <span style="color:#75715e">//关闭推送消息队列
 </span><span style="color:#75715e"></span>	close(<span style="color:#a6e22e">chWrite</span>)  
@@ -2052,6 +2120,38 @@
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -2270,6 +2370,22 @@
                     
             
         
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
             
         
@@ -2813,12 +2929,12 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1653465635"></script>
-    <script src="/js/jquery.sticky.js?1653465635"></script>
-    <script src="/js/featherlight.min.js?1653465635"></script>
-    <script src="/js/highlight.pack.js?1653465635"></script>
+    <script src="/js/clipboard.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1660740786"></script>
+    <script src="/js/jquery.sticky.js?1660740786"></script>
+    <script src="/js/featherlight.min.js?1660740786"></script>
+    <script src="/js/highlight.pack.js?1660740786"></script>
     <script>
         hljs.configure({
             
@@ -2829,12 +2945,12 @@
         
         hljs.initHighlightingOnLoad();
     </script>
-    <script src="/js/modernizr.custom-3.6.0.js?1653465635"></script>
-    <script src="/js/learn.js?1653465635"></script>
-    <script src="/js/hugo-learn.js?1653465635"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1660740786"></script>
+    <script src="/js/learn.js?1660740786"></script>
+    <script src="/js/hugo-learn.js?1660740786"></script>
 
-    <link href="/mermaid/mermaid.css?1653465635" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1653465635"></script>
+    <link href="/mermaid/mermaid.css?1660740786" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1660740786"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

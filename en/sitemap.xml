@@ -1,65 +1,43 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>http://echotrue.github.io/golang/</loc>
-    <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2022-07-19T10:33:39+08:00</lastmod>
+  </url><url>
     <loc>http://echotrue.github.io/game/nano/</loc>
     <lastmod>2021-08-31T16:57:22+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/nano/nano-start/</loc>
     <lastmod>2021-08-31T16:54:27+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/context/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/nano/one-nano-request/</loc>
     <lastmod>2021-08-31T16:57:22+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/algorithm/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/black-hat-go/</loc>
     <lastmod>2021-11-17T10:41:33+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/nano/nano/</loc>
     <lastmod>2021-08-14T16:19:29+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/array-slice/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/</loc>
     <lastmod>2021-09-07T13:46:08+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/nano/nano-binary-protocol/</loc>
     <lastmod>2021-08-26T10:40:25+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>http://echotrue.github.io/sql/</loc>
+    <lastmod>2022-08-08T16:45:41+08:00</lastmod>
+  </url><url>
     <loc>http://echotrue.github.io/book/</loc>
     <lastmod>2022-04-18T16:31:08+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/pages/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -72,9 +50,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/pages/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/archetypes/</loc>
     <xhtml:link
                 rel="alternate"
@@ -86,9 +62,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/archetypes/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/basics/requirements/</loc>
     <xhtml:link
                 rel="alternate"
@@ -100,9 +74,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/basics/requirements/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/markdown/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -115,9 +87,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/markdown/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/basics/installation/</loc>
     <xhtml:link
                 rel="alternate"
@@ -129,14 +99,10 @@
                 hreflang="en"
                 href="http://echotrue.github.io/basics/installation/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/syntaxhighlight/</loc>
     <lastmod>2020-06-01T13:31:12+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/basics/configuration/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -149,9 +115,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/basics/configuration/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/menushortcuts/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -164,9 +128,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/menushortcuts/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/basics/style-customization/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -179,13 +141,9 @@
                 hreflang="en"
                 href="http://echotrue.github.io/basics/style-customization/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/icons/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/i18n/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -198,9 +156,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/i18n/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/tags/</loc>
     <lastmod>2018-11-29T08:41:44+01:00</lastmod>
     <xhtml:link
@@ -213,9 +169,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/tags/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/basics/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -233,9 +187,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/basics/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/cont/</loc>
     <lastmod>2020-06-01T13:31:12+01:00</lastmod>
     <xhtml:link
@@ -248,9 +200,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/cont/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/</loc>
     <lastmod>2016-04-09T16:50:16+02:00</lastmod>
     <xhtml:link
@@ -263,11 +213,9 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/</loc>
-    <lastmod>2021-11-17T11:45:22+08:00</lastmod>
+    <lastmod>2022-08-08T16:45:41+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -283,14 +231,13 @@
                 hreflang="en"
                 href="http://echotrue.github.io/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>http://echotrue.github.io/golang/uint-int/</loc>
+    <lastmod>2022-07-19T10:33:39+08:00</lastmod>
+  </url><url>
     <loc>http://echotrue.github.io/black-hat-go/tcp/</loc>
     <lastmod>2021-11-17T11:45:22+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/categories/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
     <xhtml:link
@@ -308,19 +255,13 @@
                 hreflang="en"
                 href="http://echotrue.github.io/categories/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/functional-programming-in-golang/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/categories/go/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
     <xhtml:link
@@ -338,99 +279,61 @@
                 hreflang="en"
                 href="http://echotrue.github.io/tags/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E5%87%BD%E6%95%B0/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E9%80%89%E9%A1%B9/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E9%97%AD%E5%8C%85/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E9%AB%98%E9%98%B6%E5%87%BD%E6%95%B0/</loc>
     <lastmod>2021-11-16T16:22:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/combat-system/</loc>
     <lastmod>2021-09-08T14:24:16+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/game-vocabulary-list/</loc>
     <lastmod>2021-09-07T13:46:23+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/game/turn-based-game-with-go/</loc>
     <lastmod>2021-09-06T16:32:53+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/binary-an-bit-operation/</loc>
     <lastmod>2021-08-27T10:34:44+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/go/</loc>
     <lastmod>2021-01-22T14:56:40+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/lock/</loc>
     <lastmod>2021-01-22T14:56:40+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/lock/</loc>
     <lastmod>2021-01-22T14:56:40+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/categories/lock/</loc>
     <lastmod>2021-01-22T14:56:40+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/make-and-new/</loc>
     <lastmod>2020-10-28T11:02:10+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/about/</loc>
     <lastmod>2020-09-03T14:20:28+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/panic/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/categories/panic/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/panic-and-recover/</loc>
     <lastmod>2019-08-09T15:55:02+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/golang-select/</loc>
     <lastmod>2019-07-30T19:04:35+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/documentation/</loc>
     <lastmod>2018-11-29T08:41:44+01:00</lastmod>
     <xhtml:link
@@ -443,9 +346,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/tags/documentation/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/tutorial/</loc>
     <lastmod>2018-11-29T08:41:44+01:00</lastmod>
     <xhtml:link
@@ -458,17 +359,11 @@
                 hreflang="en"
                 href="http://echotrue.github.io/tags/tutorial/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/addressable/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/array/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/attachments/</loc>
     <xhtml:link
                 rel="alternate"
@@ -480,13 +375,9 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/attachments/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/block-forever-in-go/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/button/</loc>
     <xhtml:link
                 rel="alternate"
@@ -498,9 +389,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/button/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/</loc>
     <xhtml:link
                 rel="alternate"
@@ -512,17 +401,11 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/concurrency-safety/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/context/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/expand/</loc>
     <xhtml:link
                 rel="alternate"
@@ -534,33 +417,19 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/expand/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/channel/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/data-races/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/algorithm/golang-search-slice/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/golang/log/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/log/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/categories/log/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/mermaid/</loc>
     <xhtml:link
                 rel="alternate"
@@ -572,13 +441,9 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/mermaid/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/not-concurrency-safety/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/notice/</loc>
     <xhtml:link
                 rel="alternate"
@@ -590,9 +455,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/notice/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-1/</loc>
     <xhtml:link
                 rel="alternate"
@@ -604,9 +467,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-1/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-1/children-1-1/</loc>
     <xhtml:link
                 rel="alternate"
@@ -618,9 +479,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-1/children-1-1/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-1/children-1-1/children-1-1-1/</loc>
     <xhtml:link
                 rel="alternate"
@@ -632,9 +491,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-1/children-1-1/children-1-1-1/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/</loc>
     <xhtml:link
                 rel="alternate"
@@ -646,9 +503,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/</loc>
     <xhtml:link
                 rel="alternate"
@@ -660,9 +515,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-2/</loc>
     <xhtml:link
                 rel="alternate"
@@ -674,9 +527,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-2/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-3/</loc>
     <xhtml:link
                 rel="alternate"
@@ -688,9 +539,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-3/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-4/</loc>
     <xhtml:link
                 rel="alternate"
@@ -702,9 +551,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-4/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/test/</loc>
     <xhtml:link
                 rel="alternate"
@@ -716,9 +563,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/test/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/children/children-2/test3/</loc>
     <xhtml:link
                 rel="alternate"
@@ -730,9 +575,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/children/children-2/test3/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/showcase/</loc>
     <xhtml:link
                 rel="alternate"
@@ -744,9 +587,7 @@
                 hreflang="en"
                 href="http://echotrue.github.io/showcase/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/shortcodes/siteparam/</loc>
     <xhtml:link
                 rel="alternate"
@@ -758,34 +599,21 @@
                 hreflang="en"
                 href="http://echotrue.github.io/shortcodes/siteparam/"
                 />
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/slice/</loc>
-  </url>
-  
-  <url>
+  </url><url>
+    <loc>http://echotrue.github.io/golang/sqlx/</loc>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E4%B8%8A%E4%B8%8B%E6%96%87/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E5%88%87%E7%89%87/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>http://echotrue.github.io/tags/%E6%95%B0%E7%BB%84/</loc>
   </url>
-  
 </urlset>

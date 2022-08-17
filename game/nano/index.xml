@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Tue, 31 Aug 2021 16:57:22 +0800</lastBuildDate>
-    
-	<atom:link href="http://echotrue.github.io/game/nano/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 31 Aug 2021 16:57:22 +0800</lastBuildDate><atom:link href="http://echotrue.github.io/game/nano/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nano Start</title>
       <link>http://echotrue.github.io/game/nano/nano-start/</link>

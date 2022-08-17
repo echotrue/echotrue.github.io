@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Tue, 16 Nov 2021 16:22:06 +0800</lastBuildDate>
-    
-	<atom:link href="http://echotrue.github.io/golang/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 19 Jul 2022 10:33:39 +0800</lastBuildDate><atom:link href="http://echotrue.github.io/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Context</title>
       <link>http://echotrue.github.io/golang/context/</link>
@@ -37,6 +33,18 @@ var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Contex
 var arr [4]int // 声明 fmt.Println(arr[1]) // 不需要显式的初始化 arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 数组的字面值 arr2 := [...]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 编译器统计数组字面值中的元素数量 fmt.Println(arr1, len(arr1), cap(arr1)) fmt.Println(arr2, len(arr2), cap(arr2)) Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）
 func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main() { arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} update(&amp;amp;arr1) fmt.Println(arr1) } 切片的创建和初始化 Golang中切片有三种初始化方式：
  通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片：  arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片  slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片  var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0  需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</description>
+    </item>
+    
+    <item>
+      <title>Uint Int</title>
+      <link>http://echotrue.github.io/golang/uint-int/</link>
+      <pubDate>Tue, 19 Jul 2022 10:33:39 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang/uint-int/</guid>
+      <description>“一般来说，如果你使用整数，你应该只使用 int 类型。”
+“uint 通常只用于进行二元运算”
+“不要使用无符号类型来强制或建议数字必须是正数。这不是它们的用途。”
+“这是 Go 编程语言所推荐的，当你想要进行按位运算时，uint 的具体示例很有用”</description>
     </item>
     
     <item>
@@ -152,6 +160,21 @@ $ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000
       
       <guid>http://echotrue.github.io/golang/log/</guid>
       <description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;) </description>
+    </item>
+    
+    <item>
+      <title>Sqlx</title>
+      <link>http://echotrue.github.io/golang/sqlx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang/sqlx/</guid>
+      <description>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型
+ sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似于sql.Tx,是事务的表示 sqlx.Stmt类似于sql.Stmt,是预处理语句的表示 sqlx.NamedStmt是一种支持命名参数的预处理语句的表示  引用类型都嵌入了他们在database/sql中的等效物，这就意味着当你调用sqlx.DB.Query()，实际是调用与sql.DB.Query相同的代码。
+除此之外，还有两种光标类型：
+Querying 101 (查询概述) 引用类型实现了以下相同的操作来查询数据库
+ Exec(...) (sql.Result, error) - unchanged from database/sql Query(...) (*sql.Rows, error) - unchanged from database/sql QueryRow(...) *sql.Row - unchanged from database/sql  以下这些是内置操作的扩展
+ MustExec() sql.Result &amp;ndash; Exec, but panic on error Queryx(...) (*sqlx.Rows, error) - Query, but return an sqlx.Rows QueryRowx(...) *sqlx.Row &amp;ndash; QueryRow, but return an sqlx.Row  还有这些新的语义：
+ Get(dest interface{}, .</description>
     </item>
     
   </channel>

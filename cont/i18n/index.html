@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.88.0-DEV" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Multilingual and i18n :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1653465635" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1653465635" rel="stylesheet">
-    <link href="/css/hybrid.css?1653465635" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1653465635" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1653465635" rel="stylesheet">
-    <link href="/css/auto-complete.css?1653465635" rel="stylesheet">
-    <link href="/css/atom-one-dark.min.css?1653465635" rel="stylesheet">
-    <link href="/css/theme.css?1653465635" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1653465635" rel="stylesheet">
+    <link href="/css/nucleus.css?1660740786" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1660740786" rel="stylesheet">
+    <link href="/css/hybrid.css?1660740786" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1660740786" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1660740786" rel="stylesheet">
+    <link href="/css/auto-complete.css?1660740786" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1660740786" rel="stylesheet">
+    <link href="/css/theme.css?1660740786" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1660740786" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1653465635" rel="stylesheet">
+    <link href="/css/theme-blue.css?1660740786" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1653465635"></script>
+    <script src="/js/jquery-3.3.1.min.js?1660740786"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1653465635"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1653465635"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1660740786"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1660740786"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1653465635"></script>
+<script type="text/javascript" src="/js/search.js?1660740786"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/uint-int/" title="Uint Int" class="dd-item ">
+        <a href="/golang/uint-int/">
+        Uint Int
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -368,6 +389,27 @@
       <li data-nav-id="/golang/log/" title="Log" class="dd-item ">
         <a href="/golang/log/">
         Log
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/sqlx/" title="Sqlx" class="dd-item ">
+        <a href="/golang/sqlx/">
+        Sqlx
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -716,6 +758,32 @@
           
         
         </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/sql/" title="Sql" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sql/">
+          <b>5. </b>Sql
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
               
     </li>
   
@@ -1741,7 +1809,7 @@
 <h2 id="basic-configuration">Basic configuration</h2>
 <p>After learning <a href="https://gohugo.io/content-management/multilingual">how Hugo handle multilingual websites</a>, define your languages in your <code>config.toml</code> file.</p>
 <p>For example with current French and English website.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># English is the default language</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml"><span style="color:#75715e"># English is the default language</span>
 <span style="color:#a6e22e">defaultContentLanguage</span> = <span style="color:#e6db74">&#34;en&#34;</span>
 <span style="color:#75715e"># Force to have /en/my-page and /fr/my-page routes, even for default language.</span>
 <span style="color:#a6e22e">defaultContentLanguageInSubdir</span>= <span style="color:#66d9ef">true</span>
@@ -1786,7 +1854,7 @@
 <h2 id="disable-language-switching">Disable language switching</h2>
 <p>Switching the language in the browser is a great feature, but for some reasons you may want to disable it.</p>
 <p>Just set <code>disableLanguageSwitchingButton=true</code> in your <code>config.toml</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">params</span>]
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-toml" data-lang="toml">[<span style="color:#a6e22e">params</span>]
   <span style="color:#75715e"># When using mulitlingual website, disable the switch language button.</span>
   <span style="color:#a6e22e">disableLanguageSwitchingButton</span> = <span style="color:#66d9ef">true</span>
 </code></pre></div><p><img src="/en/cont/i18n/images/i18n-menu.gif" alt="I18n menu"></p>
@@ -2049,6 +2117,38 @@
             
         
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
             
         
                     
@@ -2156,57 +2256,6 @@
                     
                     
 
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
                     
             
         
@@ -2258,6 +2307,73 @@
                     
             
         
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
             
         
@@ -2809,12 +2925,12 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1653465635"></script>
-    <script src="/js/jquery.sticky.js?1653465635"></script>
-    <script src="/js/featherlight.min.js?1653465635"></script>
-    <script src="/js/highlight.pack.js?1653465635"></script>
+    <script src="/js/clipboard.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1660740786"></script>
+    <script src="/js/jquery.sticky.js?1660740786"></script>
+    <script src="/js/featherlight.min.js?1660740786"></script>
+    <script src="/js/highlight.pack.js?1660740786"></script>
     <script>
         hljs.configure({
             
@@ -2825,12 +2941,12 @@
         
         hljs.initHighlightingOnLoad();
     </script>
-    <script src="/js/modernizr.custom-3.6.0.js?1653465635"></script>
-    <script src="/js/learn.js?1653465635"></script>
-    <script src="/js/hugo-learn.js?1653465635"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1660740786"></script>
+    <script src="/js/learn.js?1660740786"></script>
+    <script src="/js/hugo-learn.js?1660740786"></script>
 
-    <link href="/mermaid/mermaid.css?1653465635" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1653465635"></script>
+    <link href="/mermaid/mermaid.css?1660740786" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1660740786"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.88.0-DEV" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Nano Start :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1653465635" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1653465635" rel="stylesheet">
-    <link href="/css/hybrid.css?1653465635" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1653465635" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1653465635" rel="stylesheet">
-    <link href="/css/auto-complete.css?1653465635" rel="stylesheet">
-    <link href="/css/atom-one-dark.min.css?1653465635" rel="stylesheet">
-    <link href="/css/theme.css?1653465635" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1653465635" rel="stylesheet">
+    <link href="/css/nucleus.css?1660740786" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1660740786" rel="stylesheet">
+    <link href="/css/hybrid.css?1660740786" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1660740786" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1660740786" rel="stylesheet">
+    <link href="/css/auto-complete.css?1660740786" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1660740786" rel="stylesheet">
+    <link href="/css/theme.css?1660740786" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1660740786" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1653465635" rel="stylesheet">
+    <link href="/css/theme-blue.css?1660740786" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1653465635"></script>
+    <script src="/js/jquery-3.3.1.min.js?1660740786"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1653465635"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1653465635"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1660740786"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1660740786"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1653465635"></script>
+<script type="text/javascript" src="/js/search.js?1660740786"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/uint-int/" title="Uint Int" class="dd-item ">
+        <a href="/golang/uint-int/">
+        Uint Int
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -368,6 +389,27 @@
       <li data-nav-id="/golang/log/" title="Log" class="dd-item ">
         <a href="/golang/log/">
         Log
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/sqlx/" title="Sqlx" class="dd-item ">
+        <a href="/golang/sqlx/">
+        Sqlx
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -716,6 +758,32 @@
           
         
         </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/sql/" title="Sql" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sql/">
+          <b>5. </b>Sql
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
               
     </li>
   
@@ -1751,7 +1819,7 @@
 <p>一个<code>nano</code>应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：<code>node</code>,<code>cluster</code>,<code>component</code>,<code>service</code>,<code>handler</code>等等。这里简单介绍各个单元的概念，并概述他们之间的关系。</p>
 <h3 id="cluster">Cluster</h3>
 <p><code>cluster</code>表示一个<code>nano</code>的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到<code>gate</code>网关，然后被发送到响应的节点</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">cluster</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">cluster</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#75715e">// If cluster is not large enough, use slice is OK 
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">currentNode</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Node</span>  <span style="color:#75715e">//当前节点对象
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">rpcClient</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">rpcClient</span>  <span style="color:#75715e">// rpc客户端用于和其他节点通信
@@ -1760,7 +1828,7 @@
 	<span style="color:#a6e22e">members</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">Member</span>  <span style="color:#75715e">//所有的节点成员，member包含了节点地址，节点下的服务，是否是主节点
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p><code>Node</code>是<code>nano</code>集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#66d9ef">struct</span> {  
  <span style="color:#a6e22e">Options</span> <span style="color:#75715e">// 节点配置项  
 </span><span style="color:#75715e"></span> <span style="color:#a6e22e">ServiceAddr</span> <span style="color:#66d9ef">string</span> <span style="color:#75715e">// 当前节点的服务地址，主要用于RPC通信 
 </span><span style="color:#75715e"></span>  
@@ -1773,7 +1841,7 @@
  <span style="color:#a6e22e">sessions</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int64</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Session</span>  <span style="color:#75715e">//会话列表
 </span><span style="color:#75715e"></span>}
 </code></pre></div><p><code>Node.Options</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Options</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Options</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#a6e22e">Pipeline</span> <span style="color:#a6e22e">pipeline</span>.<span style="color:#a6e22e">Pipeline</span>  
 	<span style="color:#a6e22e">IsMaster</span> <span style="color:#66d9ef">bool</span>  
 	<span style="color:#a6e22e">AdvertiseAddr</span> <span style="color:#66d9ef">string</span>  
@@ -1790,7 +1858,7 @@
 <li>初始化配置
 设置集群的<code>Options</code>选项。其中<code>Options.Components</code>类型定义了一个组件切片<code>comps</code>，这个切片的类型是<code>CompWithOptions</code>，其中<code>Comp</code>是组件，<code>Opts</code>是该组件的属性。</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Options.Components
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Options.Components
 </span><span style="color:#75715e"></span>
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Components</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#a6e22e">comps</span> []<span style="color:#a6e22e">CompWithOptions</span>  
@@ -1805,7 +1873,7 @@
 <li>初始化节点属性
 初始化<code>Node</code>的属性：<code>session</code>用来保存客户端会话,<code>cluster</code>是nano集群,<code>handler</code>存储了本地及远程服务.结构如下：</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">cluster</span> <span style="color:#66d9ef">struct</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">cluster</span> <span style="color:#66d9ef">struct</span> {  
 	<span style="color:#75715e">// If cluster is not large enough, use slice is OK currentNode *Node  
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">rpcClient</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">rpcClient</span>  
 
@@ -1825,7 +1893,7 @@
 }
 </code></pre></div><h3 id="install-service-and-handler">install service and handler</h3>
 <p>接下来将上面组件切片中组件依次注册到节点的handle中。这里的组件被定义为<code>Service</code>类型，组件中的方法被定义为<code>Handler</code>类型。<code>Service</code>实现了一个特定服务，该服务下的方法将在对应事件触发是被调用。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Service</span> <span style="color:#66d9ef">struct</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Service</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#75715e">// 服务名称 
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Type</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Type</span> <span style="color:#75715e">// 接收者类型  
 </span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Receiver</span> <span style="color:#a6e22e">reflect</span>.<span style="color:#a6e22e">Value</span> <span style="color:#75715e">// 服务下方法的接收者 
@@ -1842,7 +1910,7 @@
 </span><span style="color:#75715e"></span>}
 
 </code></pre></div><p>注册服务及服务下func部分代码：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">LocalHandler</span>) <span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">comp</span> <span style="color:#a6e22e">component</span>.<span style="color:#a6e22e">Component</span>, <span style="color:#a6e22e">opts</span> []<span style="color:#a6e22e">component</span>.<span style="color:#a6e22e">Option</span>) <span style="color:#66d9ef">error</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">LocalHandler</span>) <span style="color:#a6e22e">register</span>(<span style="color:#a6e22e">comp</span> <span style="color:#a6e22e">component</span>.<span style="color:#a6e22e">Component</span>, <span style="color:#a6e22e">opts</span> []<span style="color:#a6e22e">component</span>.<span style="color:#a6e22e">Option</span>) <span style="color:#66d9ef">error</span> {  
 	 <span style="color:#a6e22e">s</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">component</span>.<span style="color:#a6e22e">NewService</span>(<span style="color:#a6e22e">comp</span>, <span style="color:#a6e22e">opts</span>)  
 
 	 <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">localServices</span>[<span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Name</span>]; <span style="color:#a6e22e">ok</span> {  
@@ -1868,7 +1936,7 @@
 <h4 id="init-grpc-and-register-service">init gRPC and register service</h4>
 <p><code>n.server = grpc.NewServer()</code>创建一个<code>gRPC</code>服务器。此时该服务器上没有注册任何服务，也没有开始接收请求。</p>
 <p><code>clusterpb.RegisterMemberServer(n.server, n)</code>向<code>gRPC</code>注册<code>MemberServer</code>服务。<code>MemberServer</code>服务包含了一些列<code>API</code>,而节点<code>n</code>实现了<code>MemberServer</code>接口。因此所有启动的节点均提供这些<code>API</code>服务。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MemberServer</span> <span style="color:#66d9ef">interface</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MemberServer</span> <span style="color:#66d9ef">interface</span> {  
 	<span style="color:#a6e22e">HandleRequest</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">RequestMessage</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">MemberHandleResponse</span>, <span style="color:#66d9ef">error</span>)  
 	<span style="color:#a6e22e">HandleNotify</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">NotifyMessage</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">MemberHandleResponse</span>, <span style="color:#66d9ef">error</span>)  
 	<span style="color:#a6e22e">HandlePush</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">PushMessage</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">MemberHandleResponse</span>, <span style="color:#66d9ef">error</span>)  
@@ -1895,7 +1963,7 @@
 <h3 id="listen-client-address">Listen client address</h3>
 <p>如果设置了<code>node.ClientAddr</code>地址，则开始监听并接收请求。<code>node.ClientAddr</code>是暴露给外部供外部访问的地址。</p>
 <h3 id="node实现的服务列表">Node实现的服务列表</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MemberServer</span> <span style="color:#66d9ef">interface</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MemberServer</span> <span style="color:#66d9ef">interface</span> {  
 	<span style="color:#a6e22e">HandleRequest</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">RequestMessage</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">MemberHandleResponse</span>, <span style="color:#66d9ef">error</span>)  
 	<span style="color:#a6e22e">HandleNotify</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">NotifyMessage</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">MemberHandleResponse</span>, <span style="color:#66d9ef">error</span>)  
 	<span style="color:#a6e22e">HandlePush</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">PushMessage</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">MemberHandleResponse</span>, <span style="color:#66d9ef">error</span>)  
@@ -1906,7 +1974,7 @@
 	<span style="color:#a6e22e">CloseSession</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">CloseSessionRequest</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">CloseSessionResponse</span>, <span style="color:#66d9ef">error</span>)  
 }
 </code></pre></div><h3 id="cluster实现的服务列表">Cluster实现的服务列表</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MasterServer</span> <span style="color:#66d9ef">interface</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MasterServer</span> <span style="color:#66d9ef">interface</span> {  
 	<span style="color:#a6e22e">Register</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">RegisterRequest</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">RegisterResponse</span>, <span style="color:#66d9ef">error</span>)  
 	<span style="color:#a6e22e">Unregister</span>(<span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#f92672">*</span><span style="color:#a6e22e">UnregisterRequest</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">UnregisterResponse</span>, <span style="color:#66d9ef">error</span>)  
 }
@@ -2166,139 +2234,6 @@
             
         
                     
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
             
             
@@ -2347,6 +2282,120 @@
                     
 
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -2381,6 +2430,73 @@
                     
             
         
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
                     
             
         
@@ -2924,12 +3040,12 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1653465635"></script>
-    <script src="/js/jquery.sticky.js?1653465635"></script>
-    <script src="/js/featherlight.min.js?1653465635"></script>
-    <script src="/js/highlight.pack.js?1653465635"></script>
+    <script src="/js/clipboard.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1660740786"></script>
+    <script src="/js/jquery.sticky.js?1660740786"></script>
+    <script src="/js/featherlight.min.js?1660740786"></script>
+    <script src="/js/highlight.pack.js?1660740786"></script>
     <script>
         hljs.configure({
             
@@ -2940,12 +3056,12 @@
         
         hljs.initHighlightingOnLoad();
     </script>
-    <script src="/js/modernizr.custom-3.6.0.js?1653465635"></script>
-    <script src="/js/learn.js?1653465635"></script>
-    <script src="/js/hugo-learn.js?1653465635"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1660740786"></script>
+    <script src="/js/learn.js?1660740786"></script>
+    <script src="/js/hugo-learn.js?1660740786"></script>
 
-    <link href="/mermaid/mermaid.css?1653465635" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1653465635"></script>
+    <link href="/mermaid/mermaid.css?1660740786" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1660740786"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

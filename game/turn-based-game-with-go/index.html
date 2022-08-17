@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="generator" content="Hugo 0.88.0-DEV" />
     <meta name="description" content="gohper">
 <meta name="author" content="axlrose">
 
@@ -12,21 +12,21 @@
     <title>Turn-Based Game With Go【译】 :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1653465635" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1653465635" rel="stylesheet">
-    <link href="/css/hybrid.css?1653465635" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1653465635" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1653465635" rel="stylesheet">
-    <link href="/css/auto-complete.css?1653465635" rel="stylesheet">
-    <link href="/css/atom-one-dark.min.css?1653465635" rel="stylesheet">
-    <link href="/css/theme.css?1653465635" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1653465635" rel="stylesheet">
+    <link href="/css/nucleus.css?1660740786" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1660740786" rel="stylesheet">
+    <link href="/css/hybrid.css?1660740786" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1660740786" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1660740786" rel="stylesheet">
+    <link href="/css/auto-complete.css?1660740786" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1660740786" rel="stylesheet">
+    <link href="/css/theme.css?1660740786" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1660740786" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1653465635" rel="stylesheet">
+    <link href="/css/theme-blue.css?1660740786" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1653465635"></script>
+    <script src="/js/jquery-3.3.1.min.js?1660740786"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1653465635"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1653465635"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1660740786"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1660740786"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1653465635"></script>
+<script type="text/javascript" src="/js/search.js?1660740786"></script>
 
     
   </div>
@@ -137,6 +137,27 @@
       <li data-nav-id="/golang/array-slice/" title="Array And Slice" class="dd-item ">
         <a href="/golang/array-slice/">
         Array And Slice
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/uint-int/" title="Uint Int" class="dd-item ">
+        <a href="/golang/uint-int/">
+        Uint Int
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -368,6 +389,27 @@
       <li data-nav-id="/golang/log/" title="Log" class="dd-item ">
         <a href="/golang/log/">
         Log
+        <i class="fas fa-check read-icon"></i>
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+      <li data-nav-id="/golang/sqlx/" title="Sqlx" class="dd-item ">
+        <a href="/golang/sqlx/">
+        Sqlx
         <i class="fas fa-check read-icon"></i>
         </a>
     </li>
@@ -716,6 +758,32 @@
           
         
         </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/sql/" title="Sql" class="dd-item 
+        
+        
+        
+        ">
+      <a href="/sql/">
+          <b>5. </b>Sql
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
               
     </li>
   
@@ -1776,7 +1844,7 @@
 <p>heroCharacter/heroCharacter.go: All the characters have Name, Level (experience),Attacks(Damage List) and Blood(Energy)</p>
 </blockquote>
 <p>所有的角色都有角色名称，等级（经验），攻击力（伤害列表）和血量（能量）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">heroCharacter</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">heroCharacter</span>
 
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hero</span> <span style="color:#66d9ef">struct</span> {
 	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
@@ -1792,7 +1860,7 @@
 <p>fightHero/fightHero.go: Every hero Hits the other characters, takes Damage after attacked by someone else. We can get info about him or her healthy, stamina or mana.And finally, we can check he or she died or not. These are the common functions of all Characters.</p>
 </blockquote>
 <p>每个英雄角色击中其他角色，或者收到其他人的攻击。我们会获取他的健康，魔法或者体力信息.然后,检查他是否死亡.这是所有角色的通用方法。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">fightHero</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">package</span> <span style="color:#a6e22e">fightHero</span>
 
 <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">FightHero</span> <span style="color:#66d9ef">interface</span> {
 
@@ -1812,7 +1880,7 @@
 <p>创建第一个角色男巫</p>
 <p>wizard/wizard.go:</p>
 <h4 id="properties-of-wizard">properties of Wizard</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span>(
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span>(
 	<span style="color:#a6e22e">Wizard</span> <span style="color:#66d9ef">struct</span>{
 		<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Hero</span>
 		<span style="color:#a6e22e">Manas</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">int</span>
@@ -1840,7 +1908,7 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
 <h4 id="action-of-wizard">Action of Wizard</h4>
 <h5 id="fighthero-interface-methods">FightHero interface Methods:</h5>
 <p><code>Hit()</code>计算魔法技能伤害值,只有法力值足够的前提下才能施放魔法技能,魔法技能的伤害值和等级有关系.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">Wizard</span>) <span style="color:#a6e22e">Hit</span>() <span style="color:#66d9ef">int</span> {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#a6e22e">Wizard</span>) <span style="color:#a6e22e">Hit</span>() <span style="color:#66d9ef">int</span> {  
 	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Mana</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Manas</span>[<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Magic</span>] {  
 		<span style="color:#a6e22e">levelEffect</span> <span style="color:#f92672">:=</span> int(<span style="color:#a6e22e">math</span>.<span style="color:#a6e22e">Ceil</span>(float64(<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Level</span>) <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.1</span>))  
 		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Attacks</span>[<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Magic</span>] <span style="color:#f92672">+</span> <span style="color:#a6e22e">levelEffect</span>  
@@ -1848,7 +1916,7 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
 	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>  
 }
 </code></pre></div><p><code>TakeDamage</code> 如果被其他角色攻击,血量将会减少,当血量为0时,男巫就会死亡.此处使用了指针类型<code>*Wizard</code>,因为当男巫受到伤害时必须及时减少男巫的血量</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Wizard</span>) <span style="color:#a6e22e">TakeDamage</span>(<span style="color:#a6e22e">damage</span> <span style="color:#66d9ef">int</span>) {  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Wizard</span>) <span style="color:#a6e22e">TakeDamage</span>(<span style="color:#a6e22e">damage</span> <span style="color:#66d9ef">int</span>) {  
 	<span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Blood</span> = <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">Blood</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">damage</span>  
 }
 </code></pre></div><p><code>GetInfo()</code> 获取男巫的名称和血量</p>
@@ -1862,7 +1930,7 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
 <h3 id="fight-战斗">Fight (战斗)</h3>
 <p>我们已经定义了所有的英雄角色,现在开始让他们之间互相战斗,他们中只有一个能获胜幸存下来.
 定义全局变量和随机函数:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">fighterList</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">IHero</span>.<span style="color:#a6e22e">FightHero</span>  
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">fighterList</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">IHero</span>.<span style="color:#a6e22e">FightHero</span>  
 <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">fighterNumberList</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">int</span>]<span style="color:#a6e22e">IHero</span>.<span style="color:#a6e22e">FightHero</span>  
   
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetRandomID</span>(<span style="color:#a6e22e">limit</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">int</span> {  
@@ -2152,137 +2220,6 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
             
         
                     
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                    
-                
-                
-
-                    
-                    
-                        
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                        
-                        
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
             
             
@@ -2331,6 +2268,169 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
                     
 
                     
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
             
         
                     
@@ -2377,6 +2477,22 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
                     
                         
                         
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
                     
                 
                 
@@ -2902,7 +3018,7 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
 			<a class="nav nav-prev" href="/game/game-vocabulary-list/" title="Game Vocabulary List"> <i class="fa fa-chevron-left"></i></a>
 		
 		
-			<a class="nav nav-next" href="/basics/" title="Basics" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+			<a class="nav nav-next" href="/sql/" title="Sql" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
 		
 	
     </div>
@@ -2912,12 +3028,12 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.min.js?1653465635"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1653465635"></script>
-    <script src="/js/jquery.sticky.js?1653465635"></script>
-    <script src="/js/featherlight.min.js?1653465635"></script>
-    <script src="/js/highlight.pack.js?1653465635"></script>
+    <script src="/js/clipboard.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.min.js?1660740786"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1660740786"></script>
+    <script src="/js/jquery.sticky.js?1660740786"></script>
+    <script src="/js/featherlight.min.js?1660740786"></script>
+    <script src="/js/highlight.pack.js?1660740786"></script>
     <script>
         hljs.configure({
             
@@ -2928,12 +3044,12 @@ Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attac
         
         hljs.initHighlightingOnLoad();
     </script>
-    <script src="/js/modernizr.custom-3.6.0.js?1653465635"></script>
-    <script src="/js/learn.js?1653465635"></script>
-    <script src="/js/hugo-learn.js?1653465635"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1660740786"></script>
+    <script src="/js/learn.js?1660740786"></script>
+    <script src="/js/hugo-learn.js?1660740786"></script>
 
-    <link href="/mermaid/mermaid.css?1653465635" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1653465635"></script>
+    <link href="/mermaid/mermaid.css?1660740786" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1660740786"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>

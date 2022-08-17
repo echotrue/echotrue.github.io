@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <copyright>Axlrose</copyright>
-    <lastBuildDate>Wed, 17 Nov 2021 11:45:22 +0800</lastBuildDate>
-    
-	<atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 08 Aug 2022 16:45:41 +0800</lastBuildDate><atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nano Start</title>
       <link>http://echotrue.github.io/game/nano/nano-start/</link>
@@ -88,7 +84,7 @@ func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main()
       <pubDate>Mon, 18 Apr 2022 16:31:08 +0800</pubDate>
       
       <guid>http://echotrue.github.io/book/</guid>
-      <description>Book ListProgramming in Lua 4th Edition.pdf(1203 ko)Reading 16GB File in Seconds, Golang.pdf(53 ko)Turn-Based Game With Go.pdf(3275 ko)go-files-cheat-sheet.pdf(52 ko)golang-naming-conventions-cheat-sheet.pdf(78 ko)turn-based-game-with-go.pdf(8010 ko)</description>
+      <description>Book ListGolang101-v1.14.e.pdf-ForPrinting.pdf(2811 ko)Programming in Lua 4th Edition.pdf(1203 ko)Reading 16GB File in Seconds, Golang.pdf(53 ko)Turn-Based Game With Go.pdf(3275 ko)go-data-structures.pdf(2102 ko)go-files-cheat-sheet.pdf(52 ko)golang-naming-conventions-cheat-sheet.pdf(78 ko)turn-based-game-with-go.pdf(8010 ko)</description>
     </item>
     
     <item>
@@ -160,6 +156,18 @@ Configuration Just add tags to any page:
 --- date: 2018-11-29T08:41:44+01:00 title: Theme tutorial weight: 15 tags: [&amp;#34;tutorial&amp;#34;, &amp;#34;theme&amp;#34;] --- Behavior The tags are displayed at the top of the page, in their insertion order.
 Each tag is a link to a Taxonomy page displaying all the articles with the given tag.
 List all the tags In the config.toml file you can add a shortcut to display all the tags</description>
+    </item>
+    
+    <item>
+      <title>Uint Int</title>
+      <link>http://echotrue.github.io/golang/uint-int/</link>
+      <pubDate>Tue, 19 Jul 2022 10:33:39 +0800</pubDate>
+      
+      <guid>http://echotrue.github.io/golang/uint-int/</guid>
+      <description>“一般来说，如果你使用整数，你应该只使用 int 类型。”
+“uint 通常只用于进行二元运算”
+“不要使用无符号类型来强制或建议数字必须是正数。这不是它们的用途。”
+“这是 Go 编程语言所推荐的，当你想要进行按位运算时，uint 的具体示例很有用”</description>
     </item>
     
     <item>
@@ -442,6 +450,21 @@ For instance, in this current site, the editURL variable is used in config.toml
 [params] editURL = &amp;#34;https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/&amp;#34; Use the siteparam shortcode to display its value.
 `editURL` Value : {{% siteparam &amp;quot;editURL&amp;quot; %}}is displayed as
 editURL Value :</description>
+    </item>
+    
+    <item>
+      <title>Sqlx</title>
+      <link>http://echotrue.github.io/golang/sqlx/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://echotrue.github.io/golang/sqlx/</guid>
+      <description>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型
+ sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似于sql.Tx,是事务的表示 sqlx.Stmt类似于sql.Stmt,是预处理语句的表示 sqlx.NamedStmt是一种支持命名参数的预处理语句的表示  引用类型都嵌入了他们在database/sql中的等效物，这就意味着当你调用sqlx.DB.Query()，实际是调用与sql.DB.Query相同的代码。
+除此之外，还有两种光标类型：
+Querying 101 (查询概述) 引用类型实现了以下相同的操作来查询数据库
+ Exec(...) (sql.Result, error) - unchanged from database/sql Query(...) (*sql.Rows, error) - unchanged from database/sql QueryRow(...) *sql.Row - unchanged from database/sql  以下这些是内置操作的扩展
+ MustExec() sql.Result &amp;ndash; Exec, but panic on error Queryx(...) (*sqlx.Rows, error) - Query, but return an sqlx.Rows QueryRowx(...) *sqlx.Row &amp;ndash; QueryRow, but return an sqlx.Row  还有这些新的语义：
+ Get(dest interface{}, .</description>
     </item>
     
   </channel>
