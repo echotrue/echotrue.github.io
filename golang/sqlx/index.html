@@ -12,21 +12,21 @@
     <title>Sqlx :: Axlrose&#39;s blog</title>
 
     
-    <link href="/css/nucleus.css?1660740786" rel="stylesheet">
-    <link href="/css/fontawesome-all.min.css?1660740786" rel="stylesheet">
-    <link href="/css/hybrid.css?1660740786" rel="stylesheet">
-    <link href="/css/featherlight.min.css?1660740786" rel="stylesheet">
-    <link href="/css/perfect-scrollbar.min.css?1660740786" rel="stylesheet">
-    <link href="/css/auto-complete.css?1660740786" rel="stylesheet">
-    <link href="/css/atom-one-dark.min.css?1660740786" rel="stylesheet">
-    <link href="/css/theme.css?1660740786" rel="stylesheet">
-    <link href="/css/hugo-theme.css?1660740786" rel="stylesheet">
+    <link href="/css/nucleus.css?1662538889" rel="stylesheet">
+    <link href="/css/fontawesome-all.min.css?1662538889" rel="stylesheet">
+    <link href="/css/hybrid.css?1662538889" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1662538889" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1662538889" rel="stylesheet">
+    <link href="/css/auto-complete.css?1662538889" rel="stylesheet">
+    <link href="/css/atom-one-dark.min.css?1662538889" rel="stylesheet">
+    <link href="/css/theme.css?1662538889" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1662538889" rel="stylesheet">
     
-    <link href="/css/theme-blue.css?1660740786" rel="stylesheet">
+    <link href="/css/theme-blue.css?1662538889" rel="stylesheet">
     
     
 
-    <script src="/js/jquery-3.3.1.min.js?1660740786"></script>
+    <script src="/js/jquery-3.3.1.min.js?1662538889"></script>
 
     <style>
       :root #header + #content > #left > #rlblock_left{
@@ -59,14 +59,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="/js/lunr.min.js?1660740786"></script>
-<script type="text/javascript" src="/js/auto-complete.js?1660740786"></script>
+<script type="text/javascript" src="/js/lunr.min.js?1662538889"></script>
+<script type="text/javascript" src="/js/auto-complete.js?1662538889"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/echotrue.github.io\/";
     
 </script>
-<script type="text/javascript" src="/js/search.js?1660740786"></script>
+<script type="text/javascript" src="/js/search.js?1662538889"></script>
 
     
   </div>
@@ -1777,6 +1777,9 @@
         <li><a href="#transactions-事务">Transactions (事务)</a></li>
         <li><a href="#prepared-statement-预处理语句">Prepared Statement （预处理语句）</a></li>
         <li><a href="#query-helpers">Query Helpers</a></li>
+        <li><a href="#advanced-scanning">Advanced Scanning</a></li>
+        <li><a href="#custom-types">Custom Types</a></li>
+        <li><a href="#the-connection-pool">The Connection Pool</a></li>
       </ul>
     </li>
   </ul>
@@ -1936,6 +1939,152 @@ for rows.Next() {
 If a Stmt is prepared on a Tx or Conn, it will be bound to a single underlying connection forever. If the Tx or Conn closes, the Stmt will become unusable and all operations will return an error. If a Stmt is prepared on a DB, it will remain usable for the lifetime of the DB. When the Stmt needs to execute on a new underlying connection, it will prepare itself on the new connection automatically.</p>
 </blockquote>
 <h3 id="query-helpers">Query Helpers</h3>
+<p><code>database/sql</code>包不对查询语句文本做任何封装操作。这使得在<code>sql</code>代码中使用特定于后端的特性变得琐碎。你可以像在数据库中一样迅速的编写查询语句。虽然这很灵活，但是在编写某些类型的查询语句变得困难。</p>
+<h4 id="in-queries">In Queries</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">levels</span> = []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>}
+<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">In</span>(<span style="color:#e6db74">&#34;SELECT * FROM users WHERE level IN (?);&#34;</span>, <span style="color:#a6e22e">levels</span>)
+ 
+<span style="color:#75715e">// sqlx.In returns queries with the `?` bindvar, we can rebind it for our backend
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">query</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Rebind</span>(<span style="color:#a6e22e">query</span>)
+<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>)
+</code></pre></div><p><code>db.Rebind</code>可以用来获取适用于你的数据库驱动的<code>query</code>格式。例如：MySQL使用<code>?</code>作为占位符，而SQLite则可以使用<code>?</code>和<code>$1</code>作为占位符。具体参考<code>bindvars</code>章节</p>
+<h4 id="named-queries">Named Queries</h4>
+<p>命名查询，通过映射到结构体字段名或者<code>map</code>的<code>key</code>来绑定变量到查询。不必映射所有字段。他包含两个与命名查询相关的查询动作：</p>
+<ul>
+<li>NamedQuery(&hellip;) (*sqlx.Rows, error) - like Queryx, but with named bindvars</li>
+<li>NamedExec(&hellip;) (sql.Result, error) - like Exec, but with named bindvars
+和一个额外引用类型查询动作：</li>
+<li>NamedStmt - an sqlx.Stmt which can be prepared with named bindvars</li>
+</ul>
+<p>使用示例：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// named query with a struct
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Place</span>{<span style="color:#a6e22e">Country</span>: <span style="color:#e6db74">&#34;South Africa&#34;</span>}
+<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">NamedQuery</span>(<span style="color:#e6db74">`SELECT * FROM place WHERE country=:country`</span>, <span style="color:#a6e22e">p</span>)
+ 
+<span style="color:#75715e">// named query with a map
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">m</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;city&#34;</span>: <span style="color:#e6db74">&#34;Johannesburg&#34;</span>}
+<span style="color:#a6e22e">result</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">NamedExec</span>(<span style="color:#e6db74">`SELECT * FROM place WHERE city=:city`</span>, <span style="color:#a6e22e">m</span>)
+</code></pre></div><p>查询所有结果集：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">p</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Place</span>{<span style="color:#a6e22e">TelephoneCode</span>: <span style="color:#ae81ff">50</span>}
+<span style="color:#a6e22e">pp</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">Place</span>{}
+ 
+<span style="color:#75715e">// select all telcodes &gt; 50
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">nstmt</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">PrepareNamed</span>(<span style="color:#e6db74">`SELECT * FROM place WHERE telcode &gt; :telcode`</span>)
+<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">nstmt</span>.<span style="color:#a6e22e">Select</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">pp</span>, <span style="color:#a6e22e">p</span>)
+
+</code></pre></div><p>命名查询通过解析<code>:param</code>语法并将其替换为底层数据库支持的占位符，然后在执行的时候映射查询条件。所以它适用于所有<code>sqlx</code>支持的数据库。你也可以使用<code>sqlx.Named</code>，他使用<code>?</code>占位符，并且可以和<code>sqlx.In</code>组合使用。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">arg</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{
+    <span style="color:#e6db74">&#34;published&#34;</span>: <span style="color:#66d9ef">true</span>,
+    <span style="color:#e6db74">&#34;authors&#34;</span>: []{<span style="color:#ae81ff">8</span>, <span style="color:#ae81ff">19</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">44</span>},
+}
+<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">Named</span>(<span style="color:#e6db74">&#34;SELECT * FROM articles WHERE published=:published AND author_id IN (:authors)&#34;</span>, <span style="color:#a6e22e">arg</span>)
+<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">In</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>)
+<span style="color:#a6e22e">query</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Rebind</span>(<span style="color:#a6e22e">query</span>)
+<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#a6e22e">query</span>, <span style="color:#a6e22e">args</span><span style="color:#f92672">...</span>)
+</code></pre></div><h3 id="advanced-scanning">Advanced Scanning</h3>
+<p><code>StructScan</code>看似复杂。他支持结构体嵌套，并且使用与<code>Go</code>的属性嵌套及方法访问相同的优先级规则分配字段。一个常见的用法是在多个表之间共享表模型的公共部分。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">AutoIncr</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">ID</span>       <span style="color:#66d9ef">uint64</span>
+    <span style="color:#a6e22e">Created</span>  <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+}
+ 
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Place</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Address</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">AutoIncr</span>
+}
+ 
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Person</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">AutoIncr</span>
+}
+</code></pre></div><p>上面的代码中：<code>Person</code>和<code>Place</code>将都可以从<code>StructScan</code>接收<code>id</code>和<code>created</code>列的值，因为他们都嵌套了<code>AutoIncr</code>结构体。这个特性可以让你快速的为链表查询创建临时表。他可以递归的工作。下面的<code>Employee</code>结构体拥有<code>Person</code>的<code>Name</code>字段以及<code>AutoIncr</code>的 <code>ID</code>和<code>Created</code>字段的访问权限。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Employee</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">BossID</span> <span style="color:#66d9ef">uint64</span>
+    <span style="color:#a6e22e">EmployeeID</span> <span style="color:#66d9ef">uint64</span>
+    <span style="color:#a6e22e">Person</span>
+}
+</code></pre></div><p>注意：<code>sqlx</code>历史版本为非嵌入式结构体支持此特性，这使得开发者感到困惑。因为有用户利用此特性定义关系并嵌入相同的结构体两次：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Child</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Father</span> <span style="color:#a6e22e">Person</span>
+    <span style="color:#a6e22e">Mother</span> <span style="color:#a6e22e">Person</span>
+}
+</code></pre></div><p>这会引起一些问题。在Go中隐藏派生字段是合法的.如果上面的<code>Employee</code>定义了<code>Name</code>字段，他的优先级将会高于<code>Person</code>结构体的<code>Name</code>字段。但是模糊的选择器是非法的且会引起运行时错误。如果我们想要为<code>Person</code>和<code>Place</code>快速的创建链表查询，我们应该将<code>id</code>定义到哪里？是他们两个结构体都嵌入的<code>AutoIncr</code>结构体中？这是否会有错误？
+由于<code>sqlx</code>构建字段名到字段地址的映射方式，当你扫描数据到结构体时，它并不知道在遍历结构体树的过程中是否遇到了同一个字段名两次。所以，与Go不同，<code>StructScan</code>将会选择首次遇到的这个字段。由于Go结构体字段是从上到下排序，并且<code>sqlx</code>使用广度优先原则便利以维持优先级原则，因此<code>StructScan</code>使用最浅层（多层嵌套情况下），且最前面的定义的字段。
+例如：在以下结构体中，<code>StructScan</code>会将<code>id</code>列的值赋给<code>Persion.AutoIncr.ID</code>,也可以通过<code>Persion.ID</code>来访问。为了避免混淆，建议在你的SQL种使用<code>AS</code>关键字为列设置别名。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">PersonPlace</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Person</span>
+    <span style="color:#a6e22e">Place</span>
+}
+</code></pre></div><h4 id="scan-destination-safety">Scan Destination Safety</h4>
+<p>通常情况下，如果列的值不能映射到目标数据结构的字段上，<code>StructScan</code>会返回一个错误。这模仿了Go中对未使用变量的处理方式，但是与标准库编码解码包例如：<code>encoding/json</code>不同。因为SQL通常以比解析<code>JSON</code>更可控的方式执行，这些错误通常是编码错误，默认情况下会返回错误。
+像未使用的变量一样，你忽略的列是对网络和数据库资源的浪费，并且，在没有映射器告诉你一些东西未找到的情况下，尽早的检测出不兼容的映射和结构体标签中的错别字是非常困难的。
+尽管如此，在某些情况下需要忽略没有目标结构的列。为此，每一种引用类型都实现了一个<code>Unsafe</code>方法，它返回这个引用的拷贝，这份拷贝关闭了安全功能。
+Unsafe()方法说明：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// Unsafe returns a version of DB which will silently succeed to scan when
+</span><span style="color:#75715e">// columns in the SQL result have no fields in the destination struct.
+</span><span style="color:#75715e">// sqlx.Stmt and sqlx.Tx which are created from this DB will inherit its
+</span><span style="color:#75715e">// safety behavior.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">db</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span>) <span style="color:#a6e22e">Unsafe</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">DB</span> {
+	<span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">DB</span>{<span style="color:#a6e22e">DB</span>: <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">driverName</span>: <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">driverName</span>, <span style="color:#a6e22e">unsafe</span>: <span style="color:#66d9ef">true</span>, <span style="color:#a6e22e">Mapper</span>: <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Mapper</span>}
+}
+</code></pre></div><p>Usage：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">p</span> <span style="color:#a6e22e">Person</span>
+<span style="color:#75715e">// err here is not nil because there are no field destinations for columns in `place`
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">p</span>, <span style="color:#e6db74">&#34;SELECT * FROM person, place LIMIT 1;&#34;</span>)
+
+<span style="color:#75715e">// this will NOT return an error, even though place columns have no destination
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">udb</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Unsafe</span>()
+<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">udb</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">p</span>, <span style="color:#e6db74">&#34;SELECT * FROM person, place LIMIT 1;&#34;</span>)
+</code></pre></div><h4 id="controlling-name-mappint">Controlling Name Mappint</h4>
+<p>用作<code>StructScan</code>目标的结构体字段必须大写才能被<code>sqlx</code>访问。因此，<code>sqlx</code>使用<code>NameMapper</code>将<code>strings.ToLower</code>应用到字段名以映射他们到查询的结果的列。这并不总是可取的，依赖于数据库对象，所以<code>sqlx</code>允许通过多种方式自定义映射。
+最简单的一种方式就是通过<code>sqlx.DB.MapperFunc</code>为引用类型设置映射，改方法接受一个<code>func(string)string</code>类型的参数。如果你的库需要特定的映射器，并且你不想污染<code>sqlx.DB</code>，你可以创建一个<code>DB</code>拷贝用于特定映射场景。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#75715e">// if our db schema uses ALLCAPS columns, we can use normal fields
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">MapperFunc</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToUpper</span>)
+
+<span style="color:#75715e">// suppose a library uses lowercase columns, we can create a copy
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">copy</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">sqlx</span>.<span style="color:#a6e22e">NewDb</span>(<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DB</span>, <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">DriverName</span>())
+<span style="color:#a6e22e">copy</span>.<span style="color:#a6e22e">MapperFunc</span>(<span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToLower</span>)
+
+</code></pre></div><p><code>sqlx.DB</code>使用 <code>sqlx/reflectx</code>包的 <code>Mapper</code> 来实现底层的映射逻辑，并且通过 <code>sqlx.DB.Mapper</code>导出当前活跃的映射器。你可以通过直接设置来自定义数据库上的映射器：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;github.com/jmoiron/sqlx/reflectx&#34;</span>
+
+<span style="color:#75715e">// Create a new mapper which will use the struct field tag &#34;json&#34; instead of &#34;db&#34;
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Mapper</span> = <span style="color:#a6e22e">reflectx</span>.<span style="color:#a6e22e">NewMapperFunc</span>(<span style="color:#e6db74">&#34;json&#34;</span>, <span style="color:#a6e22e">strings</span>.<span style="color:#a6e22e">ToLower</span>)
+</code></pre></div><h4 id="alternate-scan-types">Alternate Scan Types</h4>
+<p>除了使用 <code>StructScan</code> 和 <code>Scan</code> ,<code>sqlx</code>的查询行结果也可以返回切片或 <code>map</code>集合：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Queryx</span>(<span style="color:#e6db74">&#34;SELECT * FROM place&#34;</span>)
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
+    <span style="color:#75715e">// cols is an []interface{} of all of the column results
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">cols</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">SliceScan</span>()
+}
+
+<span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Queryx</span>(<span style="color:#e6db74">&#34;SELECT * FROM place&#34;</span>)
+<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
+    <span style="color:#a6e22e">results</span> <span style="color:#f92672">:=</span> make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{})
+    <span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">MapScan</span>(<span style="color:#a6e22e">results</span>)
+}
+</code></pre></div><p><code>SliceScan</code>一般使用在你不知道会返回哪些字段的情况下。<code>MapScan</code>与之相同，但 <code>MapScan</code>将列映射到 <code>interface{}</code>类型值上。这里需要重点注意的是， <code>rows.Columns()</code>返回的结果不包含完整的名称。例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Go" data-lang="Go"><span style="color:#a6e22e">SELECT</span> <span style="color:#a6e22e">a</span>.<span style="color:#a6e22e">id</span>, <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">id</span> <span style="color:#a6e22e">FROM</span> <span style="color:#a6e22e">a</span> <span style="color:#a6e22e">NATURAL</span> <span style="color:#a6e22e">JOIN</span> <span style="color:#a6e22e">b</span>
+</code></pre></div><p>将会导致一个 <code>[]string{&quot;id&quot;,&quot;id&quot;}</code>格式的列结果，这破坏了你的map中的一个结果。</p>
+<h3 id="custom-types">Custom Types</h3>
+<p>上面的列子都使用了内置类型来扫描或者查询，但是 <code>database/sql</code> 提供了接口允许你使用自定义的类型：</p>
+<ul>
+<li>sql.Scanner allows you to use custom types in a Scan()</li>
+<li>driver.Valuer allows you to use custom types in a Query/QueryRow/Exec
+这些是标准的接口，使用他们可以确保在 <code>database/sql</code> 上提供的服务可以移植到任何库。具体如何使用请参考 <a href="http://jmoiron.net/blog/built-in-interfaces">Built In Interfaces</a> 这篇文章，或者查看 <code>sqlx/types</code> 包，改包实现了一些标准的实用类型。</li>
+</ul>
+<h3 id="the-connection-pool">The Connection Pool</h3>
+<p>准备语句和查询的执行都需要连接，<code>DB</code>对象会管理一个连接池，以保证它可以进行安全的并发查询。有两种方法可以控制连接池的大小：</p>
+<ul>
+<li>DB.SetMaxIdleConns(n int)</li>
+<li>DB.SetMaxOpenConns(n int)
+默认情况下，池子可以无限增长，并且只要池中没有可用连接，就会创建一个连接。你可以使用 <code>DB.SetMaxOpenConns</code>设置最大连接数。未使用的连接会被标记为空闲，如果他们不被需要将会被关闭。为避免建立和关闭大量连接，使用 <code>DB.SetMaxIdleConns</code> 将最大空闲连接数设置为适合你查询负载的大小是一种明智的选择。
+很容易陷入阻塞连接的困境中，为了防止这种情况：</li>
+<li>确保 <code>Scan()</code> 每个row对象</li>
+<li>确保通过 <code>Next()</code>对每个Rows对象进行完整迭代或调用<code>Close()</code></li>
+<li>确保每一个事务都通过 <code>Commit()</code> 或 <code>Rollback()</code> 返回连接
+如果你忘记这些操作，连接将会一直阻塞直到被 <code>GC</code> 回收，并且你的数据库会立刻停止建立更多的连接，以此抵消当前正在使用的这个链接。注意 <code>Rows.Close()</code> 可以被多次安全的调用，所以不用担心在不需要的地方调用它。</li>
+</ul>
 
 
 <footer class="footline">
@@ -2997,12 +3146,12 @@ If a Stmt is prepared on a Tx or Conn, it will be bound to a single underlying c
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="/js/clipboard.min.js?1660740786"></script>
-    <script src="/js/perfect-scrollbar.min.js?1660740786"></script>
-    <script src="/js/perfect-scrollbar.jquery.min.js?1660740786"></script>
-    <script src="/js/jquery.sticky.js?1660740786"></script>
-    <script src="/js/featherlight.min.js?1660740786"></script>
-    <script src="/js/highlight.pack.js?1660740786"></script>
+    <script src="/js/clipboard.min.js?1662538889"></script>
+    <script src="/js/perfect-scrollbar.min.js?1662538889"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1662538889"></script>
+    <script src="/js/jquery.sticky.js?1662538889"></script>
+    <script src="/js/featherlight.min.js?1662538889"></script>
+    <script src="/js/highlight.pack.js?1662538889"></script>
     <script>
         hljs.configure({
             
@@ -3013,12 +3162,12 @@ If a Stmt is prepared on a Tx or Conn, it will be bound to a single underlying c
         
         hljs.initHighlightingOnLoad();
     </script>
-    <script src="/js/modernizr.custom-3.6.0.js?1660740786"></script>
-    <script src="/js/learn.js?1660740786"></script>
-    <script src="/js/hugo-learn.js?1660740786"></script>
+    <script src="/js/modernizr.custom-3.6.0.js?1662538889"></script>
+    <script src="/js/learn.js?1662538889"></script>
+    <script src="/js/hugo-learn.js?1662538889"></script>
 
-    <link href="/mermaid/mermaid.css?1660740786" rel="stylesheet" />
-    <script src="/mermaid/mermaid.js?1660740786"></script>
+    <link href="/mermaid/mermaid.css?1662538889" rel="stylesheet" />
+    <script src="/mermaid/mermaid.js?1662538889"></script>
     <script>
         mermaid.initialize({ startOnLoad: true });
     </script>
