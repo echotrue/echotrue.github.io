@@ -7,17 +7,17 @@
 <meta name=author content="axlrose">
 <link rel=icon href=/images/favicon.png type=image/png>
 <title>Children (Pages filles) :: Documentation du thème Hugo Learn</title>
-<link href=/css/nucleus.css?1698400042 rel=stylesheet>
-<link href=/css/fontawesome-all.min.css?1698400042 rel=stylesheet>
-<link href=/css/hybrid.css?1698400042 rel=stylesheet>
-<link href=/css/featherlight.min.css?1698400042 rel=stylesheet>
-<link href=/css/perfect-scrollbar.min.css?1698400042 rel=stylesheet>
-<link href=/css/auto-complete.css?1698400042 rel=stylesheet>
-<link href=/css/atom-one-dark.min.css?1698400042 rel=stylesheet>
-<link href=/css/theme.css?1698400042 rel=stylesheet>
-<link href=/css/hugo-theme.css?1698400042 rel=stylesheet>
-<link href=/css/theme-blue.css?1698400042 rel=stylesheet>
-<script src=/js/jquery-3.3.1.min.js?1698400042></script>
+<link href=/css/nucleus.css?1698402357 rel=stylesheet>
+<link href=/css/fontawesome-all.min.css?1698402357 rel=stylesheet>
+<link href=/css/hybrid.css?1698402357 rel=stylesheet>
+<link href=/css/featherlight.min.css?1698402357 rel=stylesheet>
+<link href=/css/perfect-scrollbar.min.css?1698402357 rel=stylesheet>
+<link href=/css/auto-complete.css?1698402357 rel=stylesheet>
+<link href=/css/atom-one-dark.min.css?1698402357 rel=stylesheet>
+<link href=/css/theme.css?1698402357 rel=stylesheet>
+<link href=/css/hugo-theme.css?1698402357 rel=stylesheet>
+<link href=/css/theme-blue.css?1698402357 rel=stylesheet>
+<script src=/js/jquery-3.3.1.min.js?1698402357></script>
 <style>:root #header+#content>#left>#rlblock_left{display:none!important}:not(pre)>code+span.copy-to-clipboard{display:none}</style>
 </head>
 <body data-url=/fr/shortcodes/children/>
@@ -33,11 +33,18 @@
 <input data-search-input id=search-by type=search placeholder=Rechercher...>
 <span data-search-clear><i class="fas fa-times"></i></span>
 </div>
-<script type=text/javascript src=/js/lunr.min.js?1698400042></script>
-<script type=text/javascript src=/js/auto-complete.js?1698400042></script>
+<script type=text/javascript src=/js/lunr.min.js?1698402357></script>
+<script type=text/javascript src=/js/auto-complete.js?1698402357></script>
 <script type=text/javascript>var baseurl="http://echotrue.github.io//fr"</script>
-<script type=text/javascript src=/js/search.js?1698400042></script>
+<script type=text/javascript src=/js/search.js?1698402357></script>
 </div>
+<section id=homelinks>
+<ul>
+<li>
+<a class=padding href=/><i class="fas fa-home"></i> Home</a>
+</li>
+</ul>
+</section>
 <div class=highlightable>
 <ul class=topics>
 <li data-nav-id=/fr/basics/ title=Démarrage class=dd-item>
@@ -364,6 +371,129 @@ Children (Pages filles)
 </ul>
 <pre><code>{{% children description=&quot;true&quot;   %}}
 </code></pre>
+<ul class="children children-li">
+<li>
+<a href=/fr/shortcodes/children/children-1/>page 1</a>
+</li>
+<p>Ceci est une page test</p>
+<li>
+<a href=/fr/shortcodes/children/children-2/>page 2</a>
+</li>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<li>
+<a href=/fr/shortcodes/children/children-3/>page 3</a>
+</li>
+<p>Ceci est une page test</p>
+<li>
+<a href=/fr/shortcodes/children/test/>page test</a>
+</li>
+<p>Ceci est une page test</p>
+</ul>
+<pre><code>{{% children depth=&quot;3&quot; showhidden=&quot;true&quot; %}}
+</code></pre>
+<ul class="children children-li">
+<li>
+<a href=/fr/shortcodes/children/children-1/>page 1</a>
+</li>
+<ul>
+<li>
+<a href=/fr/shortcodes/children/children-1/children-1-1/>page 1-1</a>
+</li>
+<ul>
+<li>
+<a href=/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/>page 1-1-1</a>
+</li>
+</ul>
+</ul>
+<li>
+<a href=/fr/shortcodes/children/children-2/>page 2</a>
+</li>
+<ul>
+<li>
+<a href=/fr/shortcodes/children/children-2/test3/>page test 3</a>
+</li>
+<ul>
+</ul>
+</ul>
+<li>
+<a href=/fr/shortcodes/children/children-3/>page 3</a>
+</li>
+<ul>
+</ul>
+<li>
+<a href=/fr/shortcodes/children/children-4/>page 4</a>
+</li>
+<ul>
+</ul>
+<li>
+<a href=/fr/shortcodes/children/test/>page test</a>
+</li>
+<ul>
+</ul>
+</ul>
+<pre><code>{{% children style=&quot;h2&quot; depth=&quot;3&quot; description=&quot;true&quot; %}}
+</code></pre>
+<ul class="children children-h2">
+<h2>
+<a href=/fr/shortcodes/children/children-1/>page 1</a>
+</h2>
+<p>Ceci est une page test</p>
+<h3>
+<a href=/fr/shortcodes/children/children-1/children-1-1/>page 1-1</a>
+</h3>
+<p>Ceci est une page test</p>
+<h4>
+<a href=/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/>page 1-1-1</a>
+</h4>
+<p>Ceci est une page test</p>
+<h2>
+<a href=/fr/shortcodes/children/children-2/>page 2</a>
+</h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<h3>
+<a href=/fr/shortcodes/children/children-2/test3/>page test 3</a>
+</h3>
+<p>Ceci est une page test</p>
+<h2>
+<a href=/fr/shortcodes/children/children-3/>page 3</a>
+</h2>
+<p>Ceci est une page test</p>
+<h2>
+<a href=/fr/shortcodes/children/test/>page test</a>
+</h2>
+<p>Ceci est une page test</p>
+</ul>
+<pre><code>{{% children style=&quot;div&quot; depth=&quot;999&quot; %}}
+</code></pre>
+<ul class="children children-div">
+<div>
+<a href=/fr/shortcodes/children/children-1/>page 1</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-1/children-1-1/>page 1-1</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/>page 1-1-1</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/>page 1-1-1-1</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/>page 1-1-1-1-1</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-2/>page 2</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-2/test3/>page test 3</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/children-3/>page 3</a>
+</div>
+<div>
+<a href=/fr/shortcodes/children/test/>page test</a>
+</div>
+</ul>
 <footer class=footline>
 </footer>
 </div>
@@ -376,18 +506,17 @@ Children (Pages filles)
 <div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
 <div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
 </div>
-<script src=/js/clipboard.min.js?1698400042></script>
-<script src=/js/perfect-scrollbar.min.js?1698400042></script>
-<script src=/js/perfect-scrollbar.jquery.min.js?1698400042></script>
-<script src=/js/jquery.sticky.js?1698400042></script>
-<script src=/js/featherlight.min.js?1698400042></script>
-<script src=/js/highlight.pack.js?1698400042></script>
+<script src=/js/clipboard.min.js?1698402357></script>
+<script src=/js/perfect-scrollbar.min.js?1698402357></script>
+<script src=/js/perfect-scrollbar.jquery.min.js?1698402357></script>
+<script src=/js/jquery.sticky.js?1698402357></script>
+<script src=/js/featherlight.min.js?1698402357></script>
+<script src=/js/highlight.pack.js?1698402357></script>
 <script>hljs.initHighlightingOnLoad()</script>
-<script src=/js/modernizr.custom-3.6.0.js?1698400042></script>
-<script src=/js/learn.js?1698400042></script>
-<script src=/js/hugo-learn.js?1698400042></script>
-<link href=/mermaid/mermaid.css?1698400042 rel=stylesheet>
-<script src=/mermaid/mermaid.js?1698400042></script>
+<script src=/js/modernizr.custom-3.6.0.js?1698402357></script>
+<script src=/js/learn.js?1698402357></script>
+<script src=/js/hugo-learn.js?1698402357></script>
+<script src=/mermaid/mermaid.js?1698402357></script>
 <script>mermaid.initialize({startOnLoad:!0})</script>
 <script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-105947713-1','auto'),ga('send','pageview')</script>
 </body>
