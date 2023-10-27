@@ -1,203 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Axlrose on Axlrose&#39;s blog</title>
-    <link>http://echotrue.github.io/</link>
-    <description>Recent content in Axlrose on Axlrose&#39;s blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-US</language>
-    <copyright>Axlrose</copyright>
-    <lastBuildDate>Mon, 08 Aug 2022 16:45:41 +0800</lastBuildDate><atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Nano Start</title>
-      <link>http://echotrue.github.io/game/nano/nano-start/</link>
-      <pubDate>Tue, 31 Aug 2021 16:54:27 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/nano/nano-start/</guid>
-      <description>基础概念 一个nano应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：node,cluster,component,service,handler等等。这里简单介绍各个单元的概念，并概述他们之间的关系。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Axlrose on Axlrose's blog</title><link>http://echotrue.github.io/</link><description>Recent content in Axlrose on Axlrose's blog</description><generator>Hugo -- gohugo.io</generator><language>en-US</language><copyright>Axlrose</copyright><lastBuildDate>Wed, 07 Dec 2022 20:14:25 +0800</lastBuildDate><atom:link href="http://echotrue.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Nano Start</title><link>http://echotrue.github.io/game/nano/nano-start/</link><pubDate>Tue, 31 Aug 2021 16:54:27 +0800</pubDate><guid>http://echotrue.github.io/game/nano/nano-start/</guid><description>基础概念 一个nano应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：node,cluster,component,service,handler等等。这里简单介绍各个单元的概念，并概述他们之间的关系。
 Cluster cluster表示一个nano的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到gate网关，然后被发送到响应的节点
-type cluster struct { // If cluster is not large enough, use slice is OK 	currentNode *Node //当前节点对象 	rpcClient *rpcClient // rpc客户端用于和其他节点通信  mu sync.RWMutex members []*Member //所有的节点成员，member包含了节点地址，节点下的服务，是否是主节点 } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
-type Node struct { Options // 节点配置项  ServiceAddr string // 当前节点的服务地址，主要用于RPC通信  cluster *cluster //集群对象  handler *LocalHandler //节点本地处理程序  server *grpc.Server //grpc 服务器  rpcClient *rpcClient //rpc 客户端用于和其他节点通信  mu sync.RWMutex sessions map[int64]*session.</description>
-    </item>
-    
-    <item>
-      <title>Context</title>
-      <link>http://echotrue.github.io/golang/context/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/context/</guid>
-      <description>引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一个实际的例子是：
- 在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序可能还需要创建额外的goroutine去访问其他资源，比如：数据库， RPC服务等。由于这些goroutine都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token ，请求截止时间等。当请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们来取消掉所有 的goroutine
- Context定义 context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据， 之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构， 根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。
+type cluster struct { // If cluster is not large enough, use slice is OK currentNode *Node //当前节点对象 rpcClient *rpcClient // rpc客户端用于和其他节点通信 mu sync.RWMutex members []*Member //所有的节点成员，member包含了节点地址，节点下的服务，是否是主节点 } Node是nano集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。
+type Node struct { Options // 节点配置项 ServiceAddr string // 当前节点的服务地址，主要用于RPC通信 cluster *cluster //集群对象 handler *LocalHandler //节点本地处理程序 server *grpc.Server //grpc 服务器 rpcClient *rpcClient //rpc 客户端用于和其他节点通信 mu sync.RWMutex sessions map[int64]*session.</description></item><item><title>Context</title><link>http://echotrue.github.io/golang/context/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/context/</guid><description>引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一个实际的例子是：
+在Go服务器程序中，每个请求都会有一个goroutine去处理。然而，处理程序可能还需要创建额外的goroutine去访问其他资源，比如：数据库， RPC服务等。由于这些goroutine都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token ，请求截止时间等。当请求超时或者被取消后，所有的goroutine都应该马上退出并且释放相关的资源。这种情况也需要用Context来为我们来取消掉所有 的goroutine
+Context定义 context的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据， 之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构， 根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。
 context包的核心是interface Context ,声明如下：
 type Context interface { Deadline() (deadline time.Time, ok bool) Done() &amp;lt;-chan struct{} Err() error Value(key interface{}) interface{} } Context定义很简单，一共四个方法：
- Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求； 第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。 Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取， 则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。 Err方法返回取消的错误原因，因为什么Context被取消。 Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。  Context的实现方法 Context 虽然是个接口，但是并不需要使用方实现，golang内置的context 包，已经帮我们实现了2个方法，一般在代码中， 开始上下文的时候都是以这两个作为最顶层的parent context，然后再衍生出子context。这些 Context 对象形成一棵树： 当一个 Context 对象被取消时，继承自它的所有 Context 都会被取消。两个实现如下：
-var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Context { return background } func TODO() Context { return todo }  一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。 一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。 他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。  type emptyCtx int func (*emptyCtx) Deadline() (deadline time.</description>
-    </item>
-    
-    <item>
-      <title>One Nano Request</title>
-      <link>http://echotrue.github.io/game/nano/one-nano-request/</link>
-      <pubDate>Tue, 31 Aug 2021 16:57:22 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/nano/one-nano-request/</guid>
-      <description>Websocket request 一般由网关节点向外部暴露n.ClientAddr地址并监听，接收客户端发送的请求。以websocket请求为例。listenAndServeWS方法负责监听n.ClientAddr并接收ws请求。接收到请求后交给节点下的LocalHandler的handleWs()方法，handleWs()会对连接对象封装成wsConn类型，结构如下：
-type wsConn struct { conn *websocket.Conn typ int // message type 	reader io.Reader } 然后开辟一个新的goroutine（LocalHandler.handle()方法）从连接中持续读取数据。
+Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求； 第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。 Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取， 则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。 Err方法返回取消的错误原因，因为什么Context被取消。 Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。 Context的实现方法 Context 虽然是个接口，但是并不需要使用方实现，golang内置的context 包，已经帮我们实现了2个方法，一般在代码中， 开始上下文的时候都是以这两个作为最顶层的parent context，然后再衍生出子context。这些 Context 对象形成一棵树： 当一个 Context 对象被取消时，继承自它的所有 Context 都会被取消。两个实现如下：
+var ( background = new(emptyCtx) todo = new(emptyCtx) ) func Background() Context { return background } func TODO() Context { return todo } 一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。 一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。 他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。 type emptyCtx int func (*emptyCtx) Deadline() (deadline time.</description></item><item><title>One Nano Request</title><link>http://echotrue.github.io/game/nano/one-nano-request/</link><pubDate>Tue, 31 Aug 2021 16:57:22 +0800</pubDate><guid>http://echotrue.github.io/game/nano/one-nano-request/</guid><description>Websocket request 一般由网关节点向外部暴露n.ClientAddr地址并监听，接收客户端发送的请求。以websocket请求为例。listenAndServeWS方法负责监听n.ClientAddr并接收ws请求。接收到请求后交给节点下的LocalHandler的handleWs()方法，handleWs()会对连接对象封装成wsConn类型，结构如下：
+type wsConn struct { conn *websocket.Conn typ int // message type reader io.Reader } 然后开辟一个新的goroutine（LocalHandler.handle()方法）从连接中持续读取数据。
 LocalHandler.handle() 实例化一个Agent对象，相当于User Agent。它对应一个用户代理，用来存储原始连接信息。
-agent struct { // regular agent member 	session *session.Session // session会话 	conn net.Conn // low-level conn fd 	lastMid uint64 // last message id 	state int32 // current agent state 	chDie chan struct{} // wait for close 	chSend chan pendingMessage // push message queue 	lastAt int64 // last heartbeat unix time stamp 	decoder *codec.</description>
-    </item>
-    
-    <item>
-      <title>Nano</title>
-      <link>http://echotrue.github.io/game/nano/nano/</link>
-      <pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/nano/nano/</guid>
-      <description>Scheduler todo 启动节点后，开启一个goroutine执行go scheduler.Sched().
-Pipeline todo </description>
-    </item>
-    
-    <item>
-      <title>Array And Slice</title>
-      <link>http://echotrue.github.io/golang/array-slice/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/array-slice/</guid>
-      <description>数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。
+agent struct { // regular agent member session *session.Session // session会话 conn net.Conn // low-level conn fd lastMid uint64 // last message id state int32 // current agent state chDie chan struct{} // wait for close chSend chan pendingMessage // push message queue lastAt int64 // last heartbeat unix time stamp decoder *codec.</description></item><item><title>Nano</title><link>http://echotrue.github.io/game/nano/nano/</link><pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate><guid>http://echotrue.github.io/game/nano/nano/</guid><description>Scheduler todo 启动节点后，开启一个goroutine执行go scheduler.Sched().
+Pipeline todo</description></item><item><title>Array And Slice</title><link>http://echotrue.github.io/golang/array-slice/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/array-slice/</guid><description>数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。
 var arr [4]int // 声明 fmt.Println(arr[1]) // 不需要显式的初始化 arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 数组的字面值 arr2 := [...]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} // 编译器统计数组字面值中的元素数量 fmt.Println(arr1, len(arr1), cap(arr1)) fmt.Println(arr2, len(arr2), cap(arr2)) Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）
 func update(arr *[2]string) { arr[1] = &amp;quot;axlrose&amp;quot; } func main() { arr1 := [2]string{&amp;quot;Penn&amp;quot;, &amp;quot;Teller&amp;quot;} update(&amp;amp;arr1) fmt.Println(arr1) } 切片的创建和初始化 Golang中切片有三种初始化方式：
- 通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片：  arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片  slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片  var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0  需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</description>
-    </item>
-    
-    <item>
-      <title>Nano Binary Protocol</title>
-      <link>http://echotrue.github.io/game/nano/nano-binary-protocol/</link>
-      <pubDate>Thu, 26 Aug 2021 10:40:25 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/nano/nano-binary-protocol/</guid>
-      <description>message.Encode func Encode(m *Message) ([]byte, error) { if invalidType(m.Type) { return nil, ErrWrongMessageType } buf := make([]byte, 0) // m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6 	flag := byte(m.Type) &amp;lt;&amp;lt; 1 // 如果路由压缩 flag|1 为1,3,5,7 	code, compressed := routes[m.Route] if compressed { flag |= msgRouteCompressMask } buf = append(buf, flag) if m.Type == Request || m.Type == Response { n := m.ID // variant length encode 	for { //b是n/128余数，然后n按位右移7,相当于n、128。 	//如果n为0，将b添加到buf， 	//如果n不为0，b+128 添加到buf，并继续执行相同的逻辑 	b := byte(n % 128) n &amp;gt;&amp;gt;= 7 if n !</description>
-    </item>
-    
-    <item>
-      <title>Book</title>
-      <link>http://echotrue.github.io/book/</link>
-      <pubDate>Mon, 18 Apr 2022 16:31:08 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/book/</guid>
-      <description>Book ListGo Test 从入门到躺平.pdf(1707 ko)Golang101-v1.14.e.pdf-ForPrinting.pdf(2811 ko)Programming in Lua 4th Edition.pdf(1203 ko)Reading 16GB File in Seconds, Golang.pdf(53 ko)Turn-Based Game With Go.pdf(3275 ko)go-data-structures.pdf(2102 ko)go-files-cheat-sheet.pdf(52 ko)golang-naming-conventions-cheat-sheet.pdf(78 ko)turn-based-game-with-go.pdf(8010 ko)</description>
-    </item>
-    
-    <item>
-      <title>Archetypes</title>
-      <link>http://echotrue.github.io/cont/archetypes/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/cont/archetypes/</guid>
-      <description>Using the command: hugo new [relative new content path], you can start a content file with the date and title automatically set. While this is a welcome feature, active writers need more : archetypes.
+通过下标的方式获得数组或者切片的一部分； 使用字面量初始化新的切片； 使用关键字 make 创建切片： arr[0:3] or slice[0:3] slice := []int{1, 2, 3, 4} // 通过字面量创建并初始化长度，容量都为4的切片 slice := []int{99: 0} // 通过字面量创建并初始化长度和容量都是100的切片 slice := make([]int, 3, 4) // make() 创建并初始化长度为3，容量为4的切片 var slice []int // 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0 需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。</description></item><item><title>Nano Binary Protocol</title><link>http://echotrue.github.io/game/nano/nano-binary-protocol/</link><pubDate>Thu, 26 Aug 2021 10:40:25 +0800</pubDate><guid>http://echotrue.github.io/game/nano/nano-binary-protocol/</guid><description>message.Encode func Encode(m *Message) ([]byte, error) { if invalidType(m.Type) { return nil, ErrWrongMessageType } buf := make([]byte, 0) // m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6 flag := byte(m.Type) &amp;lt;&amp;lt; 1 // 如果路由压缩 flag|1 为1,3,5,7 code, compressed := routes[m.Route] if compressed { flag |= msgRouteCompressMask } buf = append(buf, flag) if m.Type == Request || m.Type == Response { n := m.ID // variant length encode for { //b是n/128余数，然后n按位右移7,相当于n、128。 //如果n为0，将b添加到buf， //如果n不为0，b+128 添加到buf，并继续执行相同的逻辑 b := byte(n % 128) n &amp;gt;&amp;gt;= 7 if n !</description></item><item><title>Book</title><link>http://echotrue.github.io/book/</link><pubDate>Mon, 18 Apr 2022 16:31:08 +0800</pubDate><guid>http://echotrue.github.io/book/</guid><description> Book List Go Test 从入门到躺平.pdf (1707 ko) Golang101-v1.14.e.pdf-ForPrinting.pdf (2811 ko) Programming in Lua 4th Edition.pdf (1203 ko) Reading 16GB File in Seconds, Golang.pdf (53 ko) Turn-Based Game With Go.pdf (3275 ko) go-data-structures.pdf (2102 ko) go-files-cheat-sheet.pdf (52 ko) golang-naming-conventions-cheat-sheet.pdf (78 ko) turn-based-game-with-go.pdf (8010 ko)</description></item><item><title>Archetypes</title><link>http://echotrue.github.io/cont/archetypes/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/cont/archetypes/</guid><description>Using the command: hugo new [relative new content path], you can start a content file with the date and title automatically set. While this is a welcome feature, active writers need more : archetypes.
 It is pre-configured skeleton pages with default front matter. Please refer to the documentation for types of page to understand the differences.
 Chapter To create a Chapter page, run the following commands
-hugo new --kind chapter &amp;lt;name&amp;gt;/_index.</description>
-    </item>
-    
-    <item>
-      <title>Markdown syntax</title>
-      <link>http://echotrue.github.io/cont/markdown/</link>
-      <pubDate>Sat, 09 Apr 2016 16:50:16 +0200</pubDate>
-      
-      <guid>http://echotrue.github.io/cont/markdown/</guid>
-      <description>This page is a shameful copy of the great Grav original page. Only difference is information about image customization (resizing, add CSS classes&amp;hellip;)
-Let&amp;rsquo;s face it: Writing content for the Web is tiresome. WYSIWYG editors help alleviate this task, but they generally result in horrible code, or worse yet, ugly web pages.
-Markdown is a better way to write HTML, without all the complexities and ugliness that usually accompanies it.</description>
-    </item>
-    
-    <item>
-      <title>Code highlighting</title>
-      <link>http://echotrue.github.io/cont/syntaxhighlight/</link>
-      <pubDate>Mon, 01 Jun 2020 13:31:12 +0100</pubDate>
-      
-      <guid>http://echotrue.github.io/cont/syntaxhighlight/</guid>
-      <description>Learn theme uses highlight.js to provide code syntax highlighting.
+hugo new --kind chapter &amp;lt;name&amp;gt;/_index.</description></item><item><title>Markdown syntax</title><link>http://echotrue.github.io/cont/markdown/</link><pubDate>Sat, 09 Apr 2016 16:50:16 +0200</pubDate><guid>http://echotrue.github.io/cont/markdown/</guid><description>This page is a shameful copy of the great Grav original page. Only difference is information about image customization (resizing, add CSS classes&amp;hellip;)
+Let&amp;rsquo;s face it: Writing content for the Web is tiresome. WYSIWYG editors help alleviate this task, but they generally result in horrible code, or worse yet, ugly web pages.
+Markdown is a better way to write HTML, without all the complexities and ugliness that usually accompanies it.</description></item><item><title>Code highlighting</title><link>http://echotrue.github.io/cont/syntaxhighlight/</link><pubDate>Mon, 01 Jun 2020 13:31:12 +0100</pubDate><guid>http://echotrue.github.io/cont/syntaxhighlight/</guid><description>Learn theme uses highlight.js to provide code syntax highlighting.
 Markdown syntax Wrap the code block with three backticks and the name of the language. Highlight will try to auto detect the language if one is not provided.
 ```json [ { &amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;, &amp;#34;count&amp;#34;: [12000, 20000], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;sensitive&amp;#34;: false} }, { &amp;#34;title&amp;#34;: &amp;#34;oranges&amp;#34;, &amp;#34;count&amp;#34;: [17500, null], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;...&amp;#34;, &amp;#34;sensitive&amp;#34;: false} } ] ``` Renders to:
-[ { &amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;, &amp;#34;count&amp;#34;: [12000, 20000], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;.</description>
-    </item>
-    
-    <item>
-      <title>Menu extra shortcuts</title>
-      <link>http://echotrue.github.io/cont/menushortcuts/</link>
-      <pubDate>Sat, 09 Apr 2016 16:50:16 +0200</pubDate>
-      
-      <guid>http://echotrue.github.io/cont/menushortcuts/</guid>
-      <description>You can define additional menu entries or shortcuts in the navigation menu without any link to content.
+[ { &amp;#34;title&amp;#34;: &amp;#34;apples&amp;#34;, &amp;#34;count&amp;#34;: [12000, 20000], &amp;#34;description&amp;#34;: {&amp;#34;text&amp;#34;: &amp;#34;.</description></item><item><title>Menu extra shortcuts</title><link>http://echotrue.github.io/cont/menushortcuts/</link><pubDate>Sat, 09 Apr 2016 16:50:16 +0200</pubDate><guid>http://echotrue.github.io/cont/menushortcuts/</guid><description>You can define additional menu entries or shortcuts in the navigation menu without any link to content.
 Basic configuration Edit the website configuration config.toml and add a [[menu.shortcuts]] entry for each link your want to add.
 Example from the current website:
-[[menu.shortcuts]] name = &amp;quot;&amp;lt;i class=&#39;fab fa-github&#39;&amp;gt;&amp;lt;/i&amp;gt; Github repo&amp;quot;identifier = &amp;quot;ds&amp;quot;url = &amp;quot;https://github.com/matcornic/hugo-theme-learn&amp;quot;weight = 10[[menu.shortcuts]]name = &amp;quot;&amp;lt;i class=&#39;fas fa-camera&#39;&amp;gt;&amp;lt;/i&amp;gt; Showcases&amp;quot;url = &amp;quot;/showcase&amp;quot;weight = 11[[menu.</description>
-    </item>
-    
-    <item>
-      <title>Icons and logos</title>
-      <link>http://echotrue.github.io/cont/icons/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/cont/icons/</guid>
-      <description>The Learn theme for Hugo loads the Font Awesome library, allowing you to easily display any icon or logo available in the Font Awesome free collection.
+[[menu.shortcuts]] name = &amp;quot;&amp;lt;i class='fab fa-github'&amp;gt;&amp;lt;/i&amp;gt; Github repo&amp;quot; identifier = &amp;quot;ds&amp;quot; url = &amp;quot;https://github.com/matcornic/hugo-theme-learn&amp;quot; weight = 10 [[menu.shortcuts]] name = &amp;quot;&amp;lt;i class='fas fa-camera'&amp;gt;&amp;lt;/i&amp;gt; Showcases&amp;quot; url = &amp;quot;/showcase&amp;quot; weight = 11 [[menu.</description></item><item><title>Icons and logos</title><link>http://echotrue.github.io/cont/icons/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/cont/icons/</guid><description>The Learn theme for Hugo loads the Font Awesome library, allowing you to easily display any icon or logo available in the Font Awesome free collection.
 Finding an icon Browse through the available icons in the Font Awesome Gallery. Notice that the free filter is enabled, as only the free icons are available by default.
-Once on the Font Awesome page for a specific icon, for example the page for the heart, copy the HTML reference and paste into the markdown content.</description>
-    </item>
-    
-    <item>
-      <title>Tags</title>
-      <link>http://echotrue.github.io/cont/tags/</link>
-      <pubDate>Thu, 29 Nov 2018 08:41:44 +0100</pubDate>
-      
-      <guid>http://echotrue.github.io/cont/tags/</guid>
-      <description>Learn theme support one default taxonomy of gohugo: the tag feature.
+Once on the Font Awesome page for a specific icon, for example the page for the heart, copy the HTML reference and paste into the markdown content.</description></item><item><title>Tags</title><link>http://echotrue.github.io/cont/tags/</link><pubDate>Thu, 29 Nov 2018 08:41:44 +0100</pubDate><guid>http://echotrue.github.io/cont/tags/</guid><description>Learn theme support one default taxonomy of gohugo: the tag feature.
 Configuration Just add tags to any page:
 --- date: 2018-11-29T08:41:44+01:00 title: Theme tutorial weight: 15 tags: [&amp;#34;tutorial&amp;#34;, &amp;#34;theme&amp;#34;] --- Behavior The tags are displayed at the top of the page, in their insertion order.
 Each tag is a link to a Taxonomy page displaying all the articles with the given tag.
-List all the tags In the config.toml file you can add a shortcut to display all the tags</description>
-    </item>
-    
-    <item>
-      <title>Uint Int</title>
-      <link>http://echotrue.github.io/golang/uint-int/</link>
-      <pubDate>Tue, 19 Jul 2022 10:33:39 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/uint-int/</guid>
-      <description>“一般来说，如果你使用整数，你应该只使用 int 类型。”
+List all the tags In the config.toml file you can add a shortcut to display all the tags</description></item><item><title>Uint Int</title><link>http://echotrue.github.io/golang/uint-int/</link><pubDate>Tue, 19 Jul 2022 10:33:39 +0800</pubDate><guid>http://echotrue.github.io/golang/uint-int/</guid><description>“一般来说，如果你使用整数，你应该只使用 int 类型。”
 “uint 通常只用于进行二元运算”
 “不要使用无符号类型来强制或建议数字必须是正数。这不是它们的用途。”
-“这是 Go 编程语言所推荐的，当你想要进行按位运算时，uint 的具体示例很有用”</description>
-    </item>
-    
-    <item>
-      <title>Tcp</title>
-      <link>http://echotrue.github.io/black-hat-go/tcp/</link>
-      <pubDate>Wed, 17 Nov 2021 11:45:22 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/black-hat-go/tcp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Functional Programming in Golang</title>
-      <link>http://echotrue.github.io/golang/functional-programming-in-golang/</link>
-      <pubDate>Tue, 16 Nov 2021 16:22:06 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/functional-programming-in-golang/</guid>
-      <description>Higher-order function Higher-order function又称为高阶函数.高阶函数至少支持以下特性之一:
- 将一个或多个函数作为参数（即过程参数） 返回函数作为其结果  以下为一个使用高阶函数的限流器Demo:
+“这是 Go 编程语言所推荐的，当你想要进行按位运算时，uint 的具体示例很有用”</description></item><item><title>Tcp</title><link>http://echotrue.github.io/black-hat-go/tcp/</link><pubDate>Wed, 17 Nov 2021 11:45:22 +0800</pubDate><guid>http://echotrue.github.io/black-hat-go/tcp/</guid><description/></item><item><title>Functional Programming in Golang</title><link>http://echotrue.github.io/golang/functional-programming-in-golang/</link><pubDate>Tue, 16 Nov 2021 16:22:06 +0800</pubDate><guid>http://echotrue.github.io/golang/functional-programming-in-golang/</guid><description>Higher-order function Higher-order function又称为高阶函数.高阶函数至少支持以下特性之一:
+将一个或多个函数作为参数（即过程参数） 返回函数作为其结果 以下为一个使用高阶函数的限流器Demo:
 type Limiter interface { Limit(key string) bool } type ServerInterceptor func(ctx context.Context) (interface{}, error) func Interceptor(limiter Limiter) ServerInterceptor { return func(ctx context.Context) (interface{}, error) { if limiter.Limit(&amp;#34;k&amp;#34;) { return nil, errors.New(&amp;#34;请求过于频繁&amp;#34;) } return &amp;#34;ok&amp;#34;, nil } } Functional Options Pattern Functional Options Pattern又称函数式选项模式.由于Golang中不支持参数默认值,所以针对一些函数的可选参数没有合适的处理方式.我们可以通过这种方式来构造结构体对象.
-type Person struct { Name string Age uint8 Gender uint8 } type Option func(*Person) func SetName(n string) Option { return func(o *Person) { o.</description>
-    </item>
-    
-    <item>
-      <title>Combat System</title>
-      <link>http://echotrue.github.io/game/combat-system/</link>
-      <pubDate>Wed, 08 Sep 2021 14:24:16 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/combat-system/</guid>
-      <description>加载英雄,怪物,宠物等等到状态机的soldiers属性
+type Person struct { Name string Age uint8 Gender uint8 } type Option func(*Person) func SetName(n string) Option { return func(o *Person) { o.</description></item><item><title>Combat System</title><link>http://echotrue.github.io/game/combat-system/</link><pubDate>Wed, 08 Sep 2021 14:24:16 +0800</pubDate><guid>http://echotrue.github.io/game/combat-system/</guid><description>加载英雄,怪物,宠物等等到状态机的soldiers属性
 $this-&amp;gt;loader-&amp;gt;load(); 逐个初始化soldiers.挂载主动,被动技能效果并添加监听事件到observers属性. 保留原始属性
 触发EVENT_CREATED事件.事件id为1的技能效果将会被加载.该类型的技能效果是永久加成效果.observers的数据格式为:
 {&amp;#34;3&amp;#34;:[53102,53103,312],&amp;#34;9&amp;#34;:[53104],&amp;#34;4&amp;#34;:[53105],&amp;#34;5&amp;#34;:[53106]} 计算英雄被动属性差值diff_addition
@@ -207,265 +47,56 @@ $this-&amp;gt;loader-&amp;gt;load(); 逐个初始化soldiers.挂载主动,被动
 检查并削弱基础属性
 处理残血模式下血量
 处理蓝量
-保存属性值到英雄基础属性对象base</description>
-    </item>
-    
-    <item>
-      <title>Game Vocabulary List</title>
-      <link>http://echotrue.github.io/game/game-vocabulary-list/</link>
-      <pubDate>Tue, 07 Sep 2021 13:46:23 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/game-vocabulary-list/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Turn-Based Game With Go【译】</title>
-      <link>http://echotrue.github.io/game/turn-based-game-with-go/</link>
-      <pubDate>Mon, 06 Sep 2021 16:32:53 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/game/turn-based-game-with-go/</guid>
-      <description>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang
- 今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的Interface,channels,concurrency等特性。
- If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.</description>
-    </item>
-    
-    <item>
-      <title>Binary an Bit Operation</title>
-      <link>http://echotrue.github.io/golang/binary-an-bit-operation/</link>
-      <pubDate>Fri, 27 Aug 2021 10:34:44 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/binary-an-bit-operation/</guid>
-      <description>fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 0, 0, 0&amp;lt;&amp;lt;1, 0&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 1, 1, 1&amp;lt;&amp;lt;1, 1&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 2, 2, 2&amp;lt;&amp;lt;1, 2&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 3, 3, 3&amp;lt;&amp;lt;1, 3&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 0, 0&amp;gt;&amp;gt;1, 0&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 1, 1&amp;gt;&amp;gt;1, 1&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 2, 2&amp;gt;&amp;gt;1, 2&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 3, 3&amp;gt;&amp;gt;1, 3&amp;gt;&amp;gt;2) </description>
-    </item>
-    
-    <item>
-      <title>Lock</title>
-      <link>http://echotrue.github.io/golang/lock/</link>
-      <pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/lock/</guid>
-      <description>检测Go程序中按值传递的 locks </description>
-    </item>
-    
-    <item>
-      <title>Golang make and new</title>
-      <link>http://echotrue.github.io/golang/make-and-new/</link>
-      <pubDate>Wed, 28 Oct 2020 11:02:10 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/make-and-new/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>http://echotrue.github.io/about/</link>
-      <pubDate>Thu, 03 Sep 2020 14:20:28 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/about/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Panic and Recover</title>
-      <link>http://echotrue.github.io/golang/panic-and-recover/</link>
-      <pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/panic-and-recover/</guid>
-      <description>panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
+保存属性值到英雄基础属性对象base</description></item><item><title>Game Vocabulary List</title><link>http://echotrue.github.io/game/game-vocabulary-list/</link><pubDate>Tue, 07 Sep 2021 13:46:23 +0800</pubDate><guid>http://echotrue.github.io/game/game-vocabulary-list/</guid><description/></item><item><title>Turn-Based Game With Go【译】</title><link>http://echotrue.github.io/game/turn-based-game-with-go/</link><pubDate>Mon, 06 Sep 2021 16:32:53 +0800</pubDate><guid>http://echotrue.github.io/game/turn-based-game-with-go/</guid><description>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang
+今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的Interface,channels,concurrency等特性。
+If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.</description></item><item><title>Binary an Bit Operation</title><link>http://echotrue.github.io/golang/binary-an-bit-operation/</link><pubDate>Fri, 27 Aug 2021 10:34:44 +0800</pubDate><guid>http://echotrue.github.io/golang/binary-an-bit-operation/</guid><description>fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 0, 0, 0&amp;lt;&amp;lt;1, 0&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 1, 1, 1&amp;lt;&amp;lt;1, 1&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 2, 2, 2&amp;lt;&amp;lt;1, 2&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;, 3, 3, 3&amp;lt;&amp;lt;1, 3&amp;lt;&amp;lt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 0, 0&amp;gt;&amp;gt;1, 0&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 1, 1&amp;gt;&amp;gt;1, 1&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 2, 2&amp;gt;&amp;gt;1, 2&amp;gt;&amp;gt;2) fmt.Printf(&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;, 3, 3&amp;gt;&amp;gt;1, 3&amp;gt;&amp;gt;2)</description></item><item><title>Lock</title><link>http://echotrue.github.io/golang/lock/</link><pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate><guid>http://echotrue.github.io/golang/lock/</guid><description>检测Go程序中按值传递的 locks</description></item><item><title>Golang make and new</title><link>http://echotrue.github.io/golang/make-and-new/</link><pubDate>Wed, 28 Oct 2020 11:02:10 +0800</pubDate><guid>http://echotrue.github.io/golang/make-and-new/</guid><description/></item><item><title>About</title><link>http://echotrue.github.io/about/</link><pubDate>Thu, 03 Sep 2020 14:20:28 +0800</pubDate><guid>http://echotrue.github.io/about/</guid><description/></item><item><title>Panic and Recover</title><link>http://echotrue.github.io/golang/panic-and-recover/</link><pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate><guid>http://echotrue.github.io/golang/panic-and-recover/</guid><description>panic  Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。
  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。
 func main() { var user = os.Getenv(&amp;quot;USER_&amp;quot;) go func() { defer func() { fmt.Println(&amp;quot;defer 1&amp;quot;) }() if user == &amp;quot;&amp;quot;{ panic(&amp;quot;should set user env.&amp;quot;) } }() time.Sleep(1*time.Second) fmt.Println(&amp;quot;get result&amp;quot;) }  上述代码输出：
 defer 1 panic: should set user env. goroutine 19 [running]: main.main.func1(0x0, 0x0) D:/gopath/src/race_condition/index.go:16 +0x86 created by main.main D:/gopath/src/race_condition/index.go:11 +0x59 Process finished with exit code 2 说明panic坚守了自己的原则：执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行
-recover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil</description>
-    </item>
-    
-    <item>
-      <title>Golang Select</title>
-      <link>http://echotrue.github.io/golang/golang-select/</link>
-      <pubDate>Tue, 30 Jul 2019 19:04:35 +0800</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/golang-select/</guid>
-      <description>什么是select select语句用于从多个发送/接收channel中进行选择的操作。 select语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于switch，只是每个case语句被一个channel操作取代了。让我们深入研究一些代码，以便更好地理解
+recover  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil</description></item><item><title>Golang Select</title><link>http://echotrue.github.io/golang/golang-select/</link><pubDate>Tue, 30 Jul 2019 19:04:35 +0800</pubDate><guid>http://echotrue.github.io/golang/golang-select/</guid><description>什么是select select语句用于从多个发送/接收channel中进行选择的操作。 select语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于switch，只是每个case语句被一个channel操作取代了。让我们深入研究一些代码，以便更好地理解
 func server1(ch chan string) { time.Sleep(6 * time.Second) ch &amp;lt;- &amp;quot;from server1&amp;quot; } func server2(ch chan string) { time.Sleep(3 * time.Second) ch &amp;lt;- &amp;quot;from server2&amp;quot; } func main() { output1 := make(chan string) output2 := make(chan string) go server1(output1) go server2(output2) select { case s1 := &amp;lt;-output1: fmt.Println(s1) case s2 := &amp;lt;-output2: fmt.Println(s2) } } 在上面的程序中，在第 8 行server1函数休眠 6 秒然后将文本从server1写入channel ch。第 12 行server2函数休眠 3 秒，然后从server2写入channel ch。
-main函数在 20 和 21 行分别调用server1和server2。</description>
-    </item>
-    
-    <item>
-      <title>Addressable and Unaddressable-Value</title>
-      <link>http://echotrue.github.io/golang/addressable/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/addressable/</guid>
-      <description>Addressable </description>
-    </item>
-    
-    <item>
-      <title>Attachments</title>
-      <link>http://echotrue.github.io/shortcodes/attachments/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/attachments/</guid>
-      <description>The Attachments shortcode displays a list of files attached to a page.
-AttachmentsBachGavotteShort.mp3(357 ko)Carroll_AliceAuPaysDesMerveilles.pdf(175 ko)adivorciarsetoca00cape.pdf(361 ko)hugo.png(17 ko)movieselectricsheep-flock-244-32500-2.mp4(340 ko)Usage The shortcurt lists files found in a specific folder. Currently, it support two implementations for pages
-  If your page is a markdown file, attachements must be place in a folder named like your page and ending with .</description>
-    </item>
-    
-    <item>
-      <title>Block forever in go</title>
-      <link>http://echotrue.github.io/golang/block-forever-in-go/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/block-forever-in-go/</guid>
-      <description>Golang中永久阻塞的不同方法 The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling os.Exit or by returning from the main() function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.
-1. Using sync.</description>
-    </item>
-    
-    <item>
-      <title>Button</title>
-      <link>http://echotrue.github.io/shortcodes/button/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/button/</guid>
-      <description>A button is a just a clickable button with optional icon.
-{{% button href=&amp;quot;https://getgrav.org/&amp;quot; %}}Get Grav{{% /button %}}{{% button href=&amp;quot;https://getgrav.org/&amp;quot; icon=&amp;quot;fas fa-download&amp;quot; %}}Get Grav with icon{{% /button %}}{{% button href=&amp;quot;https://getgrav.org/&amp;quot; icon=&amp;quot;fas fa-download&amp;quot; icon-position=&amp;quot;right&amp;quot; %}}Get Grav with icon right{{% /button %}}Get GravGet Grav with iconGet Grav with icon right</description>
-    </item>
-    
-    <item>
-      <title>Expand</title>
-      <link>http://echotrue.github.io/shortcodes/expand/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/expand/</guid>
-      <description>The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example
-Expand me...Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</description>
-    </item>
-    
-    <item>
-      <title>Golang channel</title>
-      <link>http://echotrue.github.io/golang/channel/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/channel/</guid>
-      <description>概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色
- Do not communicate by sharing memory; instead, share memory by communicating.
- Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。 writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据 readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据 阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
- Unbuffered Channels   Buffered Channels  基本用法 ch := make(chan string) go func() { ch &amp;lt;- &amp;quot;hello&amp;quot; }() msg := &amp;lt;-ch fmt.Println(msg)  以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description>
-    </item>
-    
-    <item>
-      <title>Golang Data Races</title>
-      <link>http://echotrue.github.io/golang/data-races/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/data-races/</guid>
-      <description>关于Golang并发安全  谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong?  什么是数据竞争 package main import ( &amp;quot;fmt&amp;quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：
- 变量i的值正在被设置为5 打印i的值  所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。
+main函数在 20 和 21 行分别调用server1和server2。</description></item><item><title>Addressable and Unaddressable-Value</title><link>http://echotrue.github.io/golang/addressable/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/addressable/</guid><description>Addressable</description></item><item><title>Attachments</title><link>http://echotrue.github.io/shortcodes/attachments/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/attachments/</guid><description>The Attachments shortcode displays a list of files attached to a page.
+Attachments BachGavotteShort.mp3 (357 ko) Carroll_AliceAuPaysDesMerveilles.pdf (175 ko) adivorciarsetoca00cape.pdf (361 ko) hugo.png (17 ko) movieselectricsheep-flock-244-32500-2.mp4 (340 ko) Usage The shortcurt lists files found in a specific folder. Currently, it support two implementations for pages
+If your page is a markdown file, attachements must be place in a folder named like your page and ending with .</description></item><item><title>Block forever in go</title><link>http://echotrue.github.io/golang/block-forever-in-go/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/block-forever-in-go/</guid><description>Golang中永久阻塞的不同方法 The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling os.Exit or by returning from the main() function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.
+1. Using sync.</description></item><item><title>Button</title><link>http://echotrue.github.io/shortcodes/button/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/button/</guid><description>A button is a just a clickable button with optional icon.
+{{% button href=&amp;quot;https://getgrav.org/&amp;quot; %}}Get Grav{{% /button %}} {{% button href=&amp;quot;https://getgrav.org/&amp;quot; icon=&amp;quot;fas fa-download&amp;quot; %}}Get Grav with icon{{% /button %}} {{% button href=&amp;quot;https://getgrav.org/&amp;quot; icon=&amp;quot;fas fa-download&amp;quot; icon-position=&amp;quot;right&amp;quot; %}}Get Grav with icon right{{% /button %}} Get Grav Get Grav with icon Get Grav with icon right</description></item><item><title>Expand</title><link>http://echotrue.github.io/shortcodes/expand/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/expand/</guid><description>The Expand shortcode displays an expandable/collapsible section of text on your page. Here is an example
+Expand me... Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</description></item><item><title>Golang channel</title><link>http://echotrue.github.io/golang/channel/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/channel/</guid><description>概念  从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，channel就像两个goroutine之间的导管，来实现各种资源的同步。在官方Effective go文档中有一句非常著名的话可以说明channel在使用Golang进行并发编程的时候扮演了极为重要的角色
+Do not communicate by sharing memory; instead, share memory by communicating.
+Channel类型 readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。 writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据 readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据 阻塞  根据Channel缓冲区的大小，我们又可以将Channel分为Unbuffered channels与Buffered channels。其中，Unbuffered channels的缓冲区大小为0，这种channel的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个goroutine进行状态同步。Buffered channels拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用The Nature Of Channels In Go中的两张图片来说明两种channel的特性。
+Unbuffered Channels Buffered Channels 基本用法 ch := make(chan string) go func() { ch &amp;lt;- &amp;quot;hello&amp;quot; }() msg := &amp;lt;-ch fmt.Println(msg)  以上代码，利用不带缓冲的channel双向阻塞的特性。主goroutine(就是main函数)会阻塞直到接收到子goroutine向ch中写入的值。所以保证了hello一定会输出。</description></item><item><title>Golang Data Races</title><link>http://echotrue.github.io/golang/data-races/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/data-races/</guid><description>关于Golang并发安全 谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong? 什么是数据竞争 package main import ( &amp;quot;fmt&amp;quot; ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的goroutine来设置i的值。 同时，在不知道开启的goroutine是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：
+变量i的值正在被设置为5 打印i的值 所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。
 检测数据竞争 Golang有一个内置的数据竞争检测器，只需要在使用Go命令行工具的时候添加-race标志。例如：让我们尝试用-race标志来 运行我们刚刚编写的程序：
-$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.</description>
-    </item>
-    
-    <item>
-      <title>Golang Search Slice</title>
-      <link>http://echotrue.github.io/algorithm/golang-search-slice/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/algorithm/golang-search-slice/</guid>
-      <description>题目  假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]， 查找的目标值为345，如果切片中存在目标值程序输出:&amp;ldquo;Found it!&amp;ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未 找到目标值程序输出:&amp;ldquo;Timeout! Not Found&amp;rdquo;，同时立即取消仍在执行查找任务的goroutine。
- 首先题目里提到了在找到目标值或者超时后立刻结束所有goroutine的执行，完成这两个功能需要借助计时器、通道和context才行。 我能想到的第一点就是要用context.WithCancel创建一个上下文对象传递给每个执行任务的goroutine，外部在满足条件后（找到目标值或者已超时） 通过调用上下文的取消函数来通知所有goroutine停止工作。
-解法 package mainimport (&amp;quot;context&amp;quot;&amp;quot;fmt&amp;quot;&amp;quot;os&amp;quot;&amp;quot;time&amp;quot;)func main() {timer := time.NewTimer(time.Second * 5)data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96}dataLen := len(data)size := 3target := 345ctx, cancel := context.</description>
-    </item>
-    
-    <item>
-      <title>Log</title>
-      <link>http://echotrue.github.io/golang/log/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/log/</guid>
-      <description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;) </description>
-    </item>
-    
-    <item>
-      <title>Mermaid</title>
-      <link>http://echotrue.github.io/shortcodes/mermaid/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/mermaid/</guid>
-      <description>Mermaid is a library helping you to generate diagram and flowcharts from text, in a similar manner as Markdown.
+$ go run -race main.go 0 ================== WARNING: DATA RACE Write at 0x00c000122068 by goroutine 7: main.main.func1() F:/go_project/api-service/test/core/main.go:10 +0x3f Previous read at 0x00c000122068 by main goroutine: main.</description></item><item><title>Golang Search Slice</title><link>http://echotrue.github.io/algorithm/golang-search-slice/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/algorithm/golang-search-slice/</guid><description>题目 假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]， 查找的目标值为345，如果切片中存在目标值程序输出:&amp;ldquo;Found it!&amp;ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未 找到目标值程序输出:&amp;ldquo;Timeout! Not Found&amp;rdquo;，同时立即取消仍在执行查找任务的goroutine。
+首先题目里提到了在找到目标值或者超时后立刻结束所有goroutine的执行，完成这两个功能需要借助计时器、通道和context才行。 我能想到的第一点就是要用context.WithCancel创建一个上下文对象传递给每个执行任务的goroutine，外部在满足条件后（找到目标值或者已超时） 通过调用上下文的取消函数来通知所有goroutine停止工作。
+解法 package main import ( &amp;quot;context&amp;quot; &amp;quot;fmt&amp;quot; &amp;quot;os&amp;quot; &amp;quot;time&amp;quot; ) func main() { timer := time.NewTimer(time.Second * 5) data := []int{1, 2, 3, 10, 999, 8, 345, 7, 98, 33, 66, 77, 88, 68, 96} dataLen := len(data) size := 3 target := 345 ctx, cancel := context.</description></item><item><title>Log</title><link>http://echotrue.github.io/golang/log/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/log/</guid><description>Write log to both console and file consoleWriter := os.Stdout // os.Stderr w, err := os.OpenFile(&amp;quot;./app.log&amp;quot;, os.O_APPEND|os.O_CREATE|os.O_RDWR, os.ModeAppend|os.ModePerm) if err != nil { log.Fatal(err) } logWriter := io.MultiWriter(consoleWriter, w) l := log.New(logWriter, &amp;quot;---&amp;gt;&amp;quot;, log.LstdFlags|log.Lshortfile) l.Println(&amp;quot;this is a log&amp;quot;)</description></item><item><title>Mermaid</title><link>http://echotrue.github.io/shortcodes/mermaid/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/mermaid/</guid><description>Mermaid is a library helping you to generate diagram and flowcharts from text, in a similar manner as Markdown.
 Just insert your mermaid code in the mermaid shortcode and that&amp;rsquo;s it.
-Flowchart example {{&amp;lt;mermaid align=&amp;quot;left&amp;quot;&amp;gt;}}graph LR;A[Hard edge] --&amp;gt;|Link text| B(Round edge)B --&amp;gt; C{Decision}C --&amp;gt;|One| D[Result one]C --&amp;gt;|Two| E[Result two]{{&amp;lt; /mermaid &amp;gt;}} renders as
-graph LR;A[Hard edge] --|Link text| B(Round edge)B -- C{Decision}C --|One| D[Result one]C --|Two| E[Result two]or you can use this alternative syntax:</description>
-    </item>
-    
-    <item>
-      <title>Notice</title>
-      <link>http://echotrue.github.io/shortcodes/notice/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/notice/</guid>
-      <description>The notice shortcode shows 4 types of disclaimers to help you structure your page.
-Note {{% notice note %}}A notice disclaimer{{% /notice %}}renders as
+Flowchart example {{&amp;lt;mermaid align=&amp;quot;left&amp;quot;&amp;gt;}} graph LR; A[Hard edge] --&amp;gt;|Link text| B(Round edge) B --&amp;gt; C{Decision} C --&amp;gt;|One| D[Result one] C --&amp;gt;|Two| E[Result two] {{&amp;lt; /mermaid &amp;gt;}} renders as
+graph LR; A[Hard edge] --|Link text| B(Round edge) B -- C{Decision} C --|One| D[Result one] C --|Two| E[Result two] or you can use this alternative syntax:</description></item><item><title>Notice</title><link>http://echotrue.github.io/shortcodes/notice/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/notice/</guid><description>The notice shortcode shows 4 types of disclaimers to help you structure your page.
+Note {{% notice note %}} A notice disclaimer {{% /notice %}} renders as
 A notice disclaimer
-Info {{% notice info %}}An information disclaimer{{% /notice %}}renders as
+Info {{% notice info %}} An information disclaimer {{% /notice %}} renders as
 An information disclaimer
-Tip {{% notice tip %}}A tip disclaimer{{% /notice %}}renders as
+Tip {{% notice tip %}} A tip disclaimer {{% /notice %}} renders as
 A tip disclaimer
-Warning {{% notice warning %}}A warning disclaimer{{% /notice %}}renders as</description>
-    </item>
-    
-    <item>
-      <title>page test</title>
-      <link>http://echotrue.github.io/shortcodes/children/test/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/children/test/</guid>
-      <description>This is a test demo child page</description>
-    </item>
-    
-    <item>
-      <title>page test 3</title>
-      <link>http://echotrue.github.io/shortcodes/children/children-2/test3/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/children/children-2/test3/</guid>
-      <description>This is a test 3 demo child page</description>
-    </item>
-    
-    <item>
-      <title>Showcase</title>
-      <link>http://echotrue.github.io/showcase/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/showcase/</guid>
-      <description>TAT by OVH Tshark.dev by Ross Jacobs inteliver by Amir Lavasani </description>
-    </item>
-    
-    <item>
-      <title>Site param</title>
-      <link>http://echotrue.github.io/shortcodes/siteparam/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/shortcodes/siteparam/</guid>
-      <description>siteparam shortcode is used to help you print values of site params.
+Warning {{% notice warning %}} A warning disclaimer {{% /notice %}} renders as</description></item><item><title>page test</title><link>http://echotrue.github.io/shortcodes/children/test/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/children/test/</guid><description>This is a test demo child page</description></item><item><title>page test 3</title><link>http://echotrue.github.io/shortcodes/children/children-2/test3/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/children/children-2/test3/</guid><description>This is a test 3 demo child page</description></item><item><title>Read Vssh</title><link>http://echotrue.github.io/read/read-vssh/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/read/read-vssh/</guid><description/></item><item><title>Showcase</title><link>http://echotrue.github.io/showcase/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/showcase/</guid><description>TAT by OVH Tshark.dev by Ross Jacobs inteliver by Amir Lavasani</description></item><item><title>Site param</title><link>http://echotrue.github.io/shortcodes/siteparam/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/shortcodes/siteparam/</guid><description>siteparam shortcode is used to help you print values of site params.
 For instance, in this current site, the editURL variable is used in config.toml
 [params] editURL = &amp;#34;https://github.com/matcornic/hugo-theme-learn/edit/master/exampleSite/content/&amp;#34; Use the siteparam shortcode to display its value.
-`editURL` Value : {{% siteparam &amp;quot;editURL&amp;quot; %}}is displayed as
-editURL Value :</description>
-    </item>
-    
-    <item>
-      <title>Sqlx</title>
-      <link>http://echotrue.github.io/golang/sqlx/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://echotrue.github.io/golang/sqlx/</guid>
-      <description>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型
- sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似于sql.Tx,是事务的表示 sqlx.Stmt类似于sql.Stmt,是预处理语句的表示 sqlx.NamedStmt是一种支持命名参数的预处理语句的表示  引用类型都嵌入了他们在database/sql中的等效物，这就意味着当你调用sqlx.DB.Query()，实际是调用与sql.DB.Query相同的代码。
+`editURL` Value : {{% siteparam &amp;quot;editURL&amp;quot; %}} is displayed as
+editURL Value :</description></item><item><title>Sqlx</title><link>http://echotrue.github.io/golang/sqlx/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/sqlx/</guid><description>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型
+sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似于sql.Tx,是事务的表示 sqlx.Stmt类似于sql.Stmt,是预处理语句的表示 sqlx.NamedStmt是一种支持命名参数的预处理语句的表示 引用类型都嵌入了他们在database/sql中的等效物，这就意味着当你调用sqlx.DB.Query()，实际是调用与sql.DB.Query相同的代码。
 除此之外，还有两种光标类型：
 Querying 101 (查询概述) 引用类型实现了以下相同的操作来查询数据库
- Exec(...) (sql.Result, error) - unchanged from database/sql Query(...) (*sql.Rows, error) - unchanged from database/sql QueryRow(...) *sql.Row - unchanged from database/sql  以下这些是内置操作的扩展
- MustExec() sql.Result &amp;ndash; Exec, but panic on error Queryx(...) (*sqlx.Rows, error) - Query, but return an sqlx.Rows QueryRowx(...) *sqlx.Row &amp;ndash; QueryRow, but return an sqlx.Row  还有这些新的语义：
- Get(dest interface{}, .</description>
-    </item>
-    
-  </channel>
-</rss>
+Exec(...) (sql.Result, error) - unchanged from database/sql Query(...) (*sql.Rows, error) - unchanged from database/sql QueryRow(...) *sql.Row - unchanged from database/sql 以下这些是内置操作的扩展
+MustExec() sql.Result &amp;ndash; Exec, but panic on error Queryx(...) (*sqlx.Rows, error) - Query, but return an sqlx.Rows QueryRowx(...) *sqlx.Row &amp;ndash; QueryRow, but return an sqlx.Row 还有这些新的语义：
+Get(dest interface{}, .</description></item><item><title>Struct Interface</title><link>http://echotrue.github.io/golang/struct-interface/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/struct-interface/</guid><description>interface struct 能否相互嵌套 struct struct //继承(不能多态), 如果内部struct实现了接口, 它也相当于实现了接口 struct interface //可以多态 interface interface //单纯的导入 interface struct //不允许</description></item><item><title>Type</title><link>http://echotrue.github.io/golang/type/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://echotrue.github.io/golang/type/</guid><description>处理接口值时,变量的&amp;quot;动态类型&amp;quot;很重要.动态类型定义如下(源):
+变量的静态类型(或仅仅类型)是其声明定义的类型.**接口类型的变量也有一个不同的动态类型,它是运行时存储在变量中的值的实际类型.**动态类型可能在执行期间有所不同,但始终可分配给接口变量的静态类型.对于非接口类型,动态类型始终是静态类型.
+考虑这个例子:
+var someValue interface{} = 2 静态类型someValue是interface{}动态类型,int并且可能在未来很好地改变.例:
+var someValue interface{} = 2 someValue = &amp;quot;foo&amp;quot; 在上面的示例中,动态类型从someValue更改int为string.
+Slice，Map，函数三种引用类型以及含有以上三种类型的结构体和数组不能直接用==比较，只能用reflect.deepEqual进行比较。
+channel可以用==比较，且只有两个通道是由同一个 make 创建才相等;
+接口可以用==比较，且只有两个接口具有相同的动态类型和动态值两者才相等；并且当 interface 与非 interface 比较时，会将非interface 转换成 interface，然后再按照 两个 interface 比较 的规则进行比较；接口的动态类型和动态值都为nil，接口才是nil。
+结构体和数组作为复合类型，能否比较以其内部的元素是否能比较决定，且数组要求长度相同。
+空结构体不可相互比较：
+若逃逸到堆上，空结构体则默认分配的是 runtime.zerobase 变量，是专门用于分配到堆上的 0 字节基础地址。因此两个空结构体都是 runtime.zerobase，一比较当然就是 true 了。
+若没有发生逃逸，也就分配到栈上，在 Go 编译器的代码优化阶段，会对其进行优化，直接返回 false。并没有比较的意义了。 ———————————————— 版权声明：本文为CSDN博主「傅里叶、」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/qq_34562093/article/details/120981451</description></item></channel></rss>
