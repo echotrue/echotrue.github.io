@@ -1,735 +1,149 @@
-<!doctype html><html lang=en class="js csstransforms3d">
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=generator content="Hugo 0.88.0">
-<meta name=description content="gohper">
-<meta name=author content="axlrose">
-<link rel=icon href=/images/favicon.png type=image/png>
-<title>Turn-Based Game With Go【译】 :: Axlrose's blog</title>
-<link href=/css/nucleus.css?1698402356 rel=stylesheet>
-<link href=/css/fontawesome-all.min.css?1698402356 rel=stylesheet>
-<link href=/css/hybrid.css?1698402356 rel=stylesheet>
-<link href=/css/featherlight.min.css?1698402356 rel=stylesheet>
-<link href=/css/perfect-scrollbar.min.css?1698402356 rel=stylesheet>
-<link href=/css/auto-complete.css?1698402356 rel=stylesheet>
-<link href=/css/atom-one-dark.min.css?1698402356 rel=stylesheet>
-<link href=/css/theme.css?1698402356 rel=stylesheet>
-<link href=/css/hugo-theme.css?1698402356 rel=stylesheet>
-<link href=/css/theme-blue.css?1698402356 rel=stylesheet>
-<script src=/js/jquery-3.3.1.min.js?1698402356></script>
-<style>:root #header+#content>#left>#rlblock_left{display:none!important}:not(pre)>code+span.copy-to-clipboard{display:none}</style>
-</head>
-<body data-url=/game/turn-based-game-with-go/>
-<nav id=sidebar class=showVisitedLinks>
-<div id=header-wrapper>
-<div id=header>
-<a id=logo href=/>
-<img src=/images/logo.png height=40px>&emsp;<span style=font-size:36px;color:#fff>Axlrose</span>
-</a>
-</div>
-<div class=searchbox>
-<label for=search-by><i class="fas fa-search"></i></label>
+<!doctype html><html lang=en class="js csstransforms3d"><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.119.0"><meta name=description content="gohper"><meta name=author content="axlrose"><link rel=icon href=/images/favicon.png type=image/png><title>Turn-Based Game With Go【译】 :: Axlrose's blog</title><link href=/css/nucleus.css?1698402473 rel=stylesheet><link href=/css/fontawesome-all.min.css?1698402473 rel=stylesheet><link href=/css/hybrid.css?1698402473 rel=stylesheet><link href=/css/featherlight.min.css?1698402473 rel=stylesheet><link href=/css/perfect-scrollbar.min.css?1698402473 rel=stylesheet><link href=/css/auto-complete.css?1698402473 rel=stylesheet><link href=/css/atom-one-dark.min.css?1698402473 rel=stylesheet><link href=/css/theme.css?1698402473 rel=stylesheet><link href=/css/hugo-theme.css?1698402473 rel=stylesheet><link href=/css/theme-blue.css?1698402473 rel=stylesheet><script src=/js/jquery-3.3.1.min.js?1698402473></script><style>:root #header+#content>#left>#rlblock_left{display:none!important}:not(pre)>code+span.copy-to-clipboard{display:none}</style></head><body data-url=/game/turn-based-game-with-go/><nav id=sidebar class=showVisitedLinks><div id=header-wrapper><div id=header><a id=logo href=/><img src=/images/logo.png height=40px>&emsp;<span style=font-size:36px;color:#fff>Axlrose</span></a></div><div class=searchbox><label for=search-by><i class="fas fa-search"></i></label>
 <input data-search-input id=search-by type=search placeholder=Search...>
-<span data-search-clear><i class="fas fa-times"></i></span>
-</div>
-<script type=text/javascript src=/js/lunr.min.js?1698402356></script>
-<script type=text/javascript src=/js/auto-complete.js?1698402356></script>
-<script type=text/javascript>var baseurl="http://echotrue.github.io/"</script>
-<script type=text/javascript src=/js/search.js?1698402356></script>
-</div>
-<section id=homelinks>
-<ul>
-<li>
-<a class=padding href=/><i class="fas fa-home"></i> Home</a>
-</li>
-</ul>
-</section>
-<div class=highlightable>
-<ul class=topics>
-<li data-nav-id=/golang/ title=Golang class=dd-item>
-<a href=/golang/>
-<b>1. </b>Golang
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/golang/context/ title=Context class=dd-item>
-<a href=/golang/context/>
-Context
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/array-slice/ title="Array And Slice" class=dd-item>
-<a href=/golang/array-slice/>
-Array And Slice
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/uint-int/ title="Uint Int" class=dd-item>
-<a href=/golang/uint-int/>
-Uint Int
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/functional-programming-in-golang/ title="Functional Programming in Golang" class=dd-item>
-<a href=/golang/functional-programming-in-golang/>
-Functional Programming in Golang
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/binary-an-bit-operation/ title="Binary an Bit Operation" class=dd-item>
-<a href=/golang/binary-an-bit-operation/>
-Binary an Bit Operation
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/lock/ title=Lock class=dd-item>
-<a href=/golang/lock/>
-Lock
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/make-and-new/ title="Golang make and new" class=dd-item>
-<a href=/golang/make-and-new/>
-Golang make and new
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/panic-and-recover/ title="Panic and Recover" class=dd-item>
-<a href=/golang/panic-and-recover/>
-Panic and Recover
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/golang-select/ title="Golang Select" class=dd-item>
-<a href=/golang/golang-select/>
-Golang Select
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/addressable/ title="Addressable and Unaddressable-Value" class=dd-item>
-<a href=/golang/addressable/>
-Addressable and Unaddressable-Value
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/block-forever-in-go/ title="Block forever in go" class=dd-item>
-<a href=/golang/block-forever-in-go/>
-Block forever in go
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/channel/ title="Golang channel" class=dd-item>
-<a href=/golang/channel/>
-Golang channel
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/data-races/ title="Golang Data Races" class=dd-item>
-<a href=/golang/data-races/>
-Golang Data Races
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/log/ title=Log class=dd-item>
-<a href=/golang/log/>
-Log
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/sqlx/ title=Sqlx class=dd-item>
-<a href=/golang/sqlx/>
-Sqlx
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/struct-interface/ title="Struct Interface" class=dd-item>
-<a href=/golang/struct-interface/>
-Struct Interface
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/golang/type/ title=Type class=dd-item>
-<a href=/golang/type/>
-Type
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/algorithm/ title=Algorithm class=dd-item>
-<a href=/algorithm/>
-<b>2. </b>Algorithm
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/algorithm/golang-search-slice/ title="Golang Search Slice" class=dd-item>
-<a href=/algorithm/golang-search-slice/>
-Golang Search Slice
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/black-hat-go/ title="Black Hat Go" class=dd-item>
-<a href=/black-hat-go/>
-<b>3. </b>Black Hat Go
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/black-hat-go/tcp/ title=Tcp class=dd-item>
-<a href=/black-hat-go/tcp/>
-Tcp
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/game/ title=Game class="dd-item
-parent">
-<a href=/game/>
-<b>4. </b>Game
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/game/nano/ title="Nano Server" class=dd-item>
-<a href=/game/nano/>
-Nano Server
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/game/nano/nano-start/ title="Nano Start" class=dd-item>
-<a href=/game/nano/nano-start/>
-Nano Start
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/game/nano/one-nano-request/ title="One Nano Request" class=dd-item>
-<a href=/game/nano/one-nano-request/>
-One Nano Request
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/game/nano/nano/ title=Nano class=dd-item>
-<a href=/game/nano/nano/>
-Nano
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/game/nano/nano-binary-protocol/ title="Nano Binary Protocol" class=dd-item>
-<a href=/game/nano/nano-binary-protocol/>
-Nano Binary Protocol
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/game/combat-system/ title="Combat System" class=dd-item>
-<a href=/game/combat-system/>
-Combat System
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/game/game-vocabulary-list/ title="Game Vocabulary List" class=dd-item>
-<a href=/game/game-vocabulary-list/>
-Game Vocabulary List
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/game/turn-based-game-with-go/ title="Turn-Based Game With Go【译】" class="dd-item active">
-<a href=/game/turn-based-game-with-go/>
-Turn-Based Game With Go【译】
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/sql/ title=Sql class=dd-item>
-<a href=/sql/>
-<b>5. </b>Sql
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/read/ title=Read class=dd-item>
-<a href=/read/>
-<b>6. </b>Read
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/read/read-vssh/ title="Read Vssh" class=dd-item>
-<a href=/read/read-vssh/>
-Read Vssh
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/basics/ title=Basics class=dd-item>
-<a href=/basics/>
-<b>X. </b>Basics
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/basics/requirements/ title=Requirements class=dd-item>
-<a href=/basics/requirements/>
-Requirements
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/basics/installation/ title=Installation class=dd-item>
-<a href=/basics/installation/>
-Installation
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/basics/configuration/ title=Configuration class=dd-item>
-<a href=/basics/configuration/>
-Configuration
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/basics/style-customization/ title="Style customization" class=dd-item>
-<a href=/basics/style-customization/>
-Style customization
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/cont/ title=Content class=dd-item>
-<a href=/cont/>
-<b>Y. </b>Content
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/cont/pages/ title="Pages organization" class=dd-item>
-<a href=/cont/pages/>
-Pages organization
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/archetypes/ title=Archetypes class=dd-item>
-<a href=/cont/archetypes/>
-Archetypes
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/markdown/ title="Markdown syntax" class=dd-item>
-<a href=/cont/markdown/>
-Markdown syntax
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/syntaxhighlight/ title="Code highlighting" class=dd-item>
-<a href=/cont/syntaxhighlight/>
-Code highlighting
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/menushortcuts/ title="Menu extra shortcuts" class=dd-item>
-<a href=/cont/menushortcuts/>
-Menu extra shortcuts
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/icons/ title="Icons and logos" class=dd-item>
-<a href=/cont/icons/>
-Icons and logos
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/i18n/ title="Multilingual and i18n" class=dd-item>
-<a href=/cont/i18n/>
-Multilingual and i18n
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/cont/tags/ title=Tags class=dd-item>
-<a href=/cont/tags/>
-Tags
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/shortcodes/ title=Shortcodes class=dd-item>
-<a href=/shortcodes/>
-<b>Z. </b>Shortcodes
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/attachments/ title=Attachments class=dd-item>
-<a href=/shortcodes/attachments/>
-Attachments
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/shortcodes/button/ title=Button class=dd-item>
-<a href=/shortcodes/button/>
-Button
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/shortcodes/children/ title=Children class=dd-item>
-<a href=/shortcodes/children/>
-Children
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/children/children-1/ title="page 1" class=dd-item>
-<a href=/shortcodes/children/children-1/>
-page 1
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/children/children-1/children-1-1/ title="page 1-1" class=dd-item>
-<a href=/shortcodes/children/children-1/children-1-1/>
-page 1-1
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/children/children-1/children-1-1/children-1-1-1/ title="page 1-1-1" class=dd-item>
-<a href=/shortcodes/children/children-1/children-1-1/children-1-1-1/>
-page 1-1-1
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/ title="page 1-1-1-1" class=dd-item>
-<a href=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/>
-page 1-1-1-1
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/ title="page 1-1-1-1-1" class=dd-item>
-<a href=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/>
-page 1-1-1-1-1
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li data-nav-id=/shortcodes/children/children-2/ title="page 2" class=dd-item>
-<a href=/shortcodes/children/children-2/>
-page 2
-<i class="fas fa-check read-icon"></i>
-</a>
-<ul>
-<li data-nav-id=/shortcodes/children/children-2/test3/ title="page test 3" class=dd-item>
-<a href=/shortcodes/children/children-2/test3/>
-page test 3
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/shortcodes/children/children-3/ title="page 3" class=dd-item>
-<a href=/shortcodes/children/children-3/>
-page 3
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/shortcodes/children/test/ title="page test" class=dd-item>
-<a href=/shortcodes/children/test/>
-page test
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-<li data-nav-id=/shortcodes/expand/ title=Expand class=dd-item>
-<a href=/shortcodes/expand/>
-Expand
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/shortcodes/mermaid/ title=Mermaid class=dd-item>
-<a href=/shortcodes/mermaid/>
-Mermaid
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/shortcodes/notice/ title=Notice class=dd-item>
-<a href=/shortcodes/notice/>
-Notice
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-<li data-nav-id=/shortcodes/siteparam/ title="Site param" class=dd-item>
-<a href=/shortcodes/siteparam/>
-Site param
-<i class="fas fa-check read-icon"></i>
-</a>
-</li>
-</ul>
-</li>
-</ul>
-<section id=shortcuts>
-<h3>More</h3>
-<ul>
-<li>
-<a class=padding href=http://echotrue.github.io/book><i class="fas fa-solid fa-book-open"></i> Book list</a>
-</li>
-<li>
-<a class=padding href=http://echotrue.github.io/tags><i class="fas fa-tags"></i> Tags list</a>
-</li>
-<li>
-<a class=padding href=http://echotrue.github.io/about><i class="fas fa-fw fa-camera"></i> About me</a>
-</li>
-<li>
-<a class=padding href=https://github.com/matcornic/hugo-theme-learn><i class="fab fa-fw fa-github"></i> GitHub repo</a>
-</li>
-<li>
-<a class=padding href=https://gohugo.io/><i class="fas fa-fw fa-bookmark"></i> Hugo Documentation</a>
-</li>
-</ul>
-</section>
-<section id=prefooter>
-<hr>
-<ul>
-<li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li>
-</ul>
-</section>
-<section id=footer>
-<center>
-<p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p>
-<p>Axlrose ©2012-<script>document.write((new Date).getFullYear())</script></p>
-</center>
-<script async defer src=https://buttons.github.io/buttons.js></script>
-</section>
-</div>
-</nav>
-<section id=body>
-<div id=overlay></div>
-<div class="padding highlightable">
-<div>
-<div id=top-bar>
-<div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb>
-<span id=sidebar-toggle-span>
-<a href=# id=sidebar-toggle data-sidebar-toggle>
-<i class="fas fa-bars"></i>
-</a>
-</span>
+<span data-search-clear><i class="fas fa-times"></i></span></div><script type=text/javascript src=/js/lunr.min.js?1698402473></script>
+<script type=text/javascript src=/js/auto-complete.js?1698402473></script>
+<script type=text/javascript>var baseurl="http://echotrue.github.io/"</script><script type=text/javascript src=/js/search.js?1698402473></script></div><section id=homelinks><ul><li><a class=padding href=/><i class='fas fa-home'></i> Home</a></li></ul></section><div class=highlightable><ul class=topics><li data-nav-id=/golang/ title=Golang class=dd-item><a href=/golang/><b>1. </b>Golang
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/golang/context/ title=Context class=dd-item><a href=/golang/context/>Context
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/array-slice/ title="Array And Slice" class=dd-item><a href=/golang/array-slice/>Array And Slice
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/uint-int/ title="Uint Int" class=dd-item><a href=/golang/uint-int/>Uint Int
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/functional-programming-in-golang/ title="Functional Programming in Golang" class=dd-item><a href=/golang/functional-programming-in-golang/>Functional Programming in Golang
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/binary-an-bit-operation/ title="Binary an Bit Operation" class=dd-item><a href=/golang/binary-an-bit-operation/>Binary an Bit Operation
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/lock/ title=Lock class=dd-item><a href=/golang/lock/>Lock
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/make-and-new/ title="Golang make and new" class=dd-item><a href=/golang/make-and-new/>Golang make and new
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/panic-and-recover/ title="Panic and Recover" class=dd-item><a href=/golang/panic-and-recover/>Panic and Recover
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/golang-select/ title="Golang Select" class=dd-item><a href=/golang/golang-select/>Golang Select
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/addressable/ title="Addressable and Unaddressable-Value" class=dd-item><a href=/golang/addressable/>Addressable and Unaddressable-Value
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/block-forever-in-go/ title="Block forever in go" class=dd-item><a href=/golang/block-forever-in-go/>Block forever in go
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/channel/ title="Golang channel" class=dd-item><a href=/golang/channel/>Golang channel
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/data-races/ title="Golang Data Races" class=dd-item><a href=/golang/data-races/>Golang Data Races
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/log/ title=Log class=dd-item><a href=/golang/log/>Log
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/sqlx/ title=Sqlx class=dd-item><a href=/golang/sqlx/>Sqlx
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/struct-interface/ title="Struct Interface" class=dd-item><a href=/golang/struct-interface/>Struct Interface
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/golang/type/ title=Type class=dd-item><a href=/golang/type/>Type
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/algorithm/ title=Algorithm class=dd-item><a href=/algorithm/><b>2. </b>Algorithm
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/algorithm/golang-search-slice/ title="Golang Search Slice" class=dd-item><a href=/algorithm/golang-search-slice/>Golang Search Slice
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/black-hat-go/ title="Black Hat Go" class=dd-item><a href=/black-hat-go/><b>3. </b>Black Hat Go
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/black-hat-go/tcp/ title=Tcp class=dd-item><a href=/black-hat-go/tcp/>Tcp
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/game/ title=Game class="dd-item
+parent"><a href=/game/><b>4. </b>Game
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/game/nano/ title="Nano Server" class=dd-item><a href=/game/nano/>Nano Server
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/game/nano/nano-start/ title="Nano Start" class=dd-item><a href=/game/nano/nano-start/>Nano Start
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/game/nano/one-nano-request/ title="One Nano Request" class=dd-item><a href=/game/nano/one-nano-request/>One Nano Request
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/game/nano/nano/ title=Nano class=dd-item><a href=/game/nano/nano/>Nano
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/game/nano/nano-binary-protocol/ title="Nano Binary Protocol" class=dd-item><a href=/game/nano/nano-binary-protocol/>Nano Binary Protocol
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/game/combat-system/ title="Combat System" class=dd-item><a href=/game/combat-system/>Combat System
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/game/game-vocabulary-list/ title="Game Vocabulary List" class=dd-item><a href=/game/game-vocabulary-list/>Game Vocabulary List
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/game/turn-based-game-with-go/ title="Turn-Based Game With Go【译】" class="dd-item active"><a href=/game/turn-based-game-with-go/>Turn-Based Game With Go【译】
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/sql/ title=Sql class=dd-item><a href=/sql/><b>5. </b>Sql
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/read/ title=Read class=dd-item><a href=/read/><b>6. </b>Read
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/read/read-vssh/ title="Read Vssh" class=dd-item><a href=/read/read-vssh/>Read Vssh
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/basics/ title=Basics class=dd-item><a href=/basics/><b>X. </b>Basics
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/basics/requirements/ title=Requirements class=dd-item><a href=/basics/requirements/>Requirements
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/basics/installation/ title=Installation class=dd-item><a href=/basics/installation/>Installation
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/basics/configuration/ title=Configuration class=dd-item><a href=/basics/configuration/>Configuration
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/basics/style-customization/ title="Style customization" class=dd-item><a href=/basics/style-customization/>Style customization
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/cont/ title=Content class=dd-item><a href=/cont/><b>Y. </b>Content
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/cont/pages/ title="Pages organization" class=dd-item><a href=/cont/pages/>Pages organization
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/archetypes/ title=Archetypes class=dd-item><a href=/cont/archetypes/>Archetypes
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/markdown/ title="Markdown syntax" class=dd-item><a href=/cont/markdown/>Markdown syntax
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/syntaxhighlight/ title="Code highlighting" class=dd-item><a href=/cont/syntaxhighlight/>Code highlighting
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/menushortcuts/ title="Menu extra shortcuts" class=dd-item><a href=/cont/menushortcuts/>Menu extra shortcuts
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/icons/ title="Icons and logos" class=dd-item><a href=/cont/icons/>Icons and logos
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/i18n/ title="Multilingual and i18n" class=dd-item><a href=/cont/i18n/>Multilingual and i18n
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/cont/tags/ title=Tags class=dd-item><a href=/cont/tags/>Tags
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/shortcodes/ title=Shortcodes class=dd-item><a href=/shortcodes/><b>Z. </b>Shortcodes
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/attachments/ title=Attachments class=dd-item><a href=/shortcodes/attachments/>Attachments
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/shortcodes/button/ title=Button class=dd-item><a href=/shortcodes/button/>Button
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/shortcodes/children/ title=Children class=dd-item><a href=/shortcodes/children/>Children
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/children/children-1/ title="page 1" class=dd-item><a href=/shortcodes/children/children-1/>page 1
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/children/children-1/children-1-1/ title="page 1-1" class=dd-item><a href=/shortcodes/children/children-1/children-1-1/>page 1-1
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/children/children-1/children-1-1/children-1-1-1/ title="page 1-1-1" class=dd-item><a href=/shortcodes/children/children-1/children-1-1/children-1-1-1/>page 1-1-1
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/ title="page 1-1-1-1" class=dd-item><a href=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/>page 1-1-1-1
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/ title="page 1-1-1-1-1" class=dd-item><a href=/shortcodes/children/children-1/children-1-1/children-1-1-1/children-1-1-1-1/children-1-1-1-1-1/>page 1-1-1-1-1
+<i class="fas fa-check read-icon"></i></a></li></ul></li></ul></li></ul></li></ul></li><li data-nav-id=/shortcodes/children/children-2/ title="page 2" class=dd-item><a href=/shortcodes/children/children-2/>page 2
+<i class="fas fa-check read-icon"></i></a><ul><li data-nav-id=/shortcodes/children/children-2/test3/ title="page test 3" class=dd-item><a href=/shortcodes/children/children-2/test3/>page test 3
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/shortcodes/children/children-3/ title="page 3" class=dd-item><a href=/shortcodes/children/children-3/>page 3
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/shortcodes/children/test/ title="page test" class=dd-item><a href=/shortcodes/children/test/>page test
+<i class="fas fa-check read-icon"></i></a></li></ul></li><li data-nav-id=/shortcodes/expand/ title=Expand class=dd-item><a href=/shortcodes/expand/>Expand
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/shortcodes/mermaid/ title=Mermaid class=dd-item><a href=/shortcodes/mermaid/>Mermaid
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/shortcodes/notice/ title=Notice class=dd-item><a href=/shortcodes/notice/>Notice
+<i class="fas fa-check read-icon"></i></a></li><li data-nav-id=/shortcodes/siteparam/ title="Site param" class=dd-item><a href=/shortcodes/siteparam/>Site param
+<i class="fas fa-check read-icon"></i></a></li></ul></li></ul><section id=shortcuts><h3>More</h3><ul><li><a class=padding href=http://echotrue.github.io/book><i class='fas fa-solid fa-book-open'></i> Book list</a></li><li><a class=padding href=http://echotrue.github.io/tags><i class='fas fa-tags'></i> Tags list</a></li><li><a class=padding href=http://echotrue.github.io/about><i class='fas fa-fw fa-camera'></i> About me</a></li><li><a class=padding href=https://github.com/matcornic/hugo-theme-learn><i class='fab fa-fw fa-github'></i> GitHub repo</a></li><li><a class=padding href=https://gohugo.io/><i class='fas fa-fw fa-bookmark'></i> Hugo Documentation</a></li></ul></section><section id=prefooter><hr><ul><li><a class=padding href=# data-clear-history-toggle><i class="fas fa-history fa-fw"></i> Clear History</a></li></ul></section><section id=footer><center><p>Built with <a href=https://github.com/matcornic/hugo-theme-learn><i class="fas fa-heart"></i></a> from <a href=https://getgrav.org>Grav</a> and <a href=https://gohugo.io/>Hugo</a></p><p>Axlrose ©2012-<script>document.write((new Date).getFullYear())</script></p></center><script async defer src=https://buttons.github.io/buttons.js></script></section></div></nav><section id=body><div id=overlay></div><div class="padding highlightable"><div><div id=top-bar><div id=breadcrumbs itemscope itemtype=http://data-vocabulary.org/Breadcrumb><span id=sidebar-toggle-span><a href=# id=sidebar-toggle data-sidebar-toggle><i class="fas fa-bars"></i></a></span>
 <span id=toc-menu><i class="fas fa-list-alt"></i></span>
-<span class=links>
-<a href=/>Axlrose</a> > <a href=/game/>Game</a> > Turn-Based Game With Go【译】
-</span>
-</div>
-<div class=progress>
-<div class=wrapper>
-<nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#turn-game-rules>Turn Game Rules</a></li>
-<li><a href=#wizard>Wizard</a></li>
-<li><a href=#fighter-参考男巫>Fighter (参考男巫)</a></li>
-<li><a href=#druid-参考男巫>Druid (参考男巫)</a></li>
-<li><a href=#fight-战斗>Fight (战斗)</a></li>
-</ul>
-</li>
-</ul>
-</nav>
-</div>
-</div>
-</div>
-</div>
-<div id=head-tags>
-</div>
-<div id=body-inner>
-<h1>
-Turn-Based Game With Go【译】
-</h1>
-<blockquote>
-<p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang</p>
-</blockquote>
-<p>今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的<code>Interface</code>,<code>channels</code>,<code>concurrency</code>等特性。</p>
-<blockquote>
-<p>If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.</p>
-</blockquote>
-<p>如果你对回合制游戏一无所知，这里可以简单概括下。回合制游戏就是拥有不同力量，不同能力的各类角色之间互相战斗并逐个杀死对方. 获胜者是最后的幸存者。</p>
-<h3 id=turn-game-rules>Turn Game Rules</h3>
-<blockquote>
-<ol>
-<li>Fights mean every Warrier hit only the one Warrier in Turn. Every attacker loses stamina or mana after hit to an opponent.</li>
-</ol>
-</blockquote>
-<p>战斗意味着每个战士每个回合只能攻击一个战士。每一个攻击者在击中对手后会失去体力值或者魔法值.</p>
-<blockquote>
-<ol start=2>
-<li>Every Hit damage is changed by Warrier’s Level and his Weapon, Magic, or Animal kind.</li>
-</ol>
-</blockquote>
-<p>每一次命中的伤害会因战士的等级，武器，法力，或者宠物类型而不同</p>
-<blockquote>
-<ol start=3>
-<li>When a warrior is damaged by someone else, his or her blood will decreases. If the blood value is zero or less, he will die.</li>
-</ol>
-</blockquote>
-<p>当一个战士被其他人伤害时，他的血量会减少，如果血量值降到0或者更少，他将会死亡.</p>
-<blockquote>
-<ol start=4>
-<li>If a warrior’s stamina or mana less than zero, he can’t hit or make magic until the next Turn. Next Turn, his mana or stamina will be full.</li>
-</ol>
-</blockquote>
-<p>如果一个战士的体力或者魔法值少于0，在下一回合之前他将不能施放技能。下一回合他的体力或者魔法值将会充满。</p>
-<blockquote>
-<p>Firstly let’s create base traits struct of these types of characters.</p>
-</blockquote>
-<p>首先,创建不同角色的基础属性结构体</p>
-<blockquote>
-<p>heroCharacter/heroCharacter.go: All the characters have Name, Level (experience),Attacks(Damage List) and Blood(Energy)</p>
-</blockquote>
-<p>所有的角色都有角色名称，等级（经验），攻击力（伤害列表）和血量（能量）</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=color:#f92672>package</span> <span style=color:#a6e22e>heroCharacter</span>
-
-<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Hero</span> <span style=color:#66d9ef>struct</span> {
-	<span style=color:#a6e22e>Name</span> <span style=color:#66d9ef>string</span>
-	<span style=color:#a6e22e>Level</span> <span style=color:#66d9ef>int</span>
-	<span style=color:#a6e22e>Attacks</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>int</span>
-	<span style=color:#a6e22e>Blood</span> <span style=color:#66d9ef>int</span>
-}
-</code></pre></div><blockquote>
-<p>Let’s Create all Characters Interface. We will list all character’s common Actions in this interface.</p>
-</blockquote>
-<p>创建角色<code>interface</code>,在这个接口中我们将定义所有角色通用的操作行为的方法。</p>
-<blockquote>
-<p>fightHero/fightHero.go: Every hero Hits the other characters, takes Damage after attacked by someone else. We can get info about him or her healthy, stamina or mana.And finally, we can check he or she died or not. These are the common functions of all Characters.</p>
-</blockquote>
-<p>每个英雄角色击中其他角色，或者收到其他人的攻击。我们会获取他的健康，魔法或者体力信息.然后,检查他是否死亡.这是所有角色的通用方法。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=color:#f92672>package</span> <span style=color:#a6e22e>fightHero</span>
-
-<span style=color:#66d9ef>type</span> <span style=color:#a6e22e>FightHero</span> <span style=color:#66d9ef>interface</span> {
-
-	<span style=color:#a6e22e>Hit</span>() <span style=color:#66d9ef>int</span>
-
-	<span style=color:#a6e22e>TakeDamage</span>(<span style=color:#a6e22e>damage</span> <span style=color:#66d9ef>int</span>)
-
-	<span style=color:#a6e22e>GetInfo</span>() (<span style=color:#66d9ef>string</span>, <span style=color:#66d9ef>int</span>)
-
-	<span style=color:#a6e22e>IsDeath</span>() <span style=color:#66d9ef>bool</span>
-
-}
-</code></pre></div><h3 id=wizard>Wizard</h3>
-<blockquote>
-<p>Let’s create first character Wizard.</p>
-</blockquote>
-<p>创建第一个角色男巫</p>
-<p>wizard/wizard.go:</p>
-<h4 id=properties-of-wizard>properties of Wizard</h4>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=color:#66d9ef>type</span>(
-	<span style=color:#a6e22e>Wizard</span> <span style=color:#66d9ef>struct</span>{
-		<span style=color:#a6e22e>hero</span>.<span style=color:#a6e22e>Hero</span>
-		<span style=color:#a6e22e>Manas</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>int</span>
-		<span style=color:#a6e22e>Mana</span> <span style=color:#66d9ef>int</span>
-		<span style=color:#a6e22e>Magic</span> <span style=color:#66d9ef>string</span>
-	}
-)
-</code></pre></div><blockquote>
-<p>Hero: Common character’s properties.</p>
-</blockquote>
-<p>Hero:角色通用属性</p>
-<blockquote>
-<p>Manas: This is a collection of “string” magic names with their “int” mana costs.Example: “Manas: map[string]int{“FireBall”: 5, “Thunder”: 10, “Ghost Attack”:30}}”</p>
-</blockquote>
-<p>Manas：魔法值消耗列表.魔法技能名称作为key,魔法技能消耗的魔法值作为value.示例中火球技能消耗5点魔法值,闪电技能消耗10点,幽灵攻击消耗30点</p>
-<blockquote>
-<p>Mana: This is integer Wizard’s mana value. Wizard needs mana, for making Magic.Without mana Wizard is nothing :)</p>
-</blockquote>
-<p>Mana:魔法值,男巫的魔法值,男巫需要魔法值来施放魔法技能.没有魔法值,男巫啥也不是.</p>
-<blockquote>
-<p>Magic: This is Wizard’s weapon. He or she can hit an enemy with the Magic.
-Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attack”: 30}”</p>
-</blockquote>
-<p>Magic: 这是男巫的武器,他可以使用魔法技能攻击敌人.</p>
-<h4 id=action-of-wizard>Action of Wizard</h4>
-<h5 id=fighthero-interface-methods>FightHero interface Methods:</h5>
-<p><code>Hit()</code>计算魔法技能伤害值,只有法力值足够的前提下才能施放魔法技能,魔法技能的伤害值和等级有关系.</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>Wizard</span>) <span style=color:#a6e22e>Hit</span>() <span style=color:#66d9ef>int</span> {  
-	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Mana</span> <span style=color:#f92672>&gt;=</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Manas</span>[<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Magic</span>] {  
-		<span style=color:#a6e22e>levelEffect</span> <span style=color:#f92672>:=</span> int(<span style=color:#a6e22e>math</span>.<span style=color:#a6e22e>Ceil</span>(float64(<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Level</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>0.1</span>))  
-		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Attacks</span>[<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Magic</span>] <span style=color:#f92672>+</span> <span style=color:#a6e22e>levelEffect</span>  
-	}
-	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>  
-}
-</code></pre></div><p><code>TakeDamage</code> 如果被其他角色攻击,血量将会减少,当血量为0时,男巫就会死亡.此处使用了指针类型<code>*Wizard</code>,因为当男巫受到伤害时必须及时减少男巫的血量</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>w</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Wizard</span>) <span style=color:#a6e22e>TakeDamage</span>(<span style=color:#a6e22e>damage</span> <span style=color:#66d9ef>int</span>) {  
-	<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Blood</span> = <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Blood</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>damage</span>  
-}
-</code></pre></div><p><code>GetInfo()</code> 获取男巫的名称和血量</p>
-<p><code>IsDeath():</code> 检测男巫是否死亡</p>
-<h5 id=wizard-own-methods>Wizard Own Methods:</h5>
-<p><code>GetMana():</code> 获取男巫当前的法力值</p>
-<p><code>SpendMana()</code> 消耗男巫的法力值</p>
-<p><code>CreateWizard()</code> 创建男巫对象</p>
-<h3 id=fighter-参考男巫>Fighter (参考男巫)</h3>
-<h3 id=druid-参考男巫>Druid (参考男巫)</h3>
-<h3 id=fight-战斗>Fight (战斗)</h3>
-<p>我们已经定义了所有的英雄角色,现在开始让他们之间互相战斗,他们中只有一个能获胜幸存下来.
-定义全局变量和随机函数:</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>fighterList</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#a6e22e>IHero</span>.<span style=color:#a6e22e>FightHero</span>  
-<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>fighterNumberList</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>int</span>]<span style=color:#a6e22e>IHero</span>.<span style=color:#a6e22e>FightHero</span>  
-  
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>GetRandomID</span>(<span style=color:#a6e22e>limit</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {  
-	<span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Seed</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>().<span style=color:#a6e22e>UnixNano</span>())  
-	<span style=color:#a6e22e>rndVictim</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Intn</span>(<span style=color:#a6e22e>limit</span>) <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>  
-	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>rndVictim</span>  
-}  
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>GetRandomBetweenID</span>(<span style=color:#a6e22e>minLimit</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>maxlimit</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {  
-	<span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Seed</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>().<span style=color:#a6e22e>UnixNano</span>())  
-	<span style=color:#a6e22e>rndVictim</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Intn</span>(<span style=color:#a6e22e>maxlimit</span><span style=color:#f92672>-</span><span style=color:#a6e22e>minLimit</span>) <span style=color:#f92672>+</span> <span style=color:#a6e22e>minLimit</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>  
-	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>rndVictim</span>  
-}  
-  
-<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>isFighterDead</span> <span style=color:#66d9ef>bool</span> = <span style=color:#66d9ef>false</span>  
-<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>isWizardDead</span> <span style=color:#66d9ef>bool</span> = <span style=color:#66d9ef>false</span>  
-<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>isDruidDead</span> <span style=color:#66d9ef>bool</span> = <span style=color:#66d9ef>false</span>  
-  
-<span style=color:#66d9ef>var</span> <span style=color:#a6e22e>TotalLive</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>3</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>MapRandomKeyGet</span>(<span style=color:#a6e22e>mapI</span> <span style=color:#66d9ef>interface</span>{}) <span style=color:#66d9ef>interface</span>{} {  
-	<span style=color:#a6e22e>keys</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>reflect</span>.<span style=color:#a6e22e>ValueOf</span>(<span style=color:#a6e22e>mapI</span>).<span style=color:#a6e22e>MapKeys</span>()  
-	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>keys</span>[<span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Intn</span>(len(<span style=color:#a6e22e>keys</span>))].<span style=color:#a6e22e>Interface</span>()  
-}
-
-</code></pre></div><ul>
-<li><code>fighterList</code>以英雄的名称保存英雄信息</li>
-<li><code>fighterNumberList</code>根据英雄ID存储英雄名称</li>
-<li><code>GetRandomID</code> 获取随机数</li>
-<li><code>GetRandomBetweenID</code> 给定范围内获取随机数</li>
-<li><code>isFighterDead, isWizardDead, isDruidDead</code> 每个英雄的生死状态</li>
-<li><code>TotalLive</code> 几条生命</li>
-<li><code>MapRandomKeyGet</code> 用来随机获取<code>Wizzard</code>的魔法技能,<code>Fighter</code>的武器,<code>Druid</code>的宠物</li>
-</ul>
-<footer class=footline>
-</footer>
-</div>
-</div>
-<div id=navigation>
-<a class="nav nav-prev" href=/game/game-vocabulary-list/ title="Game Vocabulary List"> <i class="fa fa-chevron-left"></i></a>
-<a class="nav nav-next" href=/sql/ title=Sql style=margin-right:0><i class="fa fa-chevron-right"></i></a>
-</div>
-</section>
-<div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px>
-<div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div>
-</div>
-<script src=/js/clipboard.min.js?1698402356></script>
-<script src=/js/perfect-scrollbar.min.js?1698402356></script>
-<script src=/js/perfect-scrollbar.jquery.min.js?1698402356></script>
-<script src=/js/jquery.sticky.js?1698402356></script>
-<script src=/js/featherlight.min.js?1698402356></script>
-<script src=/js/highlight.pack.js?1698402356></script>
-<script>hljs.initHighlightingOnLoad()</script>
-<script src=/js/modernizr.custom-3.6.0.js?1698402356></script>
-<script src=/js/learn.js?1698402356></script>
-<script src=/js/hugo-learn.js?1698402356></script>
-<script src=/mermaid/mermaid.js?1698402356></script>
-<script>mermaid.initialize({startOnLoad:!0})</script>
-<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-105947713-1','auto'),ga('send','pageview')</script>
-</body>
-</html>
+<span class=links><a href=/>Axlrose</a> > <a href=/game/>Game</a> > Turn-Based Game With Go【译】</span></div><div class=progress><div class=wrapper><nav id=TableOfContents><ul><li><ul><li><a href=#turn-game-rules>Turn Game Rules</a></li><li><a href=#wizard>Wizard</a></li><li><a href=#fighter-参考男巫>Fighter (参考男巫)</a></li><li><a href=#druid-参考男巫>Druid (参考男巫)</a></li><li><a href=#fight-战斗>Fight (战斗)</a></li></ul></li></ul></nav></div></div></div></div><div id=head-tags></div><div id=body-inner><h1>Turn-Based Game With Go【译】</h1><blockquote><p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang</p></blockquote><p>今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的<code>Interface</code>,<code>channels</code>,<code>concurrency</code>等特性。</p><blockquote><p>If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.</p></blockquote><p>如果你对回合制游戏一无所知，这里可以简单概括下。回合制游戏就是拥有不同力量，不同能力的各类角色之间互相战斗并逐个杀死对方. 获胜者是最后的幸存者。</p><h3 id=turn-game-rules>Turn Game Rules</h3><blockquote><ol><li>Fights mean every Warrier hit only the one Warrier in Turn. Every attacker loses stamina or mana after hit to an opponent.</li></ol></blockquote><p>战斗意味着每个战士每个回合只能攻击一个战士。每一个攻击者在击中对手后会失去体力值或者魔法值.</p><blockquote><ol start=2><li>Every Hit damage is changed by Warrier’s Level and his Weapon, Magic, or Animal kind.</li></ol></blockquote><p>每一次命中的伤害会因战士的等级，武器，法力，或者宠物类型而不同</p><blockquote><ol start=3><li>When a warrior is damaged by someone else, his or her blood will decreases. If the blood value is zero or less, he will die.</li></ol></blockquote><p>当一个战士被其他人伤害时，他的血量会减少，如果血量值降到0或者更少，他将会死亡.</p><blockquote><ol start=4><li>If a warrior’s stamina or mana less than zero, he can’t hit or make magic until the next Turn. Next Turn, his mana or stamina will be full.</li></ol></blockquote><p>如果一个战士的体力或者魔法值少于0，在下一回合之前他将不能施放技能。下一回合他的体力或者魔法值将会充满。</p><blockquote><p>Firstly let’s create base traits struct of these types of characters.</p></blockquote><p>首先,创建不同角色的基础属性结构体</p><blockquote><p>heroCharacter/heroCharacter.go: All the characters have Name, Level (experience),Attacks(Damage List) and Blood(Energy)</p></blockquote><p>所有的角色都有角色名称，等级（经验），攻击力（伤害列表）和血量（能量）</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>heroCharacter</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Hero</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Name</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Level</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Attacks</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Blood</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><blockquote><p>Let’s Create all Characters Interface. We will list all character’s common Actions in this interface.</p></blockquote><p>创建角色<code>interface</code>,在这个接口中我们将定义所有角色通用的操作行为的方法。</p><blockquote><p>fightHero/fightHero.go: Every hero Hits the other characters, takes Damage after attacked by someone else. We can get info about him or her healthy, stamina or mana.And finally, we can check he or she died or not. These are the common functions of all Characters.</p></blockquote><p>每个英雄角色击中其他角色，或者收到其他人的攻击。我们会获取他的健康，魔法或者体力信息.然后,检查他是否死亡.这是所有角色的通用方法。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#f92672>package</span> <span style=color:#a6e22e>fightHero</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>FightHero</span> <span style=color:#66d9ef>interface</span> {
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Hit</span>() <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>TakeDamage</span>(<span style=color:#a6e22e>damage</span> <span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>GetInfo</span>() (<span style=color:#66d9ef>string</span>, <span style=color:#66d9ef>int</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>IsDeath</span>() <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=wizard>Wizard</h3><blockquote><p>Let’s create first character Wizard.</p></blockquote><p>创建第一个角色男巫</p><p>wizard/wizard.go:</p><h4 id=properties-of-wizard>properties of Wizard</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#66d9ef>type</span>(
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Wizard</span> <span style=color:#66d9ef>struct</span>{
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>hero</span>.<span style=color:#a6e22e>Hero</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>Manas</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>Mana</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>Magic</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></div><blockquote><p>Hero: Common character’s properties.</p></blockquote><p>Hero:角色通用属性</p><blockquote><p>Manas: This is a collection of “string” magic names with their “int” mana costs.Example: “Manas: map[string]int{“FireBall”: 5, “Thunder”: 10, “Ghost Attack”:30}}”</p></blockquote><p>Manas：魔法值消耗列表.魔法技能名称作为key,魔法技能消耗的魔法值作为value.示例中火球技能消耗5点魔法值,闪电技能消耗10点,幽灵攻击消耗30点</p><blockquote><p>Mana: This is integer Wizard’s mana value. Wizard needs mana, for making Magic.Without mana Wizard is nothing :)</p></blockquote><p>Mana:魔法值,男巫的魔法值,男巫需要魔法值来施放魔法技能.没有魔法值,男巫啥也不是.</p><blockquote><p>Magic: This is Wizard’s weapon. He or she can hit an enemy with the Magic.
+Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attack”: 30}”</p></blockquote><p>Magic: 这是男巫的武器,他可以使用魔法技能攻击敌人.</p><h4 id=action-of-wizard>Action of Wizard</h4><h5 id=fighthero-interface-methods>FightHero interface Methods:</h5><p><code>Hit()</code>计算魔法技能伤害值,只有法力值足够的前提下才能施放魔法技能,魔法技能的伤害值和等级有关系.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>w</span> <span style=color:#a6e22e>Wizard</span>) <span style=color:#a6e22e>Hit</span>() <span style=color:#66d9ef>int</span> {  
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Mana</span> <span style=color:#f92672>&gt;=</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Manas</span>[<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Magic</span>] {  
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>levelEffect</span> <span style=color:#f92672>:=</span> int(<span style=color:#a6e22e>math</span>.<span style=color:#a6e22e>Ceil</span>(float64(<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Level</span>) <span style=color:#f92672>*</span> <span style=color:#ae81ff>0.1</span>))  
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Attacks</span>[<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Magic</span>] <span style=color:#f92672>+</span> <span style=color:#a6e22e>levelEffect</span>  
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>  
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><code>TakeDamage</code> 如果被其他角色攻击,血量将会减少,当血量为0时,男巫就会死亡.此处使用了指针类型<code>*Wizard</code>,因为当男巫受到伤害时必须及时减少男巫的血量</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>w</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Wizard</span>) <span style=color:#a6e22e>TakeDamage</span>(<span style=color:#a6e22e>damage</span> <span style=color:#66d9ef>int</span>) {  
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Blood</span> = <span style=color:#a6e22e>w</span>.<span style=color:#a6e22e>Blood</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>damage</span>  
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><code>GetInfo()</code> 获取男巫的名称和血量</p><p><code>IsDeath():</code> 检测男巫是否死亡</p><h5 id=wizard-own-methods>Wizard Own Methods:</h5><p><code>GetMana():</code> 获取男巫当前的法力值</p><p><code>SpendMana()</code> 消耗男巫的法力值</p><p><code>CreateWizard()</code> 创建男巫对象</p><h3 id=fighter-参考男巫>Fighter (参考男巫)</h3><h3 id=druid-参考男巫>Druid (参考男巫)</h3><h3 id=fight-战斗>Fight (战斗)</h3><p>我们已经定义了所有的英雄角色,现在开始让他们之间互相战斗,他们中只有一个能获胜幸存下来.
+定义全局变量和随机函数:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>fighterList</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>string</span>]<span style=color:#a6e22e>IHero</span>.<span style=color:#a6e22e>FightHero</span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>fighterNumberList</span> <span style=color:#66d9ef>map</span>[<span style=color:#66d9ef>int</span>]<span style=color:#a6e22e>IHero</span>.<span style=color:#a6e22e>FightHero</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>GetRandomID</span>(<span style=color:#a6e22e>limit</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {  
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Seed</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>().<span style=color:#a6e22e>UnixNano</span>())  
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rndVictim</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Intn</span>(<span style=color:#a6e22e>limit</span>) <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>  
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>rndVictim</span>  
+</span></span><span style=display:flex><span>}  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>GetRandomBetweenID</span>(<span style=color:#a6e22e>minLimit</span> <span style=color:#66d9ef>int</span>, <span style=color:#a6e22e>maxlimit</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>int</span> {  
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Seed</span>(<span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Now</span>().<span style=color:#a6e22e>UnixNano</span>())  
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>rndVictim</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Intn</span>(<span style=color:#a6e22e>maxlimit</span><span style=color:#f92672>-</span><span style=color:#a6e22e>minLimit</span>) <span style=color:#f92672>+</span> <span style=color:#a6e22e>minLimit</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>  
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>rndVictim</span>  
+</span></span><span style=display:flex><span>}  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>isFighterDead</span> <span style=color:#66d9ef>bool</span> = <span style=color:#66d9ef>false</span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>isWizardDead</span> <span style=color:#66d9ef>bool</span> = <span style=color:#66d9ef>false</span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>isDruidDead</span> <span style=color:#66d9ef>bool</span> = <span style=color:#66d9ef>false</span>  
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> <span style=color:#a6e22e>TotalLive</span> <span style=color:#66d9ef>int</span> = <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>MapRandomKeyGet</span>(<span style=color:#a6e22e>mapI</span> <span style=color:#66d9ef>interface</span>{}) <span style=color:#66d9ef>interface</span>{} {  
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>keys</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>reflect</span>.<span style=color:#a6e22e>ValueOf</span>(<span style=color:#a6e22e>mapI</span>).<span style=color:#a6e22e>MapKeys</span>()  
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>keys</span>[<span style=color:#a6e22e>rand</span>.<span style=color:#a6e22e>Intn</span>(len(<span style=color:#a6e22e>keys</span>))].<span style=color:#a6e22e>Interface</span>()  
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>fighterList</code>以英雄的名称保存英雄信息</li><li><code>fighterNumberList</code>根据英雄ID存储英雄名称</li><li><code>GetRandomID</code> 获取随机数</li><li><code>GetRandomBetweenID</code> 给定范围内获取随机数</li><li><code>isFighterDead, isWizardDead, isDruidDead</code> 每个英雄的生死状态</li><li><code>TotalLive</code> 几条生命</li><li><code>MapRandomKeyGet</code> 用来随机获取<code>Wizzard</code>的魔法技能,<code>Fighter</code>的武器,<code>Druid</code>的宠物</li></ul><footer class=footline></footer></div></div><div id=navigation><a class="nav nav-prev" href=/game/game-vocabulary-list/ title="Game Vocabulary List"><i class="fa fa-chevron-left"></i></a>
+<a class="nav nav-next" href=/sql/ title=Sql style=margin-right:0><i class="fa fa-chevron-right"></i></a></div></section><div style=left:-1000px;overflow:scroll;position:absolute;top:-1000px;border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px><div style=border:none;box-sizing:content-box;height:200px;margin:0;padding:0;width:200px></div></div><script src=/js/clipboard.min.js?1698402473></script>
+<script src=/js/perfect-scrollbar.min.js?1698402473></script>
+<script src=/js/perfect-scrollbar.jquery.min.js?1698402473></script>
+<script src=/js/jquery.sticky.js?1698402473></script>
+<script src=/js/featherlight.min.js?1698402473></script>
+<script src=/js/highlight.pack.js?1698402473></script>
+<script>hljs.initHighlightingOnLoad()</script><script src=/js/modernizr.custom-3.6.0.js?1698402473></script>
+<script src=/js/learn.js?1698402473></script>
+<script src=/js/hugo-learn.js?1698402473></script>
+<script src=/mermaid/mermaid.js?1698402473></script>
+<script>mermaid.initialize({startOnLoad:!0})</script><script>(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)})(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-105947713-1","auto"),ga("send","pageview")</script></body></html>
