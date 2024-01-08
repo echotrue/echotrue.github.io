@@ -17,8 +17,7 @@
 <small>·
 <a href=https://echotrue.github.io/tags/nano/>nano</a></small><p>message.Encode func Encode(m *Message) ([]byte, error) { if invalidType(m.Type) { return nil, ErrWrongMessageType } buf := make([]byte, 0) // m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6 flag := byte(m.Type) &lt;&lt; 1 // 如果路由压缩 flag|1 为1,3,</div></article><article><div class=blog-card><h3><a href=/game/nano/nano/>Nano</a></h3><p><small>2021年8月14日&nbsp;· 28 字&nbsp;· 1 分钟</small>
 <small>·
-<a href=https://echotrue.github.io/tags/nano/>nano</a></small><p>Scheduler todo 启动节点后，开启一个goroutine执行go scheduler.Sched(). Pipeline todo</div></article><article><div class=blog-card><h3><a href=/game/turn-based-combat/skill-manager/>Skill Manager</a></h3><p><small>1年1月1日&nbsp;· 0 字&nbsp;· 0 分钟</small>
-<small></small><p></div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/nano/>nano</a></small><p>Scheduler todo 启动节点后，开启一个goroutine执行go scheduler.Sched(). Pipeline todo</div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by
