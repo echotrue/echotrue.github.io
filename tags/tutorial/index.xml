@@ -17,9 +17,9 @@
 &lt;li>&lt;a href="https://guangzhengli.com/blog/zh/how-to-create-your-blog-for-free-by-hugo-ladder-in-30min/">how-to-create-your-blog-for-free-by-hugo-ladder-in-30min&lt;/a>&lt;/li>
 &lt;/ul></description></item><item><title>多语言支持</title><link>https://echotrue.github.io/blog/zh/multi-language/</link><pubDate>Sun, 14 Aug 2022 21:34:36 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/zh/multi-language/</guid><description>&lt;p>本文是关于多语言支持。&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="#available-languages">Available Languages&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#configure-languages">Configure languages&lt;/a>&lt;/li>
-&lt;li>&lt;a href="#translation-file-example">Translation File Example&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://echotrue.github.io/blog/zh/multi-language/#available-languages">Available Languages&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://echotrue.github.io/blog/zh/multi-language/#configure-languages">Configure languages&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://echotrue.github.io/blog/zh/multi-language/#translation-file-example">Translation File Example&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;h2 id="available-languages">Available Languages&lt;/h2>
 &lt;p>目前主题支持这些语言:&lt;/p>
@@ -94,10 +94,10 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>快速安装使用</title><link>https://echotrue.github.io/blog/zh/quick-start/</link><pubDate>Sun, 14 Aug 2022 21:34:36 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/zh/quick-start/</guid><description>&lt;p>本文是关于如何快速安装使用本主题。&lt;/p>
 &lt;h2 id="how-to-install">how to install&lt;/h2>
 &lt;p>在这个仓库中点击 &lt;code>Use this template&lt;/code> 创建博客。 &lt;a href="https://github.com/guangzhengli/hugo-ladder-exampleSite">https://github.com/guangzhengli/hugo-ladder-exampleSite&lt;/a>&lt;/p>
-&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/guangzhengli/PicURL@master/uPic/4dmtph.png" alt="4dmtph">&lt;/p>
+&lt;p>&lt;img alt="4dmtph" src="https://cdn.jsdelivr.net/gh/guangzhengli/PicURL@master/uPic/4dmtph.png">&lt;/p>
 &lt;p>点击后输入 &lt;code>username.github.io&lt;/code> 创建(GitHub Pages)仓库 &lt;strong>用你的 github 账号名称代替 username&lt;/strong>&lt;/p>
 &lt;p>接着配置你的 GitHub pages 配置信息，如下图所示:&lt;/p>
-&lt;p>&lt;img src="https://cdn.jsdelivr.net/gh/guangzhengli/PicURL@master/uPic/nsrExo.png" alt="nsrExo">&lt;/p>
+&lt;p>&lt;img alt="nsrExo" src="https://cdn.jsdelivr.net/gh/guangzhengli/PicURL@master/uPic/nsrExo.png">&lt;/p>
 &lt;p>🎉🎉🎉 打开你的浏览器，输入: &lt;a href="https://username.github.io">https://username.github.io&lt;/a> 🎉🎉🎉&lt;/p></description></item><item><title>评论功能</title><link>https://echotrue.github.io/blog/zh/comment-system/</link><pubDate>Sun, 14 Aug 2022 21:34:36 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/zh/comment-system/</guid><description>&lt;p>本文关于如何集成评论功能，在文章末尾或者留言板中显示评论信息。&lt;/p>
 &lt;h3 id="comment-systems">Comment Systems&lt;/h3>
 &lt;p>在文章末尾或者留言板中显示评论信息。&lt;/p>
@@ -265,8 +265,8 @@
 &lt;td>string&lt;/td>
 &lt;td>No&lt;/td>
 &lt;td>License URL&lt;/td>
-&lt;td>&amp;lsquo;&amp;ldquo;&lt;a href="https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE%22'">https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE&amp;quot;'&lt;/a>&lt;/td>
-&lt;td>&amp;lsquo;&amp;ldquo;&lt;a href="https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE%22'">https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE&amp;quot;'&lt;/a>&lt;/td>
+&lt;td>&amp;lsquo;&amp;ldquo;&lt;a href="https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE%22%27">https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE"'&lt;/a>&lt;/td>
+&lt;td>&amp;lsquo;&amp;ldquo;&lt;a href="https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE%22%27">https://github.com/guangzhengli/hugo-theme-ladder/blob/master/LICENSE"'&lt;/a>&lt;/td>
 &lt;/tr>
 &lt;tr>
 &lt;td>description&lt;/td>
