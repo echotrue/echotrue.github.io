@@ -1,1 +1,1009 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on AXLROSE</title><link>https://echotrue.github.io/tags/go/</link><description>Recent content in Go on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>zh</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Mon, 20 May 2024 01:31:06 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/tags/go/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on AXLROSE</title><link>https://echotrue.github.io/tags/go/</link><description>Recent content in Go on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Mon, 20 May 2024 08:52:23 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang Search Slice</title><link>https://echotrue.github.io/blog/algorithm/golang-search-slice/</link><pubDate>Mon, 20 May 2024 08:52:23 +0000</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/algorithm/golang-search-slice/</guid><description>&lt;h2 id="题目">题目&lt;/h2>
+&lt;blockquote>
+&lt;p>假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值，
+在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]，
+查找的目标值为345，如果切片中存在目标值程序输出:&amp;ldquo;Found it!&amp;ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未
+找到目标值程序输出:&amp;ldquo;Timeout! Not Found&amp;rdquo;，同时立即取消仍在执行查找任务的goroutine。&lt;/p>
+&lt;/blockquote>
+&lt;p>首先题目里提到了在找到目标值或者超时后立刻结束所有&lt;code>goroutine&lt;/code>的执行，完成这两个功能需要借助计时器、通道和&lt;code>context&lt;/code>才行。
+我能想到的第一点就是要用&lt;code>context.WithCancel&lt;/code>创建一个上下文对象传递给每个执行任务的&lt;code>goroutine&lt;/code>，外部在满足条件后（找到目标值或者已超时）
+通过调用上下文的取消函数来通知所有&lt;code>goroutine&lt;/code>停止工作。&lt;/p>
+&lt;h3 id="解法">解法&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;context&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;fmt&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;os&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;time&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">timer&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">NewTimer&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">5&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">data&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> []&lt;span style="color:#66d9ef">int&lt;/span>{&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">10&lt;/span>, &lt;span style="color:#ae81ff">999&lt;/span>, &lt;span style="color:#ae81ff">8&lt;/span>, &lt;span style="color:#ae81ff">345&lt;/span>, &lt;span style="color:#ae81ff">7&lt;/span>, &lt;span style="color:#ae81ff">98&lt;/span>, &lt;span style="color:#ae81ff">33&lt;/span>, &lt;span style="color:#ae81ff">66&lt;/span>, &lt;span style="color:#ae81ff">77&lt;/span>, &lt;span style="color:#ae81ff">88&lt;/span>, &lt;span style="color:#ae81ff">68&lt;/span>, &lt;span style="color:#ae81ff">96&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dataLen&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> len(&lt;span style="color:#a6e22e">data&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">size&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">target&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">345&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ctx&lt;/span>, &lt;span style="color:#a6e22e">cancel&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">WithCancel&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Background&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">resultChan&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &amp;lt; &lt;span style="color:#a6e22e">dataLen&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#a6e22e">size&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">end&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">size&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">end&lt;/span> &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#a6e22e">dataLen&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">end&lt;/span> = &lt;span style="color:#a6e22e">dataLen&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#a6e22e">SearchTarget&lt;/span>(&lt;span style="color:#a6e22e">ctx&lt;/span>, &lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#a6e22e">i&lt;/span>:&lt;span style="color:#a6e22e">end&lt;/span>], &lt;span style="color:#a6e22e">target&lt;/span>, &lt;span style="color:#a6e22e">resultChan&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">timer&lt;/span>.&lt;span style="color:#a6e22e">C&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Fprintln&lt;/span>(&lt;span style="color:#a6e22e">os&lt;/span>.&lt;span style="color:#a6e22e">Stderr&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Timeout! Not Found&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cancel&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">resultChan&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Fprintf&lt;/span>(&lt;span style="color:#a6e22e">os&lt;/span>.&lt;span style="color:#a6e22e">Stdout&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Found it!\n&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cancel&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">SearchTarget&lt;/span>(&lt;span style="color:#a6e22e">ctx&lt;/span> &lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">data&lt;/span> []&lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#a6e22e">target&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#a6e22e">resultChan&lt;/span> &lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">_&lt;/span>, &lt;span style="color:#a6e22e">v&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">range&lt;/span> &lt;span style="color:#a6e22e">data&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>():
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Fprintf&lt;/span>(&lt;span style="color:#a6e22e">os&lt;/span>.&lt;span style="color:#a6e22e">Stdout&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Task cancelded! \n&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 模拟一个耗时查找，这里只是比对值，真实开发中可以是其他操作
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Fprintf&lt;/span>(&lt;span style="color:#a6e22e">os&lt;/span>.&lt;span style="color:#a6e22e">Stdout&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;v: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">v&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Millisecond&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">1500&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">target&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">v&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">resultChan&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Sqlx</title><link>https://echotrue.github.io/blog/golang/sqlx/</link><pubDate>Thu, 04 Aug 2022 14:50:30 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/sqlx/</guid><description>&lt;h3 id="handle-types-引用类型">Handle Types (引用类型)&lt;/h3>
+&lt;p>&lt;code>sqlx&lt;/code>旨在和&lt;code>database/sql&lt;/code>具有相同的感觉，他有四种引用类型&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>sqlx.DB&lt;/code> 类似于&lt;code>sql.DB&lt;/code>,是数据库的表示&lt;/li>
+&lt;li>&lt;code>sqlx.Tx&lt;/code>类似于&lt;code>sql.Tx&lt;/code>,是事务的表示&lt;/li>
+&lt;li>&lt;code>sqlx.Stmt&lt;/code>类似于&lt;code>sql.Stmt&lt;/code>,是预处理语句的表示&lt;/li>
+&lt;li>&lt;code>sqlx.NamedStmt&lt;/code>是一种支持命名参数的预处理语句的表示&lt;/li>
+&lt;/ul>
+&lt;p>引用类型都嵌入了他们在&lt;code>database/sql&lt;/code>中的等效物，这就意味着当你调用&lt;code>sqlx.DB.Query()&lt;/code>，实际是调用与&lt;code>sql.DB.Query&lt;/code>相同的代码。&lt;/p>
+&lt;p>除此之外，还有两种光标类型：&lt;/p>
+&lt;h3 id="querying-101-查询概述">Querying 101 (查询概述)&lt;/h3>
+&lt;p>引用类型实现了以下相同的操作来查询数据库&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Exec(...) (sql.Result, error)&lt;/code> - unchanged from database/sql&lt;/li>
+&lt;li>&lt;code>Query(...) (*sql.Rows, error)&lt;/code> - unchanged from database/sql&lt;/li>
+&lt;li>&lt;code>QueryRow(...) *sql.Row&lt;/code> - unchanged from database/sql&lt;/li>
+&lt;/ul>
+&lt;p>以下这些是内置操作的扩展&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>MustExec() sql.Result&lt;/code> &amp;ndash; Exec, but panic on error&lt;/li>
+&lt;li>&lt;code>Queryx(...) (*sqlx.Rows, error)&lt;/code> - Query, but return an sqlx.Rows&lt;/li>
+&lt;li>&lt;code>QueryRowx(...) *sqlx.Row&lt;/code> &amp;ndash; QueryRow, but return an sqlx.Row&lt;/li>
+&lt;/ul>
+&lt;p>还有这些新的语义：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Get(dest interface{}, ...) error&lt;/code>&lt;/li>
+&lt;li>&lt;code>Select(dest interface{}, ...) error&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h4 id="exec-and-mustexec">Exec and MustExec&lt;/h4>
+&lt;p>这两个方法都是用于执行插入，修改以及DDL语句。区别是他们的错误处理机制不一样，&lt;code>Exec&lt;/code>会将结果和错误返回，由开发者自行处理。而&lt;code>MustExec&lt;/code>遇到错误会抛出恐慌&lt;code>panic&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Create table
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">schema&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#e6db74">`CREATE TABLE place (country text,city text NULL,telcode integer);`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">result&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Exec&lt;/span>(&lt;span style="color:#a6e22e">schema&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">log&lt;/span>.&lt;span style="color:#a6e22e">Fatalln&lt;/span>(&lt;span style="color:#a6e22e">err&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Insert
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">schema&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#e6db74">`INSERT INTO place (country,telcode) VALUES (?,?)`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">result&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">MustExec&lt;/span>(&lt;span style="color:#a6e22e">schema&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Hong Kong&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">852&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//result.LastInsertId()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//result.RowsAffected()
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="query">Query&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// fetch all places from the db
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">rows&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Query&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;SELECT country, city, telcode FROM place&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// iterate over each row
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">Next&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">country&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// note that city can be NULL, so we use the NullString type
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">city&lt;/span> &lt;span style="color:#a6e22e">sql&lt;/span>.&lt;span style="color:#a6e22e">NullString&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">telcode&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">Scan&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">country&lt;/span>, &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">city&lt;/span>, &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">telcode&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// check the error from rows
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">Err&lt;/span>()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>应该像数据库游标一样看待&lt;code>Rows&lt;/code>，而不是将其看作一个具体的结果集。尽管数据库驱动缓冲行为有所不同，但是通过&lt;code>Next()&lt;/code>迭代能够有效的约束大型查询结果集的内存使用，因为一次只扫描一行。&lt;code>Scan()&lt;/code>通过反射来将数据库列的类型映射到&lt;code>Go&lt;/code>的类型，例如：string,[]byte等等。如果不迭代所有行的结果，请确保调用&lt;code>rows.Close()&lt;/code>以便将连接返回到连接池。
+&lt;code>Query&lt;/code>查询返回的&lt;code>error&lt;/code>是数据库服务&lt;code>preparing&lt;/code>或&lt;code>executing&lt;/code>过程中发生的任意错误。这些错误包含从连接池中获取无效的连接，尽管&lt;code>database/sql&lt;/code>会重试10次来尝试找到或创建正常的连接。通常，这些错误是由SQL语法错误，类型错误，字段名和表明错误引起。
+大多数情况下，&lt;code>Rows.Scan&lt;/code>会复制其从数据库驱动中获取的数据，因为它不知道数据库驱动将会如何重复使用缓冲区。特殊类型&lt;code>sql.RawBytes&lt;/code>可以用来从数据库驱动返回的实际数据中获取一个零拷贝的字节切片。下次调用&lt;code>Next()&lt;/code>之后，这个值将不再有效，因为这个值所在的内存可能已经被覆盖。
+&lt;code>Query&lt;/code>查询使用的连接会一直保持活跃状态，直到通过&lt;code>Next()&lt;/code>迭代完查询出的所有行，或者&lt;code>rows.Close()&lt;/code>被调用。此时，连接才会被释放。
+&lt;code>Queryx&lt;/code>和&lt;code>Query&lt;/code>用法基本一样，只是他返回一个&lt;code>sqlx.Rows&lt;/code>对象，这个对象拥有更加丰富的&lt;code>scan&lt;/code>行为可供选择。&lt;/p>
+&lt;pre tabindex="0">&lt;code>type Place struct {
+Country string
+City sql.NullString
+TelephoneCode int `db:&amp;#34;telcode&amp;#34;`
+}
+rows, err := db.Queryx(&amp;#34;SELECT * FROM place&amp;#34;)
+for rows.Next() {
+var p Place
+err = rows.StructScan(&amp;amp;p)
+}
+&lt;/code>&lt;/pre>&lt;p>&lt;code>StructScan()&lt;/code>是&lt;code>sql.Rows&lt;/code>主要的扩展行为，他会扫描查询结果并映射到结构体字段中。注意，这些字段必须是导出的（首字母大写），以便&lt;code>sqlx&lt;/code>能够将数据写入，这个规则适用于Go中的所有类型（json,xml）的&lt;code>Marshalling&lt;/code>(编码)和&lt;code>UNMarshalling&lt;/code>(解码)。可以使用结构体标签&lt;code>db&lt;/code>指定数据表列名和结构体字段的映射关系，或者使用&lt;code>db.MapperFunc()&lt;/code>设置新的默认映射关系。默认是使用&lt;code>strings.Lower&lt;/code>将结构体字段转小写来匹配数据表列名。&lt;/p>
+&lt;h4 id="queryrow">QueryRow&lt;/h4>
+&lt;p>&lt;code>QueryRow&lt;/code>从数据表提取一条记录。它从连接池中获取一个连接，然后通过&lt;code>Query&lt;/code>执行查询，返回一个内部包含&lt;code>Rows&lt;/code>对象的&lt;code>Row&lt;/code>对象。
+与&lt;code>Query&lt;/code>不同，&lt;code>QueryRow&lt;/code>返回没有错误的&lt;code>Row&lt;/code>类型结果，使得对查询结果的链式&lt;code>Scan&lt;/code>操作是安全的。如果执行查询过程中发生错误，错误会通过&lt;code>Scan&lt;/code>返回。如果没有查询到结果，&lt;code>Scan&lt;/code>返回&lt;code>sql.ErrNoRows&lt;/code>错误。如果&lt;code>Scan&lt;/code>本身发生错误（例如：类型不匹配）,错误同样会被返回。
+查询结果&lt;code>Row&lt;/code>内部的&lt;code>Rows&lt;/code>结构体在&lt;code>Scan&lt;/code>执行完后会关闭，这就意味着，&lt;code>QueryRow&lt;/code>查询所在的数据库连接一直会保持到查询结果被扫描完。同样意味着&lt;code>sql.RawBytes&lt;/code>在这里也不可用，由于被引用的内存块属于数据库驱动，并且调用返回时该内存块可能已经无效。
+&lt;code>sqlx&lt;/code>扩展的方法&lt;code>QueryRowx&lt;/code>会返回&lt;code>sqlx.Row&lt;/code>代替&lt;code>sql.Row&lt;/code>，它实现了上述介绍以及高阶扫描中&lt;code>Rows&lt;/code>相同的扫描扩展。&lt;/p>
+&lt;h4 id="get-and-select">Get and Select&lt;/h4>
+&lt;p>&lt;code>Get&lt;/code>和&lt;code>Select&lt;/code>是引用类型的节省时间的扩展，它将查询的执行和灵活的扫描语义相结合。为了清楚的解释它们，我们不得不谈论下什么是&lt;code>scannable&lt;/code>(可扫描的)：&lt;/p>
+&lt;ul>
+&lt;li>不是结构体类型的值是可扫描的，例如：&lt;code>string&lt;/code>, &lt;code>int&lt;/code>&lt;/li>
+&lt;li>实现了&lt;code>sql.Scanner&lt;/code>接口的值是可扫描的&lt;/li>
+&lt;li>没有导出字段的结构体可以是扫描的(eg. &lt;code>time.Time&lt;/code>)
+&lt;code>Get&lt;/code>和&lt;code>Select&lt;/code>使用&lt;code>rows.Scan&lt;/code>在可扫描类型上，使用&lt;code>rows.StructScan&lt;/code>在不可扫描类型上。它们与&lt;code>QueryRow&lt;/code>和&lt;code>Query&lt;/code>大致相似，&lt;code>Get&lt;/code>主要用来获取单条记录并扫描它，&lt;code>Select&lt;/code>主要用来获取一个结果集。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">pp&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> []&lt;span style="color:#a6e22e">Place&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// this will pull the first place directly into p
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;SELECT * FROM place LIMIT 1&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// this will pull places with telcode &amp;gt; 50 into the slice pp
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Select&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">pp&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;SELECT * FROM place WHERE telcode &amp;gt; ?&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">50&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// they work with regular types as well
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">id&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;SELECT count(*) FROM place&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// fetch at most 10 place names
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">names&lt;/span> []&lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Select&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">names&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;SELECT name FROM place LIMIT 10&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>Get&lt;/code>和&lt;code>Select&lt;/code>都将会关闭它们在查询执行过程中创建的&lt;code>Rows&lt;/code>对象，并且返回在这个过程中发生的任何错误。由于它们在内部使用&lt;code>StructScan&lt;/code>,因此&amp;quot;高级扫描&amp;quot;中介绍的部分也适用于这两个方法。
+&lt;code>Select&lt;/code>可以为你节省很多输入，但是，请谨记！它在语义上和&lt;code>Queryx&lt;/code>不同，因为它会将整个查询结果集一次性的加载进内存，如果这个结果集没有被查询限制到一个合理的大小，使用经典的&lt;code>Queryx/StructScan&lt;/code>迭代反而是更好的选择。&lt;/p>
+&lt;h3 id="transactions-事务">Transactions (事务)&lt;/h3>
+&lt;p>要使用事务，首选需要通过&lt;code>DB.Begin()&lt;/code>创建一个事务的引用对象。记住，&lt;code>Exec&lt;/code>以及其他查询动作每次都会向&lt;code>DB&lt;/code>索要一个连接，并且最终会将连接放回连接池。由于无法保证你每次索要的连接与&lt;code>Begin()&lt;/code>执行时所在的连接是同一个连接，所以，要使用事务，必须先调用&lt;code>DB.Begin()&lt;/code>.正确的使用方法如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">tx&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Begin&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">tx&lt;/span>.&lt;span style="color:#a6e22e">Exec&lt;/span>(&lt;span style="color:#f92672">...&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">tx&lt;/span>.&lt;span style="color:#a6e22e">Commit&lt;/span>()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>DB&lt;/code>引用也有扩展行为&lt;code>Beginx()&lt;/code>和&lt;code>MustBegin()&lt;/code>,他们返回&lt;code>sqlx.Tx&lt;/code>而不是&lt;code>sql.Tx&lt;/code>。&lt;code>sqlx.Tx&lt;/code>拥有&lt;code>sqlx.DB&lt;/code>的所有扩展行为。
+一旦事务是连接状态，&lt;code>Tx&lt;/code>对象必须绑定并限定为单个从池中获取的连接，&lt;code>Tx&lt;/code>在其整个生命周期中都将维持单个连接，只有调用&lt;code>Commit()&lt;/code>或&lt;code>Rollback()&lt;/code>才会释放连接。需要注意的是你应该至少调用这两个方法中的一个，否则，连接将会一直保持直到被GC回收。
+由于在事务中只有一个连接可以被使用，所以一次只能执行一条语句。在执行其他查询之前，必须分别扫描完或关闭&lt;code>Row&lt;/code> 和 &lt;code>Rows&lt;/code>。在数据库服务器向你发送结果的时候，如果你尝试向数据库发送数据，这很可能会破坏当前连接。
+&lt;code>Tx&lt;/code>对象实际并不意味着在服务器上的任何行为，它只是执行了&lt;code>begin&lt;/code>语句并绑定了单个连接。事务的实际行为，诸如：锁定和隔离等，在此不做具体说明，这些依赖于数据库。&lt;/p>
+&lt;h3 id="prepared-statement-预处理语句">Prepared Statement （预处理语句）&lt;/h3>
+&lt;p>在大多数数据库中，每当查询被执行时，语句会在后台被预处理。然而，你可以使用&lt;code>sqlx.DB.Prepare()&lt;/code>显式的预处理语句，以便在其他地方可以重复使用。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">stmt&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Prepare&lt;/span>(&lt;span style="color:#e6db74">`SELECT * FROM place WHERE telcode=?`&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">row&lt;/span> = &lt;span style="color:#a6e22e">stmt&lt;/span>.&lt;span style="color:#a6e22e">QueryRow&lt;/span>(&lt;span style="color:#ae81ff">65&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">tx&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Begin&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">txStmt&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">tx&lt;/span>.&lt;span style="color:#a6e22e">Prepare&lt;/span>(&lt;span style="color:#e6db74">`SELECT * FROM place WHERE telcode=?`&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">row&lt;/span> = &lt;span style="color:#a6e22e">txStmt&lt;/span>.&lt;span style="color:#a6e22e">QueryRow&lt;/span>(&lt;span style="color:#ae81ff">852&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>Prepare&lt;/code>实际会在数据库执行预处理操作，所以，它需要占用一个链接。&lt;code>database/sql&lt;/code>会抽象这一点：通过自动在新的链接上执行预处理操作，允许你使用同一个&lt;code>Stmt&lt;/code>对象同时在多个连接上执行语句。&lt;code>Preparex()&lt;/code>返回一个&lt;code>sqlx.Stmt&lt;/code>对象，它拥有&lt;code>sqlx.DB&lt;/code>和&lt;code>sqlx.Tx&lt;/code>两个扩展的所有行为。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">stmt&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Preparex&lt;/span>(&lt;span style="color:#e6db74">`SELECT * FROM place WHERE telcode=?`&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">stmt&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#ae81ff">852&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>标准的&lt;code>sql.Tx&lt;/code>对象也有一个&lt;code>Stmt()&lt;/code>方法，它从一个已存在的&lt;code>Stmt&lt;/code>对象中返回一个用于事务的特定&lt;code>Stmt&lt;/code>对象。&lt;code>sqlx.Tx&lt;/code>也有一个&lt;code>Stmtx&lt;/code>的版本，它从一个已存在的&lt;code>sql.Stmt&lt;/code>或&lt;code>sqlx.Stmt&lt;/code>对象中创建一个用于事务的特定&lt;code>sqlx.Stmt&lt;/code>对象。
+关于&lt;code>Stmt&lt;/code>对象，可参考&lt;code>pkg.go.dev&lt;/code>中&lt;code>database/sql&lt;/code>文档中的阶段概述：&lt;/p>
+&lt;blockquote>
+&lt;p>Stmt is a prepared statement. A Stmt is safe for concurrent use by multiple goroutines.
+If a Stmt is prepared on a Tx or Conn, it will be bound to a single underlying connection forever. If the Tx or Conn closes, the Stmt will become unusable and all operations will return an error. If a Stmt is prepared on a DB, it will remain usable for the lifetime of the DB. When the Stmt needs to execute on a new underlying connection, it will prepare itself on the new connection automatically.&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="query-helpers">Query Helpers&lt;/h3>
+&lt;p>&lt;code>database/sql&lt;/code>包不对查询语句文本做任何封装操作。这使得在&lt;code>sql&lt;/code>代码中使用特定于后端的特性变得琐碎。你可以像在数据库中一样迅速的编写查询语句。虽然这很灵活，但是在编写某些类型的查询语句变得困难。&lt;/p>
+&lt;h4 id="in-queries">In Queries&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">levels&lt;/span> = []&lt;span style="color:#66d9ef">int&lt;/span>{&lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">6&lt;/span>, &lt;span style="color:#ae81ff">7&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">query&lt;/span>, &lt;span style="color:#a6e22e">args&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">sqlx&lt;/span>.&lt;span style="color:#a6e22e">In&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;SELECT * FROM users WHERE level IN (?);&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">levels&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// sqlx.In returns queries with the `?` bindvar, we can rebind it for our backend
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">query&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Rebind&lt;/span>(&lt;span style="color:#a6e22e">query&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">rows&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Query&lt;/span>(&lt;span style="color:#a6e22e">query&lt;/span>, &lt;span style="color:#a6e22e">args&lt;/span>&lt;span style="color:#f92672">...&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>db.Rebind&lt;/code>可以用来获取适用于你的数据库驱动的&lt;code>query&lt;/code>格式。例如：MySQL使用&lt;code>?&lt;/code>作为占位符，而SQLite则可以使用&lt;code>?&lt;/code>和&lt;code>$1&lt;/code>作为占位符。具体参考&lt;code>bindvars&lt;/code>章节&lt;/p>
+&lt;h4 id="named-queries">Named Queries&lt;/h4>
+&lt;p>命名查询，通过映射到结构体字段名或者&lt;code>map&lt;/code>的&lt;code>key&lt;/code>来绑定变量到查询。不必映射所有字段。他包含两个与命名查询相关的查询动作：&lt;/p>
+&lt;ul>
+&lt;li>NamedQuery(&amp;hellip;) (*sqlx.Rows, error) - like Queryx, but with named bindvars&lt;/li>
+&lt;li>NamedExec(&amp;hellip;) (sql.Result, error) - like Exec, but with named bindvars
+和一个额外引用类型查询动作：&lt;/li>
+&lt;li>NamedStmt - an sqlx.Stmt which can be prepared with named bindvars&lt;/li>
+&lt;/ul>
+&lt;p>使用示例：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// named query with a struct
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span>{&lt;span style="color:#a6e22e">Country&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;South Africa&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">rows&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">NamedQuery&lt;/span>(&lt;span style="color:#e6db74">`SELECT * FROM place WHERE country=:country`&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// named query with a map
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">interface&lt;/span>{}{&lt;span style="color:#e6db74">&amp;#34;city&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;Johannesburg&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">result&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">NamedExec&lt;/span>(&lt;span style="color:#e6db74">`SELECT * FROM place WHERE city=:city`&lt;/span>, &lt;span style="color:#a6e22e">m&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查询所有结果集：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span>{&lt;span style="color:#a6e22e">TelephoneCode&lt;/span>: &lt;span style="color:#ae81ff">50&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">pp&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> []&lt;span style="color:#a6e22e">Place&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// select all telcodes &amp;gt; 50
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">nstmt&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">PrepareNamed&lt;/span>(&lt;span style="color:#e6db74">`SELECT * FROM place WHERE telcode &amp;gt; :telcode`&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">nstmt&lt;/span>.&lt;span style="color:#a6e22e">Select&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">pp&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>命名查询通过解析&lt;code>:param&lt;/code>语法并将其替换为底层数据库支持的占位符，然后在执行的时候映射查询条件。所以它适用于所有&lt;code>sqlx&lt;/code>支持的数据库。你也可以使用&lt;code>sqlx.Named&lt;/code>，他使用&lt;code>?&lt;/code>占位符，并且可以和&lt;code>sqlx.In&lt;/code>组合使用。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">arg&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">interface&lt;/span>{}{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;published&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;authors&amp;#34;&lt;/span>: []{&lt;span style="color:#ae81ff">8&lt;/span>, &lt;span style="color:#ae81ff">19&lt;/span>, &lt;span style="color:#ae81ff">32&lt;/span>, &lt;span style="color:#ae81ff">44&lt;/span>},
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">query&lt;/span>, &lt;span style="color:#a6e22e">args&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">sqlx&lt;/span>.&lt;span style="color:#a6e22e">Named&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;SELECT * FROM articles WHERE published=:published AND author_id IN (:authors)&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">arg&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">query&lt;/span>, &lt;span style="color:#a6e22e">args&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">sqlx&lt;/span>.&lt;span style="color:#a6e22e">In&lt;/span>(&lt;span style="color:#a6e22e">query&lt;/span>, &lt;span style="color:#a6e22e">args&lt;/span>&lt;span style="color:#f92672">...&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">query&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Rebind&lt;/span>(&lt;span style="color:#a6e22e">query&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Query&lt;/span>(&lt;span style="color:#a6e22e">query&lt;/span>, &lt;span style="color:#a6e22e">args&lt;/span>&lt;span style="color:#f92672">...&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="advanced-scanning">Advanced Scanning&lt;/h3>
+&lt;p>&lt;code>StructScan&lt;/code>看似复杂。他支持结构体嵌套，并且使用与&lt;code>Go&lt;/code>的属性嵌套及方法访问相同的优先级规则分配字段。一个常见的用法是在多个表之间共享表模型的公共部分。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">AutoIncr&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ID&lt;/span> &lt;span style="color:#66d9ef">uint64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Created&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Address&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">AutoIncr&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">AutoIncr&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>上面的代码中：&lt;code>Person&lt;/code>和&lt;code>Place&lt;/code>将都可以从&lt;code>StructScan&lt;/code>接收&lt;code>id&lt;/code>和&lt;code>created&lt;/code>列的值，因为他们都嵌套了&lt;code>AutoIncr&lt;/code>结构体。这个特性可以让你快速的为链表查询创建临时表。他可以递归的工作。下面的&lt;code>Employee&lt;/code>结构体拥有&lt;code>Person&lt;/code>的&lt;code>Name&lt;/code>字段以及&lt;code>AutoIncr&lt;/code>的 &lt;code>ID&lt;/code>和&lt;code>Created&lt;/code>字段的访问权限。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Employee&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">BossID&lt;/span> &lt;span style="color:#66d9ef">uint64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">EmployeeID&lt;/span> &lt;span style="color:#66d9ef">uint64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Person&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>注意：&lt;code>sqlx&lt;/code>历史版本为非嵌入式结构体支持此特性，这使得开发者感到困惑。因为有用户利用此特性定义关系并嵌入相同的结构体两次：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Child&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Father&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Mother&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这会引起一些问题。在Go中隐藏派生字段是合法的.如果上面的&lt;code>Employee&lt;/code>定义了&lt;code>Name&lt;/code>字段，他的优先级将会高于&lt;code>Person&lt;/code>结构体的&lt;code>Name&lt;/code>字段。但是模糊的选择器是非法的且会引起运行时错误。如果我们想要为&lt;code>Person&lt;/code>和&lt;code>Place&lt;/code>快速的创建链表查询，我们应该将&lt;code>id&lt;/code>定义到哪里？是他们两个结构体都嵌入的&lt;code>AutoIncr&lt;/code>结构体中？这是否会有错误？
+由于&lt;code>sqlx&lt;/code>构建字段名到字段地址的映射方式，当你扫描数据到结构体时，它并不知道在遍历结构体树的过程中是否遇到了同一个字段名两次。所以，与Go不同，&lt;code>StructScan&lt;/code>将会选择首次遇到的这个字段。由于Go结构体字段是从上到下排序，并且&lt;code>sqlx&lt;/code>使用广度优先原则便利以维持优先级原则，因此&lt;code>StructScan&lt;/code>使用最浅层（多层嵌套情况下），且最前面的定义的字段。
+例如：在以下结构体中，&lt;code>StructScan&lt;/code>会将&lt;code>id&lt;/code>列的值赋给&lt;code>Persion.AutoIncr.ID&lt;/code>,也可以通过&lt;code>Persion.ID&lt;/code>来访问。为了避免混淆，建议在你的SQL种使用&lt;code>AS&lt;/code>关键字为列设置别名。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">PersonPlace&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Person&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Place&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="scan-destination-safety">Scan Destination Safety&lt;/h4>
+&lt;p>通常情况下，如果列的值不能映射到目标数据结构的字段上，&lt;code>StructScan&lt;/code>会返回一个错误。这模仿了Go中对未使用变量的处理方式，但是与标准库编码解码包例如：&lt;code>encoding/json&lt;/code>不同。因为SQL通常以比解析&lt;code>JSON&lt;/code>更可控的方式执行，这些错误通常是编码错误，默认情况下会返回错误。
+像未使用的变量一样，你忽略的列是对网络和数据库资源的浪费，并且，在没有映射器告诉你一些东西未找到的情况下，尽早的检测出不兼容的映射和结构体标签中的错别字是非常困难的。
+尽管如此，在某些情况下需要忽略没有目标结构的列。为此，每一种引用类型都实现了一个&lt;code>Unsafe&lt;/code>方法，它返回这个引用的拷贝，这份拷贝关闭了安全功能。
+Unsafe()方法说明：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Unsafe returns a version of DB which will silently succeed to scan when
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// columns in the SQL result have no fields in the destination struct.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// sqlx.Stmt and sqlx.Tx which are created from this DB will inherit its
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// safety behavior.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">db&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">DB&lt;/span>) &lt;span style="color:#a6e22e">Unsafe&lt;/span>() &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">DB&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">DB&lt;/span>{&lt;span style="color:#a6e22e">DB&lt;/span>: &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">DB&lt;/span>, &lt;span style="color:#a6e22e">driverName&lt;/span>: &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">driverName&lt;/span>, &lt;span style="color:#a6e22e">unsafe&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>, &lt;span style="color:#a6e22e">Mapper&lt;/span>: &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Mapper&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Usage：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// err here is not nil because there are no field destinations for columns in `place`
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;SELECT * FROM person, place LIMIT 1;&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// this will NOT return an error, even though place columns have no destination
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">udb&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Unsafe&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">udb&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;SELECT * FROM person, place LIMIT 1;&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="controlling-name-mappint">Controlling Name Mappint&lt;/h4>
+&lt;p>用作&lt;code>StructScan&lt;/code>目标的结构体字段必须大写才能被&lt;code>sqlx&lt;/code>访问。因此，&lt;code>sqlx&lt;/code>使用&lt;code>NameMapper&lt;/code>将&lt;code>strings.ToLower&lt;/code>应用到字段名以映射他们到查询的结果的列。这并不总是可取的，依赖于数据库对象，所以&lt;code>sqlx&lt;/code>允许通过多种方式自定义映射。
+最简单的一种方式就是通过&lt;code>sqlx.DB.MapperFunc&lt;/code>为引用类型设置映射，改方法接受一个&lt;code>func(string)string&lt;/code>类型的参数。如果你的库需要特定的映射器，并且你不想污染&lt;code>sqlx.DB&lt;/code>，你可以创建一个&lt;code>DB&lt;/code>拷贝用于特定映射场景。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// if our db schema uses ALLCAPS columns, we can use normal fields
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">MapperFunc&lt;/span>(&lt;span style="color:#a6e22e">strings&lt;/span>.&lt;span style="color:#a6e22e">ToUpper&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// suppose a library uses lowercase columns, we can create a copy
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">copy&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">sqlx&lt;/span>.&lt;span style="color:#a6e22e">NewDb&lt;/span>(&lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">DB&lt;/span>, &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">DriverName&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">copy&lt;/span>.&lt;span style="color:#a6e22e">MapperFunc&lt;/span>(&lt;span style="color:#a6e22e">strings&lt;/span>.&lt;span style="color:#a6e22e">ToLower&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>sqlx.DB&lt;/code>使用 &lt;code>sqlx/reflectx&lt;/code>包的 &lt;code>Mapper&lt;/code> 来实现底层的映射逻辑，并且通过 &lt;code>sqlx.DB.Mapper&lt;/code>导出当前活跃的映射器。你可以通过直接设置来自定义数据库上的映射器：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;github.com/jmoiron/sqlx/reflectx&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Create a new mapper which will use the struct field tag &amp;#34;json&amp;#34; instead of &amp;#34;db&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Mapper&lt;/span> = &lt;span style="color:#a6e22e">reflectx&lt;/span>.&lt;span style="color:#a6e22e">NewMapperFunc&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;json&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">strings&lt;/span>.&lt;span style="color:#a6e22e">ToLower&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="alternate-scan-types">Alternate Scan Types&lt;/h4>
+&lt;p>除了使用 &lt;code>StructScan&lt;/code> 和 &lt;code>Scan&lt;/code> ,&lt;code>sqlx&lt;/code>的查询行结果也可以返回切片或 &lt;code>map&lt;/code>集合：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">rows&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Queryx&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;SELECT * FROM place&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">Next&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// cols is an []interface{} of all of the column results
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">cols&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">SliceScan&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">rows&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Queryx&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;SELECT * FROM place&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">Next&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">results&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">interface&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">MapScan&lt;/span>(&lt;span style="color:#a6e22e">results&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>SliceScan&lt;/code>一般使用在你不知道会返回哪些字段的情况下。&lt;code>MapScan&lt;/code>与之相同，但 &lt;code>MapScan&lt;/code>将列映射到 &lt;code>interface{}&lt;/code>类型值上。这里需要重点注意的是， &lt;code>rows.Columns()&lt;/code>返回的结果不包含完整的名称。例如：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">SELECT&lt;/span> &lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">id&lt;/span>, &lt;span style="color:#a6e22e">b&lt;/span>.&lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#a6e22e">FROM&lt;/span> &lt;span style="color:#a6e22e">a&lt;/span> &lt;span style="color:#a6e22e">NATURAL&lt;/span> &lt;span style="color:#a6e22e">JOIN&lt;/span> &lt;span style="color:#a6e22e">b&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>将会导致一个 &lt;code>[]string{&amp;quot;id&amp;quot;,&amp;quot;id&amp;quot;}&lt;/code>格式的列结果，这破坏了你的map中的一个结果。&lt;/p>
+&lt;h3 id="custom-types">Custom Types&lt;/h3>
+&lt;p>上面的列子都使用了内置类型来扫描或者查询，但是 &lt;code>database/sql&lt;/code> 提供了接口允许你使用自定义的类型：&lt;/p>
+&lt;ul>
+&lt;li>sql.Scanner allows you to use custom types in a Scan()&lt;/li>
+&lt;li>driver.Valuer allows you to use custom types in a Query/QueryRow/Exec
+这些是标准的接口，使用他们可以确保在 &lt;code>database/sql&lt;/code> 上提供的服务可以移植到任何库。具体如何使用请参考 &lt;a href="http://jmoiron.net/blog/built-in-interfaces">Built In Interfaces&lt;/a> 这篇文章，或者查看 &lt;code>sqlx/types&lt;/code> 包，改包实现了一些标准的实用类型。&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-connection-pool">The Connection Pool&lt;/h3>
+&lt;p>准备语句和查询的执行都需要连接，&lt;code>DB&lt;/code>对象会管理一个连接池，以保证它可以进行安全的并发查询。有两种方法可以控制连接池的大小：&lt;/p>
+&lt;ul>
+&lt;li>DB.SetMaxIdleConns(n int)&lt;/li>
+&lt;li>DB.SetMaxOpenConns(n int)
+默认情况下，池子可以无限增长，并且只要池中没有可用连接，就会创建一个连接。你可以使用 &lt;code>DB.SetMaxOpenConns&lt;/code>设置最大连接数。未使用的连接会被标记为空闲，如果他们不被需要将会被关闭。为避免建立和关闭大量连接，使用 &lt;code>DB.SetMaxIdleConns&lt;/code> 将最大空闲连接数设置为适合你查询负载的大小是一种明智的选择。
+很容易陷入阻塞连接的困境中，为了防止这种情况：&lt;/li>
+&lt;li>确保 &lt;code>Scan()&lt;/code> 每个row对象&lt;/li>
+&lt;li>确保通过 &lt;code>Next()&lt;/code>对每个Rows对象进行完整迭代或调用&lt;code>Close()&lt;/code>&lt;/li>
+&lt;li>确保每一个事务都通过 &lt;code>Commit()&lt;/code> 或 &lt;code>Rollback()&lt;/code> 返回连接&lt;/li>
+&lt;/ul>
+&lt;p>如果你忘记这些操作，连接将会一直阻塞直到被 &lt;code>GC&lt;/code> 回收，并且你的数据库会立刻停止建立更多的连接，以此抵消当前正在使用的这个链接。注意 &lt;code>Rows.Close()&lt;/code> 可以被多次安全的调用，所以不用担心在不需要的地方调用它。&lt;/p></description></item><item><title>Binary an Bit Operation</title><link>https://echotrue.github.io/blog/golang/binary-an-bit-operation/</link><pubDate>Fri, 27 Aug 2021 10:34:44 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/binary-an-bit-operation/</guid><description>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Addressable and Unaddressable-Value</title><link>https://echotrue.github.io/blog/golang/addressable/</link><pubDate>Sat, 23 Jan 2021 14:42:12 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/addressable/</guid><description>&lt;h3 id="addressable">Addressable&lt;/h3></description></item><item><title>Lock</title><link>https://echotrue.github.io/blog/golang/lock/</link><pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/lock/</guid><description>&lt;h3 id="检测go程序中按值传递的-locks">检测Go程序中按值传递的 locks&lt;/h3></description></item><item><title>Read Schollz/Progressbar</title><link>https://echotrue.github.io/blog/golang/read-schollz-progressbar/</link><pubDate>Fri, 13 Nov 2020 14:20:35 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-schollz-progressbar/</guid><description>&lt;h3 id="type-progressbar">type ProgressBar&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">ProgressBar&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">state&lt;/span> &lt;span style="color:#a6e22e">state&lt;/span> &lt;span style="color:#75715e">// 进度条状态
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">config&lt;/span> &lt;span style="color:#a6e22e">config&lt;/span> &lt;span style="color:#75715e">// 进度条配置
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">lock&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Mutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">state&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">currentNum&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">currentPercent&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">lastPercent&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">currentSaucerSize&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">lastShown&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">startTime&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">counterTime&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">counterNumSinceLast&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">counterLastTenRates&lt;/span> []&lt;span style="color:#66d9ef">float64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">maxLineWidth&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">currentBytes&lt;/span> &lt;span style="color:#66d9ef">float64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">finished&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">config&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">max&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span> &lt;span style="color:#75715e">// max number of the counter
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">width&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">writer&lt;/span> &lt;span style="color:#a6e22e">io&lt;/span>.&lt;span style="color:#a6e22e">Writer&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">theme&lt;/span> &lt;span style="color:#a6e22e">Theme&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">renderWithBlankState&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">description&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ignoreLength&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> &lt;span style="color:#75715e">// ignoreLength if max bytes not known
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// whether the output is expected to contain color codes
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">colorCodes&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// show rate of change in kB/sec or MB/sec
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">showBytes&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// show the iterations per second
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">showIterationsPerSecond&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">showIterationsCount&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// whether the progress bar should attempt to predict the finishing
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// time of the progress based on the start time and the average
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// number of seconds between increments.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">predictTime&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 进度条刷新最短间隔时间
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">throttleDuration&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Duration&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 完成后清除进度条
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">clearOnFinish&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// spinnerType should be a number between 0-75
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">spinnerType&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// fullWidth specifies whether to measure and set the bar to a specific width
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">fullWidth&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 完成时回调函数
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">onCompletion&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="源码分析">源码分析&lt;/h3>
+&lt;p>可以通过以下&lt;code>function&lt;/code>创建&lt;code>ProgressBar&lt;/code>实例，并渲染初始进度为0的进度条&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">New&lt;/span>(&lt;span style="color:#a6e22e">max&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ProgressBar&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">NewOptions&lt;/span>(&lt;span style="color:#a6e22e">max&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#a6e22e">options&lt;/span> &lt;span style="color:#f92672">...&lt;/span>&lt;span style="color:#a6e22e">Option&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ProgressBar&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">NewOptions64&lt;/span>(&lt;span style="color:#a6e22e">max&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span>, &lt;span style="color:#a6e22e">options&lt;/span> &lt;span style="color:#f92672">...&lt;/span>&lt;span style="color:#a6e22e">Option&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ProgressBar&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">New64&lt;/span>(&lt;span style="color:#a6e22e">max&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ProgressBar&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">Default&lt;/span>(&lt;span style="color:#a6e22e">max&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span>, &lt;span style="color:#a6e22e">description&lt;/span> &lt;span style="color:#f92672">...&lt;/span>&lt;span style="color:#66d9ef">string&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ProgressBar&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">DefaultBytes&lt;/span>(&lt;span style="color:#a6e22e">maxBytes&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span>, &lt;span style="color:#a6e22e">description&lt;/span> &lt;span style="color:#f92672">...&lt;/span>&lt;span style="color:#66d9ef">string&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ProgressBar&lt;/span> {}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>渲染进度条逻辑&lt;/p>
+&lt;ol>
+&lt;li>当上一次进度条刷新距离当前的时间小于&lt;code>config.throttleDuration&lt;/code>且当前进度数小于进度条总数时不继续执行。&lt;/li>
+&lt;li>清理进度条。即输出空格以填充当前行。&lt;/li>
+&lt;li>进度条状态是未完成，且当前进度数大于进度条的总数，则设置进度条的状态为完成状态。如果&lt;code>clearOnFinish&lt;/code>选项为false，则执行&lt;code>renderProgressBar&lt;/code>渲染。如果
+设置了&lt;code>onCompletion&lt;/code>回调函数，则执行该回调函数&lt;/li>
+&lt;li>如果&lt;code>state.finished&lt;/code>为true，则不继续执行。&lt;/li>
+&lt;li>开始渲染&lt;/li>
+&lt;/ol></description></item><item><title>Array And Slice</title><link>https://echotrue.github.io/blog/golang/array-slice/</link><pubDate>Wed, 21 Oct 2020 11:49:53 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/array-slice/</guid><description>&lt;h3 id="数组">数组&lt;/h3>
+&lt;p>数组类型定义了&lt;code>长度&lt;/code>和&lt;code>元素&lt;/code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。&lt;/p>
+&lt;pre tabindex="0">&lt;code>var arr [4]int // 声明
+fmt.Println(arr[1]) // 不需要显式的初始化
+arr1 := [2]string{&amp;#34;Penn&amp;#34;, &amp;#34;Teller&amp;#34;} // 数组的字面值
+arr2 := [...]string{&amp;#34;Penn&amp;#34;, &amp;#34;Teller&amp;#34;} // 编译器统计数组字面值中的元素数量
+fmt.Println(arr1, len(arr1), cap(arr1))
+fmt.Println(arr2, len(arr2), cap(arr2))
+&lt;/code>&lt;/pre>&lt;p>Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）&lt;/p>
+&lt;pre tabindex="0">&lt;code>func update(arr *[2]string) {
+arr[1] = &amp;#34;axlrose&amp;#34;
+}
+func main() {
+arr1 := [2]string{&amp;#34;Penn&amp;#34;, &amp;#34;Teller&amp;#34;}
+update(&amp;amp;arr1)
+fmt.Println(arr1)
+}
+&lt;/code>&lt;/pre>&lt;h3 id="切片的创建和初始化">切片的创建和初始化&lt;/h3>
+&lt;p>Golang中切片有三种初始化方式：&lt;/p>
+&lt;ul>
+&lt;li>通过下标的方式获得数组或者切片的一部分；&lt;/li>
+&lt;li>使用字面量初始化新的切片；&lt;/li>
+&lt;li>使用关键字 make 创建切片：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">arr&lt;/span>[&lt;span style="color:#ae81ff">0&lt;/span>:&lt;span style="color:#ae81ff">3&lt;/span>] &lt;span style="color:#a6e22e">or&lt;/span> &lt;span style="color:#a6e22e">slice&lt;/span>[&lt;span style="color:#ae81ff">0&lt;/span>:&lt;span style="color:#ae81ff">3&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">slice&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> []&lt;span style="color:#66d9ef">int&lt;/span>{&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>} &lt;span style="color:#75715e">// 通过字面量创建并初始化长度，容量都为4的切片
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">slice&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> []&lt;span style="color:#66d9ef">int&lt;/span>{&lt;span style="color:#ae81ff">99&lt;/span>: &lt;span style="color:#ae81ff">0&lt;/span>} &lt;span style="color:#75715e">// 通过字面量创建并初始化长度和容量都是100的切片
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">slice&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make([]&lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>) &lt;span style="color:#75715e">// make() 创建并初始化长度为3，容量为4的切片
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">slice&lt;/span> []&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#75715e">// 只创建切片，不初始化。值为nil，又称空切片，它的长度和容量都为0
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>需要注意的是使用下标初始化切片不会造成原始数组或者切片中数据的拷贝，它只会创建一个指向原始数组的切片值，所以修改新切片的数据也会修改原始切片。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="零值切片nil切片和空切片">零值切片，nil切片和空切片&lt;/h3>
+&lt;ul>
+&lt;li>零切片：切片元素的值均是元素类型所对应的的0值切片&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>slice1 :&lt;span style="color:#f92672">=&lt;/span> make&lt;span style="color:#f92672">([]&lt;/span>int, 10&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fmt.Println&lt;span style="color:#f92672">(&lt;/span>slice1&lt;span style="color:#f92672">)&lt;/span> //&lt;span style="color:#f92672">[&lt;/span>&lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> 0&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>slice2 :&lt;span style="color:#f92672">=&lt;/span> make&lt;span style="color:#f92672">([]&lt;/span>*int,10&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>fmt.Println&lt;span style="color:#f92672">(&lt;/span>slice2&lt;span style="color:#f92672">)&lt;/span> //&lt;span style="color:#f92672">[&lt;/span>&amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt; &amp;lt;nil&amp;gt;&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="切片追加和扩容">切片追加和扩容&lt;/h3>
+&lt;p>在分配内存空间之前需要先确定新的切片容量，Go 语言根据切片的当前容量选择不同的策略进行扩容：&lt;/p>
+&lt;ul>
+&lt;li>如果期望容量大于当前容量的两倍就会使用期望容量；&lt;/li>
+&lt;li>如果当前切片的长度小于 1024 就会将容量翻倍；&lt;/li>
+&lt;li>如果当前切片的长度大于 1024 就会每次增加 25% 的容量，直到新容量大于期望容量；&lt;/li>
+&lt;/ul></description></item><item><title>Context</title><link>https://echotrue.github.io/blog/golang/context/</link><pubDate>Sat, 03 Oct 2020 15:13:54 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/context/</guid><description>&lt;h3 id="引言">引言&lt;/h3>
+&lt;p>&lt;code>Golang&lt;/code>的&lt;code>Context&lt;/code>包是专门用来简化对于处理单个请求的多个&lt;code>goroutine&lt;/code>之间与请求域的数据，取消信号，截止时间等相关操作。
+一个实际的例子是：&lt;/p>
+&lt;blockquote>
+&lt;p>在&lt;code>Go&lt;/code>服务器程序中，每个请求都会有一个&lt;code>goroutine&lt;/code>去处理。然而，处理程序可能还需要创建额外的&lt;code>goroutine&lt;/code>去访问其他资源，比如：数据库，
+RPC服务等。由于这些&lt;code>goroutine&lt;/code>都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token
+，请求截止时间等。当请求超时或者被取消后，所有的&lt;code>goroutine&lt;/code>都应该马上退出并且释放相关的资源。这种情况也需要用&lt;code>Context&lt;/code>来为我们来取消掉所有
+的&lt;code>goroutine&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="context定义">Context定义&lt;/h3>
+&lt;p>&lt;code>context&lt;/code>的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据，
+之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构，
+根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。&lt;/p>
+&lt;p>&lt;code>context&lt;/code>包的核心是&lt;code>interface Context&lt;/code> ,声明如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>type Context interface {
+Deadline() (deadline time.Time, ok bool)
+Done() &amp;lt;-chan struct{}
+Err() error
+Value(key interface{}) interface{}
+}
+&lt;/code>&lt;/pre>&lt;p>&lt;code>Context&lt;/code>定义很简单，一共四个方法：&lt;/p>
+&lt;ol>
+&lt;li>Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求；
+第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。&lt;/li>
+&lt;li>Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取，
+则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。&lt;/li>
+&lt;li>Err方法返回取消的错误原因，因为什么Context被取消。&lt;/li>
+&lt;li>Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。&lt;/li>
+&lt;/ol>
+&lt;h3 id="context的实现方法">Context的实现方法&lt;/h3>
+&lt;p>&lt;code>Context&lt;/code> 虽然是个接口，但是并不需要使用方实现，&lt;code>golang&lt;/code>内置的&lt;code>context&lt;/code> 包，已经帮我们实现了2个方法，一般在代码中，
+开始上下文的时候都是以这两个作为最顶层的&lt;code>parent context&lt;/code>，然后再衍生出子&lt;code>context&lt;/code>。这些 &lt;code>Context&lt;/code> 对象形成一棵树：
+当一个 &lt;code>Context&lt;/code> 对象被取消时，继承自它的所有 &lt;code>Context&lt;/code> 都会被取消。两个实现如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>var (
+background = new(emptyCtx)
+todo = new(emptyCtx)
+)
+func Background() Context {
+return background
+}
+func TODO() Context {
+return todo
+}
+&lt;/code>&lt;/pre>&lt;ol>
+&lt;li>一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。&lt;/li>
+&lt;li>一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。&lt;/li>
+&lt;li>他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。&lt;/li>
+&lt;/ol>
+&lt;pre tabindex="0">&lt;code>type emptyCtx int
+func (*emptyCtx) Deadline() (deadline time.Time, ok bool) {
+return
+}
+func (*emptyCtx) Done() &amp;lt;-chan struct{} {
+return nil
+}
+func (*emptyCtx) Err() error {
+return nil
+}
+func (*emptyCtx) Value(key interface{}) interface{} {
+return nil
+}
+&lt;/code>&lt;/pre>&lt;h3 id="context的继承">Context的继承&lt;/h3>
+&lt;p>有了如上的根Context，那么是如何衍生更多的子Context的呢？这就要靠context包为我们提供的With系列的函数了。&lt;/p>
+&lt;pre tabindex="0">&lt;code>func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
+func WithValue(parent Context, key, val interface{}) Context
+&lt;/code>&lt;/pre>&lt;p>通过这些函数，就创建了一颗Context树，树的每个节点都可以有任意多个子节点，节点层级可以有任意多个。&lt;/p>
+&lt;ol>
+&lt;li>WithCancel函数，传递一个父Context作为参数，返回子Context，以及一个取消函数用来取消Context。&lt;/li>
+&lt;li>WithDeadline函数，和WithCancel差不多，它会多传递一个截止时间参数，意味着到了这个时间点，会自动取消Context，当然我们也可以不等到这个时候，可以提前通过取消函数进行取消。&lt;/li>
+&lt;li>WithTimeout和WithDeadline基本上一样，这个表示是超时自动取消，是多少时间后自动取消Context的意思。&lt;/li>
+&lt;li>WithValue函数和取消Context无关，它是为了生成一个绑定了一个键值对数据的Context，这个绑定的数据可以通过Context.Value方法访问到，这是我们实际用经常要用到的技巧，一般我们想要通过上下文来传递数据时，可以通过这个方法，如我们需要tarce追踪系统调用栈的时候。&lt;/li>
+&lt;/ol>
+&lt;h3 id="context使用技巧和原则">Context使用技巧和原则&lt;/h3>
+&lt;ul>
+&lt;li>不要把Context放在结构体中，要以参数的方式传递，parent Context一般为Background&lt;/li>
+&lt;li>应该要把Context作为第一个参数传递给入口请求和出口请求链路上的每一个函数，放在第一位，变量名建议都统一，如ctx。&lt;/li>
+&lt;li>给一个函数方法传递Context的时候，不要传递nil，否则在tarce追踪的时候，就会断了连接&lt;/li>
+&lt;li>Context的Value相关方法应该传递必须的数据，不要什么数据都使用这个传递&lt;/li>
+&lt;li>Context是线程安全的，可以放心的在多个goroutine中传递&lt;/li>
+&lt;li>可以把一个 Context 对象传递给任意个数的 gorotuine，对它执行 取消 操作时，所有 goroutine 都会接收到取消信号。&lt;/li>
+&lt;/ul>
+&lt;h3 id="context使用示例">Context使用示例&lt;/h3>
+&lt;h4 id="请求链路传值">请求链路传值&lt;/h4>
+&lt;pre tabindex="0">&lt;code>func func1(ctx context.Context) {
+ctx = context.WithValue(ctx, &amp;#34;k1&amp;#34;, &amp;#34;v1&amp;#34;)
+func2(ctx)
+}
+func func2(ctx context.Context) {
+fmt.Println(ctx.Value(&amp;#34;k1&amp;#34;).(string))
+}
+func main() {
+ctx := context.Background()
+func1(ctx)
+}
+&lt;/code>&lt;/pre>&lt;p>我们在&lt;code>func1&lt;/code>通过&lt;code>WithValue(parent Context, key, val interface{}) Context&lt;/code>，赋值k1为v1，
+在其下层函数&lt;code>func2&lt;/code>通过&lt;code>ctx.Value(key interface{}) interface{}&lt;/code>获取k1的值，比较简单。这里有个疑问，如果我是在&lt;code>func2&lt;/code>里赋值，
+在&lt;code>func1&lt;/code>里面能够拿到这个值吗？答案是不能，&lt;code>context&lt;/code>只能自上而下携带值，这个是要注意的一点。&lt;/p>
+&lt;h4 id="取消耗时操作及时释放资源">取消耗时操作，及时释放资源&lt;/h4>
+&lt;h5 id="主动取消">主动取消&lt;/h5>
+&lt;pre tabindex="0">&lt;code>func func1(ctx context.Context, wg *sync.WaitGroup) error {
+defer wg.Done()
+respC := make(chan int)
+// 处理逻辑
+go func() {
+time.Sleep(time.Second * 5)
+respC &amp;lt;- 10
+}()
+// 取消机制
+select {
+case &amp;lt;-ctx.Done():
+fmt.Println(&amp;#34;cancel.&amp;#34;)
+return errors.New(&amp;#34;cancel&amp;#34;)
+case r := &amp;lt;-respC:
+fmt.Println(r)
+return nil
+}
+}
+func main() {
+wg := new(sync.WaitGroup)
+ctx, cancel := context.WithCancel(context.Background())
+wg.Add(1)
+go func1(ctx, wg)
+time.Sleep(time.Second * 2)
+cancel()
+wg.Wait()
+}
+&lt;/code>&lt;/pre>&lt;h5 id="超时取消">超时取消&lt;/h5>
+&lt;pre tabindex="0">&lt;code>func func1(ctx context.Context) {
+hctx, hcancel := context.WithTimeout(ctx, time.Second*4)
+defer hcancel()
+resp := make(chan struct{}, 1)
+go func() {
+// 处理耗时操作
+time.Sleep(time.Second * 10)
+resp &amp;lt;- struct{}{}
+}()
+select {
+// case &amp;lt;-ctx.Done():
+// fmt.Println(&amp;#34;ctx timeout&amp;#34;)
+// fmt.Println(&amp;#34;退出&amp;#34;,ctx.Err())
+case &amp;lt;-hctx.Done():
+fmt.Println(&amp;#34;hctx timeout&amp;#34;)
+fmt.Println(hctx.Err())
+case v := &amp;lt;-resp:
+fmt.Println(&amp;#34;test2 function handle done&amp;#34;)
+fmt.Printf(&amp;#34;result:%v\n&amp;#34;, v)
+}
+fmt.Println(&amp;#34;test2 finish&amp;#34;)
+fmt.Println(time.Now().Unix())
+return
+}
+func main() {
+fmt.Println(time.Now().Unix())
+ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
+defer cancel()
+func1(ctx)
+}
+&lt;/code>&lt;/pre></description></item><item><title>Golang Data Races</title><link>https://echotrue.github.io/blog/golang/data-races/</link><pubDate>Sat, 03 Oct 2020 11:12:05 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/data-races/</guid><description>&lt;h3 id="关于golang并发安全">关于Golang并发安全&lt;/h3>
+&lt;ol>
+&lt;li>&lt;a href="http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html">谈谈go语言编程的并发安全&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html">Benign Data Races: What Could Possibly Go Wrong?&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3 id="什么是数据竞争">什么是数据竞争&lt;/h3>
+&lt;pre tabindex="0">&lt;code>package main
+import (
+&amp;#34;fmt&amp;#34;
+)
+func main() {
+var i int
+go func() {
+i = 5
+}()
+fmt.Println(i)
+}
+&lt;/code>&lt;/pre>&lt;p>先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的&lt;code>goroutine&lt;/code>来设置&lt;code>i&lt;/code>的值。
+同时，在不知道开启的&lt;code>goroutine&lt;/code>是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：&lt;/p>
+&lt;ul>
+&lt;li>变量&lt;code>i&lt;/code>的值正在被设置为5&lt;/li>
+&lt;li>打印i的值&lt;/li>
+&lt;/ul>
+&lt;p>所以，最后程序打印出来的值可能是0或者5。这就叫数据竞争，i的值根据以上两个操作哪一个先完成而不同。&lt;/p>
+&lt;h3 id="检测数据竞争">检测数据竞争&lt;/h3>
+&lt;p>&lt;code>Golang&lt;/code>有一个内置的数据竞争检测器，只需要在使用&lt;code>Go&lt;/code>命令行工具的时候添加&lt;code>-race&lt;/code>标志。例如：让我们尝试用&lt;code>-race&lt;/code>标志来
+运行我们刚刚编写的程序：&lt;/p>
+&lt;pre tabindex="0">&lt;code>$ go run -race main.go
+0
+==================
+WARNING: DATA RACE
+Write at 0x00c000122068 by goroutine 7:
+main.main.func1()
+F:/go_project/api-service/test/core/main.go:10 +0x3f
+Previous read at 0x00c000122068 by main goroutine:
+main.main()
+F:/go_project/api-service/test/core/main.go:12 +0x8f
+Goroutine 7 (running) created at:
+main.main()
+F:/go_project/api-service/test/core/main.go:9 +0x81
+==================
+Found 1 data race(s)
+exit status 66
+&lt;/code>&lt;/pre>&lt;p>0是打印结果，第一部分告诉我们在子&lt;code>goroutine&lt;/code>中尝试写入的位置，第二部分告诉我们在主&lt;code>goroutine&lt;/code>中，同时有一个读的操作。
+第三部分描述了导致数据竞争的&lt;code>goroutine&lt;/code>是在哪里创建。
+除了&lt;code>go run&lt;/code>名另外，&lt;code>go build&lt;/code>和&lt;code>go test&lt;/code>命令也支持使用&lt;code>-race&lt;/code>标志。这个会使编译器创建的应用程序能够记录所有运行期
+间对共享变量访问，并且会记录下每一个读或者写共享变量的goroutine的身份信息。&lt;/p>
+&lt;p>竞争检查器会报告所有的已经发生的数据竞争。然而，它只能检测到运行时的竞争条件，并不能证明之后不会发生数据竞争。由于需要额外
+的记录，因此构建时加了竞争检测的程序跑起来会慢一些，且需要更大的内存，即使是这样，这些代价对于很多生产环境的工作来说还是可
+以接受的。对于一些偶发的竞争条件来说，使用附带竞争检查器的应用程序可以节省很多花在Debug上的时间。&lt;/p>
+&lt;h3 id="数据竞争解决方案">数据竞争解决方案&lt;/h3>
+&lt;p>Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有：
+使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。&lt;/p>
+&lt;h3 id="使用waitgroup">使用WaitGroup&lt;/h3>
+&lt;pre tabindex="0">&lt;code>func main() {
+var i int
+var wg sync.WaitGroup
+wg.Add(1) // 通知程序有一个需要等待完成的任务
+go func() {
+i = 5
+wg.Done() // 告诉程序任务已经执行完成
+}()
+wg.Wait() // 阻塞当前程序直到等待的任务执行完成
+fmt.Println(i)
+}
+&lt;/code>&lt;/pre>&lt;h3 id="使用通道">使用通道&lt;/h3>
+&lt;pre tabindex="0">&lt;code>func main() {
+var i int
+wait := make(chan struct{})
+go func() {
+i = 5
+wait &amp;lt;- struct{}{}
+}()
+&amp;lt;-wait
+fmt.Println(i)
+}
+&lt;/code>&lt;/pre>&lt;h3 id="使用mutex">使用Mutex&lt;/h3>
+&lt;p>以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。
+这种情况下我们应该考虑使用&lt;code>Mutex&lt;/code>互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。&lt;/p>
+&lt;pre tabindex="0">&lt;code>type SafeNumber struct {
+i int
+m sync.Mutex
+}
+func (sn *SafeNumber) Set(n int) {
+sn.m.Lock()
+defer sn.m.Unlock()
+sn.i = n
+}
+func (sn *SafeNumber) Get() int {
+sn.m.Lock()
+defer sn.m.Unlock()
+return sn.i
+}
+func main() {
+sn := new(SafeNumber)
+go func() {
+sn.Set(5)
+}()
+fmt.Println(sn.Get())
+}
+&lt;/code>&lt;/pre></description></item><item><title>Block forever in Go</title><link>https://echotrue.github.io/blog/golang/block-forever-in-go/</link><pubDate>Tue, 08 Sep 2020 15:44:44 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/block-forever-in-go/</guid><description>&lt;h2 id="golang中永久阻塞的不同方法">Golang中永久阻塞的不同方法&lt;/h2>
+&lt;p>The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling &lt;code>os.Exit&lt;/code> or by returning from the &lt;code>main()&lt;/code> function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.&lt;/p>
+&lt;h3 id="1-using-syncwaitgroup">1. Using sync.WaitGroup&lt;/h3>
+&lt;p>Wait blocks until the WaitGroup counter is zero.&lt;/p>
+&lt;pre tabindex="0">&lt;code>package main
+import &amp;#34;sync&amp;#34;
+func main() {
+var wg sync.WaitGroup
+wg.Add(1)
+wg.Wait()
+}
+&lt;/code>&lt;/pre>&lt;h3 id="2-empty-select">2. Empty select&lt;/h3>
+&lt;p>An empty &lt;code>select{}&lt;/code> statement blocks indefinitely i.e. forever. It is similar and in practice equivalent to an empty &lt;code>for{}&lt;/code> statement.&lt;/p>
+&lt;pre tabindex="0">&lt;code>package main
+func main() {
+select{}
+}
+&lt;/code>&lt;/pre>&lt;h3 id="3-infinite-loop">3. Infinite loop&lt;/h3>
+&lt;p>The easiest way which will use 100% of CPU.&lt;/p>
+&lt;pre tabindex="0">&lt;code>package main
+func main() {
+for {}
+}
+&lt;/code>&lt;/pre>&lt;h3 id="4-using-syncmutex">4. Using sync.Mutex&lt;/h3>
+&lt;p>If the lock is already in use, the calling goroutine blocks until the mutex is available.&lt;/p>
+&lt;pre tabindex="0">&lt;code>package main
+import &amp;#34;sync&amp;#34;
+func main() {
+var m sync.Mutex
+m.Lock()
+m.Lock()
+}
+&lt;/code>&lt;/pre>&lt;h3 id="5-empty-channel">5. Empty Channel&lt;/h3>
+&lt;p>Empty channels will block until there is something to receive.&lt;/p>
+&lt;pre tabindex="0">&lt;code>package main
+func main() {
+c := make(chan struct{})
+&amp;lt;-c
+}
+&lt;/code>&lt;/pre>&lt;h3 id="6-nil-channel">6. Nil Channel&lt;/h3>
+&lt;p>Works for channels created without &lt;code>make&lt;/code>.&lt;/p>
+&lt;pre tabindex="0">&lt;code>package main
+func main() {
+var c chan struct
+&amp;lt;-c
+}
+&lt;/code>&lt;/pre>&lt;h3 id="conclusion">Conclusion&lt;/h3>
+&lt;p>I have found 6 ways to block a Go program. It can be useful when you start multiple goroutines in a &lt;code>main()&lt;/code> function and don’t want to terminate a whole program after that. But some of these examples are just for fun.&lt;/p>
+&lt;p>If you know another way - please share it in comments, I will add it here.&lt;/p></description></item><item><title>Golang channel</title><link>https://echotrue.github.io/blog/golang/channel/</link><pubDate>Tue, 08 Sep 2020 14:51:55 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/channel/</guid><description>&lt;h3 id="概念">概念&lt;/h3>
+&lt;p>  从字面上看，&lt;code>channel&lt;/code>的意思大概就是管道的意思。&lt;code>channel&lt;/code>是一种&lt;code>goroutine&lt;/code>用以接收或发送消息的安全的消息队列，&lt;code>channel&lt;/code>就像两个&lt;code>goroutine&lt;/code>之间的导管，来实现各种资源的同步。在官方&lt;code>Effective go&lt;/code>文档中有一句非常著名的话可以说明&lt;code>channel&lt;/code>在使用&lt;code>Golang&lt;/code>进行并发编程的时候扮演了极为重要的角色&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;em>Do not communicate by sharing memory; instead, share memory by communicating.&lt;/em>&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="channel类型">Channel类型&lt;/h3>
+&lt;pre tabindex="0">&lt;code>readOnlyCh := make(&amp;lt;-chan int)//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。
+writeOnlyCh := make(chan&amp;lt;- int)//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据
+readWriteCh := make(chan int)//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据
+&lt;/code>&lt;/pre>&lt;h3 id="阻塞">阻塞&lt;/h3>
+&lt;p>  根据&lt;code>Channel&lt;/code>缓冲区的大小，我们又可以将&lt;code>Channel&lt;/code>分为&lt;code>Unbuffered channels&lt;/code>与&lt;code>Buffered channels&lt;/code>。其中，&lt;code>Unbuffered channels&lt;/code>的缓冲区大小为0，这种&lt;code>channel&lt;/code>的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个&lt;code>goroutine&lt;/code>进行状态同步。&lt;code>Buffered channels&lt;/code>拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用&lt;a href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html">The Nature Of Channels In Go&lt;/a>中的两张图片来说明两种&lt;code>channel&lt;/code>的特性。&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Unbuffered Channels&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;ul>
+&lt;li>&lt;code>Buffered Channels&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;h3 id="a-idcode1基本用法a">&lt;!-- raw HTML omitted -->基本用法&lt;!-- raw HTML omitted -->&lt;/h3>
+&lt;pre tabindex="0">&lt;code>ch := make(chan string)
+go func() {
+ch &amp;lt;- &amp;#34;hello&amp;#34;
+}()
+msg := &amp;lt;-ch
+fmt.Println(msg)
+&lt;/code>&lt;/pre>&lt;p>  以上代码，利用不带缓冲的&lt;code>channel&lt;/code>双向阻塞的特性。主&lt;code>goroutine&lt;/code>(就是main函数)会阻塞直到接收到子&lt;code>goroutine&lt;/code>向&lt;code>ch&lt;/code>中写入的值。所以保证了&lt;code>hello&lt;/code>一定会输出。&lt;/p>
+&lt;h3 id="利用channel实现并发的同步">利用&lt;code>Channel&lt;/code>实现并发的同步&lt;/h3>
+&lt;p>  &lt;a href="#code1">基本用法&lt;/a>中的代码片段使用阻塞接收的方式，实现了主&lt;code>goroutine&lt;/code>等待子&lt;code>goroutine&lt;/code>完成。最终达到了两个&lt;code>goroutine&lt;/code>的同步。使用&lt;code>WaitGroup&lt;/code>同样能达到多个&lt;code>goroutine&lt;/code>的同步，尤其是需要等待多个协程的情况下，&lt;code>WaitGroup&lt;/code>会是更好的选择。&lt;/p>
+&lt;pre tabindex="0">&lt;code>func worker(i int, wg *sync.WaitGroup) {
+defer wg.Done()
+time.Sleep(time.Second)
+fmt.Printf(&amp;#34;worker %d stared\n&amp;#34;, i)
+}
+func main() {
+var wg sync.WaitGroup
+for i := 1; i &amp;lt;= 5; i++ {
+wg.Add(1)
+go worker(i, &amp;amp;wg)
+}
+wg.Wait()
+}
+&lt;/code>&lt;/pre>&lt;p>执行结果：&lt;/p>
+&lt;pre tabindex="0">&lt;code>worker 1 stared
+worker 5 stared
+worker 4 stared
+worker 3 stared
+worker 2 stared
+&lt;/code>&lt;/pre>&lt;h3 id="channel-选择器">Channel 选择器&lt;/h3>
+&lt;p>  &lt;code>select&lt;/code>语句主要用在从多个读或者写&lt;code>channel&lt;/code>的操作中进行选择。&lt;code>select&lt;/code>语句会一直阻塞直到，有至少一个读或者写&lt;code>channel&lt;/code>操作就绪。如果同时有多个操作准备就绪，&lt;code>select&lt;/code>语句会随机选择其中一个执行。&lt;code>select&lt;/code>语法类似&lt;code>switch&lt;/code>，每个&lt;code>case&lt;/code>相当于一个通道操作。&lt;/p>
+&lt;pre tabindex="0">&lt;code>c1 := make(chan string)
+c2 := make(chan string)
+go func() {
+time.Sleep(1 * time.Second)
+c1 &amp;lt;- &amp;#34;one&amp;#34;
+}()
+go func() {
+time.Sleep(1 * time.Second)
+c2 &amp;lt;- &amp;#34;two&amp;#34;
+}()
+for i := 0; i &amp;lt; 2; i++ {
+select {
+case msg1 := &amp;lt;-c1:
+fmt.Printf(&amp;#34;接到消息：%s\n&amp;#34;, msg1)
+case msg2 := &amp;lt;-c2:
+fmt.Printf(&amp;#34;接到消息：%s\n&amp;#34;, msg2)
+}
+}
+&lt;/code>&lt;/pre>&lt;p>以上代码会输出：接到消息one，接到消息two。&lt;/p>
+&lt;h3 id="channel遍历">Channel遍历&lt;/h3>
+&lt;p>&lt;code>for...range&lt;/code>可以用来遍历通道，它会反复从通道接收数据直到通道关闭。&lt;/p>
+&lt;pre tabindex="0">&lt;code>queue := make(chan string, 2)
+queue &amp;lt;- &amp;#34;one&amp;#34;
+queue &amp;lt;- &amp;#34;two&amp;#34;
+close(queue)
+for elem := range queue {
+fmt.Println(elem)
+}
+&lt;/code>&lt;/pre>&lt;h3 id="channel-的关闭">Channel 的关闭&lt;/h3>
+&lt;p>  内置函数&lt;code>close()&lt;/code>可以用来关闭&lt;code>channel&lt;/code>,&lt;code>close()&lt;/code>函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。&lt;/p>
+&lt;pre tabindex="0">&lt;code>ch := make(chan string) //可以关闭的通道
+ch := make(chan&amp;lt;- string) //可以关闭的通道
+ch := make(&amp;lt;-chan string) //不能关闭的通道
+&lt;/code>&lt;/pre>&lt;p>1、关闭 一个通道意味着不能再向这个通道发送值了。 该特性可以向通道的接收方传达工作已经完成的信息。&lt;/p>
+&lt;pre tabindex="0">&lt;code>msg := make(chan string)
+done := make(chan bool)
+go func() {
+for {
+select {
+case m, ok := &amp;lt;-msg:
+if ok {
+fmt.Printf(m)
+} else {
+fmt.Println(&amp;#34;All message has received.&amp;#34;)
+done &amp;lt;- true
+return
+}
+}
+}
+}()
+for i := 1; i &amp;lt; 4; i++ {
+msg &amp;lt;- fmt.Sprintf(&amp;#34;Message %d\n&amp;#34;, i)
+}
+close(msg)
+&amp;lt;-done
+&lt;/code>&lt;/pre>&lt;p>2、向一个已经关闭的&lt;code>channel&lt;/code>发送数据会&lt;code>panic&lt;/code>&lt;/p>
+&lt;p>3、从一个已经关闭的通道中读数据，依然可以读到数据。读到的内容是通道元素类型所对应的的零值。（例如：int类型channel读到的是0）。&lt;/p>
+&lt;pre tabindex="0">&lt;code>ch := make(chan int)
+dataCh := make(chan string)
+go func() {
+dataCh &amp;lt;- &amp;#34;str one&amp;#34;
+dataCh &amp;lt;- &amp;#34;str two&amp;#34;
+close(dataCh)
+}()
+go func() {
+for {
+time.Sleep(time.Millisecond * 500)
+select {
+case str := &amp;lt;-dataCh:
+fmt.Println(&amp;#34;--&amp;gt;&amp;#34;,str)
+}
+}
+}()
+&amp;lt;-ch
+//输出：
+--&amp;gt; str one
+--&amp;gt; str two
+--&amp;gt;
+--&amp;gt;
+&lt;/code>&lt;/pre>&lt;p>4、当发送者关闭通道后，通道接收器可以通过向接收表达式分配第二个参数来判断通道是否关闭。&lt;code>c,ok := &amp;lt;-ch&lt;/code>，如果没有更多的值要接受且通道已经关闭，&lt;code>ok&lt;/code>为&lt;code>false&lt;/code>&lt;/p>
+&lt;pre tabindex="0">&lt;code>ch := make(chan int)
+dataCh := make(chan string)
+go func() {
+dataCh &amp;lt;- &amp;#34;str one&amp;#34;
+dataCh &amp;lt;- &amp;#34;str two&amp;#34;
+close(dataCh)
+}()
+go func() {
+for {
+time.Sleep(time.Millisecond * 500)
+select {
+case str, ok := &amp;lt;-dataCh:
+if ok {
+fmt.Println(&amp;#34;--&amp;gt;&amp;#34;, str)
+} else {
+fmt.Println(&amp;#34;通道已关闭&amp;#34;)
+ch &amp;lt;- 1
+return
+}
+}
+}
+}()
+&amp;lt;-ch
+&lt;/code>&lt;/pre>&lt;h3 id="channel的基本操作和注意事项">channel的基本操作和注意事项&lt;/h3>
+&lt;p>channel存在&lt;code>3种状态&lt;/code>：&lt;/p>
+&lt;ol>
+&lt;li>nil，未初始化的状态，只进行了声明，或者手动赋值为&lt;code>nil&lt;/code>&lt;/li>
+&lt;li>active，正常的channel，可读或者可写&lt;/li>
+&lt;li>closed，已关闭，&lt;strong>千万不要误认为关闭channel后，channel的值是nil&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;p>channel可进行&lt;code>3种操作&lt;/code>：&lt;/p>
+&lt;ol>
+&lt;li>读&lt;/li>
+&lt;li>写&lt;/li>
+&lt;li>关闭&lt;/li>
+&lt;/ol>
+&lt;p>把这3种操作和3种channel状态可以组合出&lt;code>9种情况&lt;/code>：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align:left">操作&lt;/th>
+&lt;th style="text-align:left">nil的channel&lt;/th>
+&lt;th style="text-align:left">正常channel&lt;/th>
+&lt;th style="text-align:left">已关闭channel&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align:left">&amp;lt;- ch&lt;/td>
+&lt;td style="text-align:left">阻塞&lt;/td>
+&lt;td style="text-align:left">成功或阻塞&lt;/td>
+&lt;td style="text-align:left">读到零值&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">ch &amp;lt;-&lt;/td>
+&lt;td style="text-align:left">阻塞&lt;/td>
+&lt;td style="text-align:left">成功或阻塞&lt;/td>
+&lt;td style="text-align:left">panic&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align:left">close(ch)&lt;/td>
+&lt;td style="text-align:left">panic&lt;/td>
+&lt;td style="text-align:left">成功&lt;/td>
+&lt;td style="text-align:left">panic&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Panic and Recover</title><link>https://echotrue.github.io/blog/golang/panic-and-recover/</link><pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/panic-and-recover/</guid><description>&lt;h3 id="panic">panic&lt;/h3>
+&lt;p>   &lt;code>Golang&lt;/code> 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。&lt;/p>
+&lt;p>  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。&lt;/p>
+&lt;pre tabindex="0">&lt;code>func main() {
+var user = os.Getenv(&amp;#34;USER_&amp;#34;)
+go func() {
+defer func() {
+fmt.Println(&amp;#34;defer 1&amp;#34;)
+}()
+if user == &amp;#34;&amp;#34;{
+panic(&amp;#34;should set user env.&amp;#34;)
+}
+}()
+time.Sleep(1*time.Second)
+fmt.Println(&amp;#34;get result&amp;#34;)
+}
+&lt;/code>&lt;/pre>&lt;p>  上述代码输出：&lt;/p>
+&lt;pre tabindex="0">&lt;code>defer 1
+panic: should set user env.
+goroutine 19 [running]:
+main.main.func1(0x0, 0x0)
+D:/gopath/src/race_condition/index.go:16 +0x86
+created by main.main
+D:/gopath/src/race_condition/index.go:11 +0x59
+Process finished with exit code 2
+&lt;/code>&lt;/pre>&lt;p>说明panic坚守了自己的原则：&lt;strong>执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行&lt;/strong>&lt;/p>
+&lt;h3 id="recover">recover&lt;/h3>
+&lt;p>  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil&lt;/p></description></item></channel></rss>

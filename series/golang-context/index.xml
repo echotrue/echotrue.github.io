@@ -1,1 +1,478 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Golang Context on AXLROSE</title><link>https://echotrue.github.io/series/golang-context/</link><description>Recent content in Golang Context on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>zh</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Fri, 17 May 2024 16:36:37 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/series/golang-context/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Golang Context on AXLROSE</title><link>https://echotrue.github.io/series/golang-context/</link><description>Recent content in Golang Context on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Fri, 17 May 2024 16:36:37 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/series/golang-context/index.xml" rel="self" type="application/rss+xml"/><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Deadline&lt;/span>() (&lt;span style="color:#a6e22e">deadline&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Err&lt;/span>() &lt;span style="color:#66d9ef">error&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Value&lt;/span>(&lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>) &lt;span style="color:#a6e22e">any&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>Deadline()&lt;/code>返回一个截止时间，到了这个时间后正在进行的工作将会终止。这意味着当前上下文应该被取消。没有设置截止时间则第二个返回值为&lt;code>false&lt;/code>，多次调用该方法返回相同的结果。&lt;/li>
+&lt;li>&lt;code>Done()&lt;/code>返回一个已经关闭的&lt;code>chan&lt;/code>此时正在进行的工作将会终止。这意味着当前上下文应该被取消。如果这个上下文永远不能被取消，&lt;code>Done&lt;/code>返回&lt;code>nil&lt;/code>。多次调用该方法返回相同的结果。该&lt;code>chan&lt;/code>的关闭动作可能会在&lt;code>cancel&lt;/code>函数返回后异步的发生。&lt;/li>
+&lt;li>&lt;code>Err()&lt;/code>返回&lt;code>nil&lt;/code>当&lt;code>Done&lt;/code>返回的通道未关闭时，反之则返回非空的错误。&lt;/li>
+&lt;li>&lt;code>Value()&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h2 id="内置上下文">内置上下文&lt;/h2>
+&lt;div class="tabs tabs-left">
+&lt;style>
+.tabs input#tab-0-0:checked ~ .tab-content-0-0 {
+display: block;
+}
+&lt;/style>
+&lt;input type="radio" class="tab-input" name="tab-select-0" id="tab-0-0" checked/>
+&lt;label for="tab-0-0" class="tab-label">基础ctx&lt;/label>
+&lt;div class="tab-content tab-content-0-0">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">emptyCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">backgroundCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{ &lt;span style="color:#a6e22e">emptyCtx&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">todoCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{ &lt;span style="color:#a6e22e">emptyCtx&lt;/span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;style>
+.tabs input#tab-0-1:checked ~ .tab-content-0-1 {
+display: block;
+}
+&lt;/style>
+&lt;input type="radio" class="tab-input" name="tab-select-0" id="tab-0-1" />
+&lt;label for="tab-0-1" class="tab-label">可取消的ctx&lt;/label>
+&lt;div class="tab-content tab-content-0-1">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">cancelCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">mu&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Mutex&lt;/span> &lt;span style="color:#75715e">// protects following fields
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#a6e22e">atomic&lt;/span>.&lt;span style="color:#a6e22e">Value&lt;/span> &lt;span style="color:#75715e">// of chan struct{}, created lazily, closed by first cancel call
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">children&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#a6e22e">canceler&lt;/span>]&lt;span style="color:#66d9ef">struct&lt;/span>{} &lt;span style="color:#75715e">// set to nil by the first cancel call
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#66d9ef">error&lt;/span> &lt;span style="color:#75715e">// set to non-nil by the first cancel call
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">cause&lt;/span> &lt;span style="color:#66d9ef">error&lt;/span> &lt;span style="color:#75715e">// set to non-nil by the first cancel call
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">afterFuncCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cancelCtx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">once&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Once&lt;/span> &lt;span style="color:#75715e">// either starts running f or stops f from running f func()
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">timerCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cancelCtx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">timer&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Timer&lt;/span> &lt;span style="color:#75715e">// Under cancelCtx.mu.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">deadline&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;style>
+.tabs input#tab-0-2:checked ~ .tab-content-0-2 {
+display: block;
+}
+&lt;/style>
+&lt;input type="radio" class="tab-input" name="tab-select-0" id="tab-0-2" />
+&lt;label for="tab-0-2" class="tab-label">其他ctx&lt;/label>
+&lt;div class="tab-content tab-content-0-2">
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">stopCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">stop&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">valueCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">key&lt;/span>, &lt;span style="color:#a6e22e">val&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">withoutCancelCtx&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/div>
+&lt;/div>
+&lt;ul>
+&lt;li>emptyCtx是一个永远不会被取消，没有值，没有截止时间的上下文。backgroundCtx和todoCtx均是基于它而存在。通常将backgroundCtx作为根节点。&lt;/li>
+&lt;li>cancelCtx是一个带取消的上下文，afterFuncCtx和timerCtx都是基于它实现的&lt;/li>
+&lt;li>stopCtx&lt;/li>
+&lt;li>valueCtx&lt;/li>
+&lt;li>withoutCancelCtx&lt;/li>
+&lt;/ul>
+&lt;h2 id="可取消的cancelctx">可取消的cancelCtx&lt;/h2>
+&lt;h4 id="创建一个带取消的上下文">创建一个带取消的上下文：&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">withCancel&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;cannot create context from nil parent&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">propagateCancel&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span>, &lt;span style="color:#a6e22e">c&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h6 id="propagatecancel">propagateCancel()&lt;/h6>
+&lt;p>
+&lt;details class="toggle">
+&lt;summary markdown="span">propagateCancel&lt;/summary>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">propagateCancel&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">child&lt;/span> &lt;span style="color:#a6e22e">canceler&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span> = &lt;span style="color:#a6e22e">parent&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#75715e">// parent is never canceled
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">done&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// parent is already canceled
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">child&lt;/span>.&lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Err&lt;/span>(), &lt;span style="color:#a6e22e">Cause&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parentCancelCtx&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span>); &lt;span style="color:#a6e22e">ok&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// parent is a *cancelCtx, or derives from one.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// parent has already been canceled
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">child&lt;/span>.&lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">err&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">cause&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">children&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">children&lt;/span> = make(&lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#a6e22e">canceler&lt;/span>]&lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">children&lt;/span>[&lt;span style="color:#a6e22e">child&lt;/span>] = &lt;span style="color:#66d9ef">struct&lt;/span>{}{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">a&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span>.(&lt;span style="color:#a6e22e">afterFuncer&lt;/span>); &lt;span style="color:#a6e22e">ok&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// parent implements an AfterFunc method.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">stop&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">AfterFunc&lt;/span>(&lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">child&lt;/span>.&lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Err&lt;/span>(), &lt;span style="color:#a6e22e">Cause&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span> = &lt;span style="color:#a6e22e">stopCtx&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Context&lt;/span>: &lt;span style="color:#a6e22e">parent&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">stop&lt;/span>: &lt;span style="color:#a6e22e">stop&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">goroutines&lt;/span>.&lt;span style="color:#a6e22e">Add&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>():
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">child&lt;/span>.&lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Err&lt;/span>(), &lt;span style="color:#a6e22e">Cause&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">child&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>():
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/details>
+&lt;/p>
+&lt;ul>
+&lt;li>将&lt;code>parent&lt;/code>赋值给当前&lt;code>cancelCtx&lt;/code>的&lt;code>Context&lt;/code>字段&lt;/li>
+&lt;li>获取父上下文的&lt;code>Done&lt;/code>通道，如果该通道为空，说明父上下文是不可取消的。则无需执行后续逻辑。&lt;/li>
+&lt;li>如果父上下文是&lt;code>cancelCtx&lt;/code>，则通过err判断父上下文是否被取消。如果父级已被取消那么作为子级的当前上下文也应该执行&lt;code>cancel&lt;/code>操作来取消。如果父级没有被取消，则需要将当前上下文附加到父级的&lt;code>children&lt;/code>字段中,以便父级取消后依次取消所有子级。&lt;/li>
+&lt;li>如果父上下文实现了&lt;code>afterFuncer&lt;/code>,则组合一个&lt;code>stopCtx&lt;/code>并赋值给当前&lt;code>cancelCtx&lt;/code>的&lt;code>Context&lt;/code>字段.&lt;/li>
+&lt;li>既不是&lt;code>cancelCtx&lt;/code>又没有实现&lt;code>afterFuncer&lt;/code>则启动一个go程来分别监听父上下文和子上下文的状态，如果父上下文被取消则取消子上下文。如果子上下文被取消则直接跳过,因为不影响父级。
+&lt;ul>
+&lt;li>这里监听父上下文done的信号是因为当前parent并不是一个cancel类型的上下文，这在前面的&lt;code>parentCancelCtx&lt;/code>函数中已经被验证过，因此这个parent没有children，无法像cancelCtx那样取消子级上下文。因此，在这里监听parent的done信号来确定是否需要取消子级。&lt;/li>
+&lt;li>这里监听自己是因为，如果自己比父级先取消，那么该goroutine就可以直接退出了，防止内存溢出。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h6 id="cancelctxcancel">cancelCtx.cancel()&lt;/h6>
+&lt;p>
+&lt;details class="toggle">
+&lt;summary markdown="span">cancelCtx.cancel()&lt;/summary>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#a6e22e">removeFromParent&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span>, &lt;span style="color:#a6e22e">cause&lt;/span> &lt;span style="color:#66d9ef">error&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;context: internal error: missing cancel error&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">cause&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cause&lt;/span> = &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#75715e">// already canceled
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">cause&lt;/span> = &lt;span style="color:#a6e22e">cause&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">d&lt;/span>, &lt;span style="color:#a6e22e">_&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Load&lt;/span>().(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Store&lt;/span>(&lt;span style="color:#a6e22e">closedchan&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> close(&lt;span style="color:#a6e22e">d&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">child&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">range&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">children&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// NOTE: acquiring the child&amp;#39;s lock while holding parent&amp;#39;s lock.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">child&lt;/span>.&lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span>, &lt;span style="color:#a6e22e">cause&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">children&lt;/span> = &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">removeFromParent&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">removeChild&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">c&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+&lt;/details>
+&lt;/p>
+&lt;ul>
+&lt;li>cancel函数有三个入参，&lt;code>removeFromParent&lt;/code>指是否要将当前上下文从其父级的children列表中移除，err和cause是取消的错误信息描述。&lt;/li>
+&lt;li>加载cancelCtx中done的值，done是一个原子变量，其值是一个无缓冲chan struct{}。如果done没有值则为其赋值为closedchan，closedchan也是一个无缓冲的chan struct{},且在init函数中被close。如果done有值则close这个chan struct{}。一旦关闭了该通道，ctx.Done()就能接收到值，然后就可以释放go程了。&lt;/li>
+&lt;li>依次取消子级上下文&lt;/li>
+&lt;li>从父级中移除当前上下文&lt;/li>
+&lt;/ul>
+&lt;h6 id="cancelctxdone">cancelCtx.Done()&lt;/h6>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{} {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">d&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Load&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span>.(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">mu&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">d&lt;/span> = &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Load&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">d&lt;/span> = make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Store&lt;/span>(&lt;span style="color:#a6e22e">d&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span>.(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>加载cancelCtx中的done值,如果有值直接返回&lt;/li>
+&lt;li>加锁，然后再次加在cancelCtx中的done值,如果done为nil,则初始化done的值。此处使用了双重检测机制保证done只被初始化一次。&lt;/li>
+&lt;/ul>
+&lt;h6 id="parentcancelctx">parentCancelCtx()&lt;/h6>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">parentCancelCtx&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>, &lt;span style="color:#66d9ef">bool&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">closedchan&lt;/span> &lt;span style="color:#f92672">||&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Value&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">cancelCtxKey&lt;/span>).(&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> !&lt;span style="color:#a6e22e">ok&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">pdone&lt;/span>, &lt;span style="color:#a6e22e">_&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Load&lt;/span>().(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">pdone&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span>, &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// cancelCtx的Value方法
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">Value&lt;/span>(&lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>) &lt;span style="color:#a6e22e">any&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">cancelCtxKey&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">value&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">key&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// valueCtx的Value方法
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">valueCtx&lt;/span>) &lt;span style="color:#a6e22e">Value&lt;/span>(&lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>) &lt;span style="color:#a6e22e">any&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">val&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">value&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">key&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>查找并返回parent的底层cancelCtx。&lt;/li>
+&lt;li>在context包中只有cancelCtx、emptyCtx、withoutCancelCtx是直接实现了Done方法的,其中只有cancelCtx是实现了非nil的Done方法的。其他的诸如valueCtx、timeCtx等都是通过嵌入实现的，所以其他ctx调用Done方法时实际是调用的cancelCtx、emptyCtx、withoutCancelCtx这些ctx的Done方法。因此&lt;code>done := parent.Done()&lt;/code>其实是从parent的ctx树向上找到的第一个实现了Done方法的父级ctx，这里我们暂时用A称呼这个ctx。当done == nil时说明A不是cancelCtx。当done!=nil时说明A是cancelCtx。如果在ctx树中有自定义的context且也实现了Done方法，A也可能是自定义的context&lt;/li>
+&lt;li>&lt;code>parent.Value(&amp;amp;cancelCtxKey).(*cancelCtx)&lt;/code>查找ctx树中的第一个cancelCtx。这里将变量cancelCtxKey的内存地址作为参数传递给parent的Value方法。假设parent是cancelCtx直接将parent赋值给p，假设parent不是cancelCtx而是其他诸如valueCtx，则将parent的parent和key作为参数传递给&lt;code>value()&lt;/code>来向上递归查找key对应值。参考&lt;a href="#value()">value()方法&lt;/a>&lt;/li>
+&lt;li>如果parent的上下文树中找到了cancelCtx，则取其done值。然后与前面parent的done值对比，如果他们不相等，说明当前上下文树中第一个实现Done的实例不是cancelCtx。反之，直接返回找到的这个cancelCtx&lt;/li>
+&lt;/ul>
+&lt;h6 id="value">value()&lt;/h6>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">value&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>) &lt;span style="color:#a6e22e">any&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> &lt;span style="color:#a6e22e">ctx&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.(&lt;span style="color:#66d9ef">type&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">valueCtx&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">key&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">val&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> = &lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">cancelCtxKey&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> = &lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">withoutCancelCtx&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">cancelCtxKey&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// This implements Cause(ctx) == nil
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// when ctx is created using WithoutCancel.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> = &lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">timerCtx&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">cancelCtxKey&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">cancelCtx&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> = &lt;span style="color:#a6e22e">ctx&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">backgroundCtx&lt;/span>, &lt;span style="color:#a6e22e">todoCtx&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">default&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Value&lt;/span>(&lt;span style="color:#a6e22e">key&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>返回绑定在c上下文树上的key的值。&lt;/p>
+&lt;ul>
+&lt;li>如果c是valueCtx则直接根据key获取对应值，如果key不存在则向上从c的parent中查找key对应的值&lt;/li>
+&lt;li>如果c是cancelCtx则判断key是否是cancelCtxKey如果是则返回cancelCtx本身，反之向上从c的parent中查找key对应的值&lt;/li>
+&lt;li>如果c是withoutCancelCtx，则判断key是否是cancelCtx如果是则返回nil，反之向上从parent中查找&lt;/li>
+&lt;li>如果c是timerCtx，逻辑同cancelCtx&lt;/li>
+&lt;li>如果c是backgroundCtx或者todoCtx则直接返回nil&lt;/li>
+&lt;li>默认从c中取key对应的值&lt;/li>
+&lt;/ul></description></item><item><title>Context</title><link>https://echotrue.github.io/blog/golang/context/</link><pubDate>Sat, 03 Oct 2020 15:13:54 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/context/</guid><description>&lt;h3 id="引言">引言&lt;/h3>
+&lt;p>&lt;code>Golang&lt;/code>的&lt;code>Context&lt;/code>包是专门用来简化对于处理单个请求的多个&lt;code>goroutine&lt;/code>之间与请求域的数据，取消信号，截止时间等相关操作。
+一个实际的例子是：&lt;/p>
+&lt;blockquote>
+&lt;p>在&lt;code>Go&lt;/code>服务器程序中，每个请求都会有一个&lt;code>goroutine&lt;/code>去处理。然而，处理程序可能还需要创建额外的&lt;code>goroutine&lt;/code>去访问其他资源，比如：数据库，
+RPC服务等。由于这些&lt;code>goroutine&lt;/code>都是在处理同一个请求，所以他们往往需要访问一些共享的资源，比如：用户身份信息，认证token
+，请求截止时间等。当请求超时或者被取消后，所有的&lt;code>goroutine&lt;/code>都应该马上退出并且释放相关的资源。这种情况也需要用&lt;code>Context&lt;/code>来为我们来取消掉所有
+的&lt;code>goroutine&lt;/code>&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="context定义">Context定义&lt;/h3>
+&lt;p>&lt;code>context&lt;/code>的主要数据结构是一种嵌套的结构或者说是单向的继承关系的结构，比如最初的context是一个小盒子，里面装了一些数据，
+之后从这个context继承下来的children就像在原本的context中又套上了一个盒子，然后里面装着一些自己的数据。或者说context是一种分层的结构，
+根据使用场景的不同，每一层context都具备有一些不同的特性，这种层级式的组织也使得context易于扩展，职责清晰。&lt;/p>
+&lt;p>&lt;code>context&lt;/code>包的核心是&lt;code>interface Context&lt;/code> ,声明如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>type Context interface {
+Deadline() (deadline time.Time, ok bool)
+Done() &amp;lt;-chan struct{}
+Err() error
+Value(key interface{}) interface{}
+}
+&lt;/code>&lt;/pre>&lt;p>&lt;code>Context&lt;/code>定义很简单，一共四个方法：&lt;/p>
+&lt;ol>
+&lt;li>Deadline方法是获取设置的截止时间的意思，第一个返回式是截止时间，到了这个时间点，Context会自动发起取消请求；
+第二个返回值ok==false时表示没有设置截止时间，如果需要取消的话，需要调用取消函数进行取消。&lt;/li>
+&lt;li>Done方法返回一个只读的chan，类型为struct{}，我们在goroutine中，如果该方法返回的chan可以读取，
+则意味着parent context已经发起了取消请求，我们通过Done方法收到这个信号后，就应该做清理操作，然后退出goroutine，释放资源。之后，Err 方法会返回一个错误，告知为什么 Context 被取消。&lt;/li>
+&lt;li>Err方法返回取消的错误原因，因为什么Context被取消。&lt;/li>
+&lt;li>Value方法获取该Context上绑定的值，是一个键值对，所以要通过一个Key才可以获取对应的值，这个值一般是线程安全的。&lt;/li>
+&lt;/ol>
+&lt;h3 id="context的实现方法">Context的实现方法&lt;/h3>
+&lt;p>&lt;code>Context&lt;/code> 虽然是个接口，但是并不需要使用方实现，&lt;code>golang&lt;/code>内置的&lt;code>context&lt;/code> 包，已经帮我们实现了2个方法，一般在代码中，
+开始上下文的时候都是以这两个作为最顶层的&lt;code>parent context&lt;/code>，然后再衍生出子&lt;code>context&lt;/code>。这些 &lt;code>Context&lt;/code> 对象形成一棵树：
+当一个 &lt;code>Context&lt;/code> 对象被取消时，继承自它的所有 &lt;code>Context&lt;/code> 都会被取消。两个实现如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code>var (
+background = new(emptyCtx)
+todo = new(emptyCtx)
+)
+func Background() Context {
+return background
+}
+func TODO() Context {
+return todo
+}
+&lt;/code>&lt;/pre>&lt;ol>
+&lt;li>一个是Background，主要用于main函数、初始化以及测试代码中，作为Context这个树结构的最顶层的Context，也就是根Context，它不能被取消。&lt;/li>
+&lt;li>一个是TODO，如果我们不知道该使用什么Context的时候，可以使用这个，但是实际应用中，暂时还没有使用过这个TODO。&lt;/li>
+&lt;li>他们两个本质上都是emptyCtx结构体类型，是一个不可取消，没有设置截止时间，没有携带任何值的Context。&lt;/li>
+&lt;/ol>
+&lt;pre tabindex="0">&lt;code>type emptyCtx int
+func (*emptyCtx) Deadline() (deadline time.Time, ok bool) {
+return
+}
+func (*emptyCtx) Done() &amp;lt;-chan struct{} {
+return nil
+}
+func (*emptyCtx) Err() error {
+return nil
+}
+func (*emptyCtx) Value(key interface{}) interface{} {
+return nil
+}
+&lt;/code>&lt;/pre>&lt;h3 id="context的继承">Context的继承&lt;/h3>
+&lt;p>有了如上的根Context，那么是如何衍生更多的子Context的呢？这就要靠context包为我们提供的With系列的函数了。&lt;/p>
+&lt;pre tabindex="0">&lt;code>func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+func WithDeadline(parent Context, deadline time.Time) (Context, CancelFunc)
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
+func WithValue(parent Context, key, val interface{}) Context
+&lt;/code>&lt;/pre>&lt;p>通过这些函数，就创建了一颗Context树，树的每个节点都可以有任意多个子节点，节点层级可以有任意多个。&lt;/p>
+&lt;ol>
+&lt;li>WithCancel函数，传递一个父Context作为参数，返回子Context，以及一个取消函数用来取消Context。&lt;/li>
+&lt;li>WithDeadline函数，和WithCancel差不多，它会多传递一个截止时间参数，意味着到了这个时间点，会自动取消Context，当然我们也可以不等到这个时候，可以提前通过取消函数进行取消。&lt;/li>
+&lt;li>WithTimeout和WithDeadline基本上一样，这个表示是超时自动取消，是多少时间后自动取消Context的意思。&lt;/li>
+&lt;li>WithValue函数和取消Context无关，它是为了生成一个绑定了一个键值对数据的Context，这个绑定的数据可以通过Context.Value方法访问到，这是我们实际用经常要用到的技巧，一般我们想要通过上下文来传递数据时，可以通过这个方法，如我们需要tarce追踪系统调用栈的时候。&lt;/li>
+&lt;/ol>
+&lt;h3 id="context使用技巧和原则">Context使用技巧和原则&lt;/h3>
+&lt;ul>
+&lt;li>不要把Context放在结构体中，要以参数的方式传递，parent Context一般为Background&lt;/li>
+&lt;li>应该要把Context作为第一个参数传递给入口请求和出口请求链路上的每一个函数，放在第一位，变量名建议都统一，如ctx。&lt;/li>
+&lt;li>给一个函数方法传递Context的时候，不要传递nil，否则在tarce追踪的时候，就会断了连接&lt;/li>
+&lt;li>Context的Value相关方法应该传递必须的数据，不要什么数据都使用这个传递&lt;/li>
+&lt;li>Context是线程安全的，可以放心的在多个goroutine中传递&lt;/li>
+&lt;li>可以把一个 Context 对象传递给任意个数的 gorotuine，对它执行 取消 操作时，所有 goroutine 都会接收到取消信号。&lt;/li>
+&lt;/ul>
+&lt;h3 id="context使用示例">Context使用示例&lt;/h3>
+&lt;h4 id="请求链路传值">请求链路传值&lt;/h4>
+&lt;pre tabindex="0">&lt;code>func func1(ctx context.Context) {
+ctx = context.WithValue(ctx, &amp;#34;k1&amp;#34;, &amp;#34;v1&amp;#34;)
+func2(ctx)
+}
+func func2(ctx context.Context) {
+fmt.Println(ctx.Value(&amp;#34;k1&amp;#34;).(string))
+}
+func main() {
+ctx := context.Background()
+func1(ctx)
+}
+&lt;/code>&lt;/pre>&lt;p>我们在&lt;code>func1&lt;/code>通过&lt;code>WithValue(parent Context, key, val interface{}) Context&lt;/code>，赋值k1为v1，
+在其下层函数&lt;code>func2&lt;/code>通过&lt;code>ctx.Value(key interface{}) interface{}&lt;/code>获取k1的值，比较简单。这里有个疑问，如果我是在&lt;code>func2&lt;/code>里赋值，
+在&lt;code>func1&lt;/code>里面能够拿到这个值吗？答案是不能，&lt;code>context&lt;/code>只能自上而下携带值，这个是要注意的一点。&lt;/p>
+&lt;h4 id="取消耗时操作及时释放资源">取消耗时操作，及时释放资源&lt;/h4>
+&lt;h5 id="主动取消">主动取消&lt;/h5>
+&lt;pre tabindex="0">&lt;code>func func1(ctx context.Context, wg *sync.WaitGroup) error {
+defer wg.Done()
+respC := make(chan int)
+// 处理逻辑
+go func() {
+time.Sleep(time.Second * 5)
+respC &amp;lt;- 10
+}()
+// 取消机制
+select {
+case &amp;lt;-ctx.Done():
+fmt.Println(&amp;#34;cancel.&amp;#34;)
+return errors.New(&amp;#34;cancel&amp;#34;)
+case r := &amp;lt;-respC:
+fmt.Println(r)
+return nil
+}
+}
+func main() {
+wg := new(sync.WaitGroup)
+ctx, cancel := context.WithCancel(context.Background())
+wg.Add(1)
+go func1(ctx, wg)
+time.Sleep(time.Second * 2)
+cancel()
+wg.Wait()
+}
+&lt;/code>&lt;/pre>&lt;h5 id="超时取消">超时取消&lt;/h5>
+&lt;pre tabindex="0">&lt;code>func func1(ctx context.Context) {
+hctx, hcancel := context.WithTimeout(ctx, time.Second*4)
+defer hcancel()
+resp := make(chan struct{}, 1)
+go func() {
+// 处理耗时操作
+time.Sleep(time.Second * 10)
+resp &amp;lt;- struct{}{}
+}()
+select {
+// case &amp;lt;-ctx.Done():
+// fmt.Println(&amp;#34;ctx timeout&amp;#34;)
+// fmt.Println(&amp;#34;退出&amp;#34;,ctx.Err())
+case &amp;lt;-hctx.Done():
+fmt.Println(&amp;#34;hctx timeout&amp;#34;)
+fmt.Println(hctx.Err())
+case v := &amp;lt;-resp:
+fmt.Println(&amp;#34;test2 function handle done&amp;#34;)
+fmt.Printf(&amp;#34;result:%v\n&amp;#34;, v)
+}
+fmt.Println(&amp;#34;test2 finish&amp;#34;)
+fmt.Println(time.Now().Unix())
+return
+}
+func main() {
+fmt.Println(time.Now().Unix())
+ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
+defer cancel()
+func1(ctx)
+}
+&lt;/code>&lt;/pre></description></item></channel></rss>

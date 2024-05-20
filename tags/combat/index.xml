@@ -1,1 +1,184 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Combat on AXLROSE</title><link>https://echotrue.github.io/tags/combat/</link><description>Recent content in Combat on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>zh</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Wed, 08 Sep 2021 14:24:16 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/combat/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Combat on AXLROSE</title><link>https://echotrue.github.io/tags/combat/</link><description>Recent content in Combat on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Wed, 08 Sep 2021 14:24:16 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/combat/index.xml" rel="self" type="application/rss+xml"/><item><title>Combat System</title><link>https://echotrue.github.io/blog/game/turn-based-combat/combat-system.zh/</link><pubDate>Wed, 08 Sep 2021 14:24:16 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/turn-based-combat/combat-system.zh/</guid><description>&lt;p>加载英雄,怪物,宠物等等到状态机的&lt;code>soldiers&lt;/code>属性&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-php" data-lang="php">&lt;span style="display:flex;">&lt;span>$this&lt;span style="color:#f92672">-&amp;gt;&lt;/span>&lt;span style="color:#a6e22e">loader&lt;/span>&lt;span style="color:#f92672">-&amp;gt;&lt;/span>&lt;span style="color:#a6e22e">load&lt;/span>();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h5 id="逐个初始化soldiers挂载主动被动技能效果并添加监听事件到observers属性">逐个初始化&lt;code>soldiers&lt;/code>.挂载主动,被动技能效果并添加监听事件到&lt;code>observers&lt;/code>属性.&lt;/h5>
+&lt;p>保留原始属性&lt;/p>
+&lt;p>触发&lt;code>EVENT_CREATED&lt;/code>事件.事件id为1的技能效果将会被加载.该类型的技能效果是永久加成效果.&lt;code>observers&lt;/code>的数据格式为:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{&lt;span style="color:#f92672">&amp;#34;3&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53102&lt;/span>,&lt;span style="color:#ae81ff">53103&lt;/span>,&lt;span style="color:#ae81ff">312&lt;/span>],&lt;span style="color:#f92672">&amp;#34;9&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53104&lt;/span>],&lt;span style="color:#f92672">&amp;#34;4&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53105&lt;/span>],&lt;span style="color:#f92672">&amp;#34;5&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53106&lt;/span>]}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>计算英雄被动属性差值&lt;code>diff_addition&lt;/code>&lt;/p>
+&lt;p>计算队伍加成属性,并赋值到&lt;code>soldier&lt;/code>的&lt;code>addition&lt;/code>属性.&lt;/p>
+&lt;p>附加效果加成计算&lt;/p>
+&lt;p>累加加成效果数据到&lt;code>soldier&lt;/code>&lt;/p>
+&lt;p>检查并削弱基础属性&lt;/p>
+&lt;p>处理残血模式下血量&lt;/p>
+&lt;p>处理蓝量&lt;/p>
+&lt;p>保存属性值到英雄基础属性对象&lt;code>base&lt;/code>&lt;/p></description></item><item><title>Turn-Based Game With Go【译】</title><link>https://echotrue.github.io/blog/game/turn-based-game-with-go/</link><pubDate>Mon, 06 Sep 2021 16:32:53 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/turn-based-game-with-go/</guid><description>&lt;blockquote>
+&lt;p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang&lt;/p>
+&lt;/blockquote>
+&lt;p>今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的&lt;code>Interface&lt;/code>,&lt;code>channels&lt;/code>,&lt;code>concurrency&lt;/code>等特性。&lt;/p>
+&lt;blockquote>
+&lt;p>If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.&lt;/p>
+&lt;/blockquote>
+&lt;p>如果你对回合制游戏一无所知，这里可以简单概括下。回合制游戏就是拥有不同力量，不同能力的各类角色之间互相战斗并逐个杀死对方. 获胜者是最后的幸存者。&lt;/p>
+&lt;h3 id="turn-game-rules">Turn Game Rules&lt;/h3>
+&lt;blockquote>
+&lt;ol>
+&lt;li>Fights mean every Warrier hit only the one Warrier in Turn. Every attacker loses stamina or mana after hit to an opponent.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>战斗意味着每个战士每个回合只能攻击一个战士。每一个攻击者在击中对手后会失去体力值或者魔法值.&lt;/p>
+&lt;blockquote>
+&lt;ol start="2">
+&lt;li>Every Hit damage is changed by Warrier’s Level and his Weapon, Magic, or Animal kind.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>每一次命中的伤害会因战士的等级，武器，法力，或者宠物类型而不同&lt;/p>
+&lt;blockquote>
+&lt;ol start="3">
+&lt;li>When a warrior is damaged by someone else, his or her blood will decreases. If the blood value is zero or less, he will die.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>当一个战士被其他人伤害时，他的血量会减少，如果血量值降到0或者更少，他将会死亡.&lt;/p>
+&lt;blockquote>
+&lt;ol start="4">
+&lt;li>If a warrior’s stamina or mana less than zero, he can’t hit or make magic until the next Turn. Next Turn, his mana or stamina will be full.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>如果一个战士的体力或者魔法值少于0，在下一回合之前他将不能施放技能。下一回合他的体力或者魔法值将会充满。&lt;/p>
+&lt;blockquote>
+&lt;p>Firstly let’s create base traits struct of these types of characters.&lt;/p>
+&lt;/blockquote>
+&lt;p>首先,创建不同角色的基础属性结构体&lt;/p>
+&lt;blockquote>
+&lt;p>heroCharacter/heroCharacter.go: All the characters have Name, Level (experience),Attacks(Damage List) and Blood(Energy)&lt;/p>
+&lt;/blockquote>
+&lt;p>所有的角色都有角色名称，等级（经验），攻击力（伤害列表）和血量（能量）&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">heroCharacter&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Hero&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Level&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Attacks&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Blood&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>Let’s Create all Characters Interface. We will list all character’s common Actions in this interface.&lt;/p>
+&lt;/blockquote>
+&lt;p>创建角色&lt;code>interface&lt;/code>,在这个接口中我们将定义所有角色通用的操作行为的方法。&lt;/p>
+&lt;blockquote>
+&lt;p>fightHero/fightHero.go: Every hero Hits the other characters, takes Damage after attacked by someone else. We can get info about him or her healthy, stamina or mana.And finally, we can check he or she died or not. These are the common functions of all Characters.&lt;/p>
+&lt;/blockquote>
+&lt;p>每个英雄角色击中其他角色，或者收到其他人的攻击。我们会获取他的健康，魔法或者体力信息.然后,检查他是否死亡.这是所有角色的通用方法。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">fightHero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">FightHero&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Hit&lt;/span>() &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">TakeDamage&lt;/span>(&lt;span style="color:#a6e22e">damage&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">GetInfo&lt;/span>() (&lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#66d9ef">int&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">IsDeath&lt;/span>() &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="wizard">Wizard&lt;/h3>
+&lt;blockquote>
+&lt;p>Let’s create first character Wizard.&lt;/p>
+&lt;/blockquote>
+&lt;p>创建第一个角色男巫&lt;/p>
+&lt;p>wizard/wizard.go:&lt;/p>
+&lt;h4 id="properties-of-wizard">properties of Wizard&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Wizard&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">hero&lt;/span>.&lt;span style="color:#a6e22e">Hero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Manas&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Mana&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Magic&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>Hero: Common character’s properties.&lt;/p>
+&lt;/blockquote>
+&lt;p>Hero:角色通用属性&lt;/p>
+&lt;blockquote>
+&lt;p>Manas: This is a collection of “string” magic names with their “int” mana costs.Example: “Manas: map[string]int{“FireBall”: 5, “Thunder”: 10, “Ghost Attack”:30}}”&lt;/p>
+&lt;/blockquote>
+&lt;p>Manas：魔法值消耗列表.魔法技能名称作为key,魔法技能消耗的魔法值作为value.示例中火球技能消耗5点魔法值,闪电技能消耗10点,幽灵攻击消耗30点&lt;/p>
+&lt;blockquote>
+&lt;p>Mana: This is integer Wizard’s mana value. Wizard needs mana, for making Magic.Without mana Wizard is nothing :)&lt;/p>
+&lt;/blockquote>
+&lt;p>Mana:魔法值,男巫的魔法值,男巫需要魔法值来施放魔法技能.没有魔法值,男巫啥也不是.&lt;/p>
+&lt;blockquote>
+&lt;p>Magic: This is Wizard’s weapon. He or she can hit an enemy with the Magic.
+Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attack”: 30}”&lt;/p>
+&lt;/blockquote>
+&lt;p>Magic: 这是男巫的武器,他可以使用魔法技能攻击敌人.&lt;/p>
+&lt;h4 id="action-of-wizard">Action of Wizard&lt;/h4>
+&lt;h5 id="fighthero-interface-methods">FightHero interface Methods:&lt;/h5>
+&lt;p>&lt;code>Hit()&lt;/code>计算魔法技能伤害值,只有法力值足够的前提下才能施放魔法技能,魔法技能的伤害值和等级有关系.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">w&lt;/span> &lt;span style="color:#a6e22e">Wizard&lt;/span>) &lt;span style="color:#a6e22e">Hit&lt;/span>() &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Mana&lt;/span> &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Manas&lt;/span>[&lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Magic&lt;/span>] {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">levelEffect&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> int(&lt;span style="color:#a6e22e">math&lt;/span>.&lt;span style="color:#a6e22e">Ceil&lt;/span>(float64(&lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Level&lt;/span>) &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">0.1&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Attacks&lt;/span>[&lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Magic&lt;/span>] &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">levelEffect&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>TakeDamage&lt;/code> 如果被其他角色攻击,血量将会减少,当血量为0时,男巫就会死亡.此处使用了指针类型&lt;code>*Wizard&lt;/code>,因为当男巫受到伤害时必须及时减少男巫的血量&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">w&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Wizard&lt;/span>) &lt;span style="color:#a6e22e">TakeDamage&lt;/span>(&lt;span style="color:#a6e22e">damage&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Blood&lt;/span> = &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Blood&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#a6e22e">damage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>GetInfo()&lt;/code> 获取男巫的名称和血量&lt;/p>
+&lt;p>&lt;code>IsDeath():&lt;/code> 检测男巫是否死亡&lt;/p>
+&lt;h5 id="wizard-own-methods">Wizard Own Methods:&lt;/h5>
+&lt;p>&lt;code>GetMana():&lt;/code> 获取男巫当前的法力值&lt;/p>
+&lt;p>&lt;code>SpendMana()&lt;/code> 消耗男巫的法力值&lt;/p>
+&lt;p>&lt;code>CreateWizard()&lt;/code> 创建男巫对象&lt;/p>
+&lt;h3 id="fighter-参考男巫">Fighter (参考男巫)&lt;/h3>
+&lt;h3 id="druid-参考男巫">Druid (参考男巫)&lt;/h3>
+&lt;h3 id="hero-战斗">Hero (战斗)&lt;/h3>
+&lt;p>我们已经定义了所有的英雄角色,现在开始让他们之间互相战斗,他们中只有一个能获胜幸存下来.
+定义全局变量和随机函数:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">fighterList&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">fighterNumberList&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">int&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">GetRandomID&lt;/span>(&lt;span style="color:#a6e22e">limit&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Seed&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Now&lt;/span>().&lt;span style="color:#a6e22e">UnixNano&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rndVictim&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Intn&lt;/span>(&lt;span style="color:#a6e22e">limit&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">rndVictim&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">GetRandomBetweenID&lt;/span>(&lt;span style="color:#a6e22e">minLimit&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#a6e22e">maxlimit&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Seed&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Now&lt;/span>().&lt;span style="color:#a6e22e">UnixNano&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rndVictim&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Intn&lt;/span>(&lt;span style="color:#a6e22e">maxlimit&lt;/span>&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#a6e22e">minLimit&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">minLimit&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">rndVictim&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">isFighterDead&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">isWizardDead&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">isDruidDead&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">TotalLive&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">MapRandomKeyGet&lt;/span>(&lt;span style="color:#a6e22e">mapI&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{}) &lt;span style="color:#66d9ef">interface&lt;/span>{} {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">keys&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">ValueOf&lt;/span>(&lt;span style="color:#a6e22e">mapI&lt;/span>).&lt;span style="color:#a6e22e">MapKeys&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">keys&lt;/span>[&lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Intn&lt;/span>(len(&lt;span style="color:#a6e22e">keys&lt;/span>))].&lt;span style="color:#a6e22e">Interface&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>fighterList&lt;/code>以英雄的名称保存英雄信息&lt;/li>
+&lt;li>&lt;code>fighterNumberList&lt;/code>根据英雄ID存储英雄名称&lt;/li>
+&lt;li>&lt;code>GetRandomID&lt;/code> 获取随机数&lt;/li>
+&lt;li>&lt;code>GetRandomBetweenID&lt;/code> 给定范围内获取随机数&lt;/li>
+&lt;li>&lt;code>isFighterDead, isWizardDead, isDruidDead&lt;/code> 每个英雄的生死状态&lt;/li>
+&lt;li>&lt;code>TotalLive&lt;/code> 几条生命&lt;/li>
+&lt;li>&lt;code>MapRandomKeyGet&lt;/code> 用来随机获取&lt;code>Wizzard&lt;/code>的魔法技能,&lt;code>Fighter&lt;/code>的武器,&lt;code>Druid&lt;/code>的宠物&lt;/li>
+&lt;/ul>
+&lt;h3 id="heromain">hero/main()&lt;/h3>
+&lt;p>首先我们创建默认的&lt;code>wizard&lt;/code>,&lt;code>fighter&lt;/code>和&lt;code>druid&lt;/code>人物角色。由于每个英雄出手攻击都要等待确保其他英雄的攻击动作已经完成。所以我们使用&lt;code>channels&lt;/code>来达到顺序战斗的效果。攻击动作完成之后才会继续接下来的战斗。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">merlin&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">wizard&lt;/span>.&lt;span style="color:#a6e22e">CreateWizard&lt;/span>(&lt;span style="color:#a6e22e">GetRandomBetweenID&lt;/span>(&lt;span style="color:#ae81ff">50&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>), &lt;span style="color:#a6e22e">GetRandomBetweenID&lt;/span>(&lt;span style="color:#ae81ff">50&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>))
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果你注意上面的代码会发现，每个英雄的血量、法力和耐力值都是设置为50到100之间的随机数&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fighterList&lt;/span> = &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>{&lt;span style="color:#e6db74">&amp;#34;fighter&amp;#34;&lt;/span>: &lt;span style="color:#a6e22e">barbar&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;wizard&amp;#34;&lt;/span>: &lt;span style="color:#a6e22e">merlin&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;druid&amp;#34;&lt;/span>: &lt;span style="color:#a6e22e">forest&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fighterNumberList&lt;/span> = &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">int&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>{&lt;span style="color:#ae81ff">1&lt;/span>: &lt;span style="color:#a6e22e">barbar&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>: &lt;span style="color:#a6e22e">merlin&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>: &lt;span style="color:#a6e22e">forest&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>我们会将所有英雄名字和英雄对象以键值对的形式保存在&lt;code>fightList&lt;/code> Map中&lt;/li>
+&lt;li>我们会像枚举一样使用&lt;code>fighterNumberList&lt;/code>,随机的从这个map中取英雄&lt;/li>
+&lt;/ul>
+&lt;p>接下来，我们会让角色在一个循环中战斗知道最后只有一个人存活&lt;/p></description></item></channel></rss>

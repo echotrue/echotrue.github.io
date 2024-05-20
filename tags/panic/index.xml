@@ -1,1 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Panic on AXLROSE</title><link>https://echotrue.github.io/tags/panic/</link><description>Recent content in Panic on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>zh</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Fri, 09 Aug 2019 15:55:02 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/panic/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Panic on AXLROSE</title><link>https://echotrue.github.io/tags/panic/</link><description>Recent content in Panic on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Fri, 09 Aug 2019 15:55:02 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/panic/index.xml" rel="self" type="application/rss+xml"/><item><title>Panic and Recover</title><link>https://echotrue.github.io/blog/golang/panic-and-recover/</link><pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/panic-and-recover/</guid><description>&lt;h3 id="panic">panic&lt;/h3>
+&lt;p>   &lt;code>Golang&lt;/code> 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。&lt;/p>
+&lt;p>  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。&lt;/p>
+&lt;pre tabindex="0">&lt;code>func main() {
+var user = os.Getenv(&amp;#34;USER_&amp;#34;)
+go func() {
+defer func() {
+fmt.Println(&amp;#34;defer 1&amp;#34;)
+}()
+if user == &amp;#34;&amp;#34;{
+panic(&amp;#34;should set user env.&amp;#34;)
+}
+}()
+time.Sleep(1*time.Second)
+fmt.Println(&amp;#34;get result&amp;#34;)
+}
+&lt;/code>&lt;/pre>&lt;p>  上述代码输出：&lt;/p>
+&lt;pre tabindex="0">&lt;code>defer 1
+panic: should set user env.
+goroutine 19 [running]:
+main.main.func1(0x0, 0x0)
+D:/gopath/src/race_condition/index.go:16 +0x86
+created by main.main
+D:/gopath/src/race_condition/index.go:11 +0x59
+Process finished with exit code 2
+&lt;/code>&lt;/pre>&lt;p>说明panic坚守了自己的原则：&lt;strong>执行且只执行当前goroutine的defer，defer的特点是LIFO，即后进先出。如果有多个defer的时候，会倒序执行&lt;/strong>&lt;/p>
+&lt;h3 id="recover">recover&lt;/h3>
+&lt;p>  有时候不希望因为panic导致整个进程终止，因此需要像其他语言捕获异常。在Golang中可以通过在当前goroutine的defer中使用recover来捕获panic。recover只在defer的函数中有效，如果不是在defer上下文中调用，recover会直接返回nil&lt;/p></description></item></channel></rss>
