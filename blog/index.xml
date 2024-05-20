@@ -1,16 +1,14 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on AXLROSE</title><link>https://echotrue.github.io/blog/</link><description>Recent content in Blog on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Mon, 20 May 2024 09:34:20 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on AXLROSE</title><link>https://echotrue.github.io/blog/</link><description>Recent content in Blog on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Mon, 20 May 2024 09:47:31 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Deadline&lt;/span>() (&lt;span style="color:#a6e22e">deadline&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Err&lt;/span>() &lt;span style="color:#66d9ef">error&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Value&lt;/span>(&lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>) &lt;span style="color:#a6e22e">any&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>&lt;code>Deadline()&lt;/code>返回一个截止时间，到了这个时间后正在进行的工作将会终止。这意味着当前上下文应该被取消。没有设置截止时间则第二个返回值为&lt;code>false&lt;/code>，多次调用该方法返回相同的结果。&lt;/li>
-&lt;li>&lt;code>Done()&lt;/code>返回一个已经关闭的&lt;code>chan&lt;/code>此时正在进行的工作将会终止。这意味着当前上下文应该被取消。如果这个上下文永远不能被取消，&lt;code>Done&lt;/code>返回&lt;code>nil&lt;/code>。多次调用该方法返回相同的结果。该&lt;code>chan&lt;/code>的关闭动作可能会在&lt;code>cancel&lt;/code>函数返回后异步的发生。&lt;/li>
-&lt;li>&lt;code>Err()&lt;/code>返回&lt;code>nil&lt;/code>当&lt;code>Done&lt;/code>返回的通道未关闭时，反之则返回非空的错误。&lt;/li>
-&lt;li>&lt;code>Value()&lt;/code>&lt;/li>
-&lt;/ul>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>Deadline()&lt;/code>返回一个截止时间，到了这个时间后正在进行的工作将会终止。这意味着当前上下文应该被取消。没有设置截止时间则第二个返回值为&lt;code>false&lt;/code>，多次调用该方法返回相同的结果。&lt;/p>
+&lt;p>&lt;code>Done()&lt;/code>返回一个已经关闭的&lt;code>chan&lt;/code>此时正在进行的工作将会终止。这意味着当前上下文应该被取消。如果这个上下文永远不能被取消，&lt;code>Done&lt;/code>返回&lt;code>nil&lt;/code>。多次调用该方法返回相同的结果。该&lt;code>chan&lt;/code>的关闭动作可能会在&lt;code>cancel&lt;/code>函数返回后异步的发生。&lt;/p>
+&lt;p>&lt;code>Err()&lt;/code>返回&lt;code>nil&lt;/code>当&lt;code>Done&lt;/code>返回的通道未关闭时，反之则返回非空的错误。&lt;/p>
+&lt;p>&lt;code>Value()&lt;/code>&lt;/p>
 &lt;h2 id="内置上下文">内置上下文&lt;/h2>
 &lt;div class="tabs tabs-left">
 &lt;style>
@@ -91,7 +89,7 @@ display: block;
 &lt;li>withoutCancelCtx&lt;/li>
 &lt;/ul>
 &lt;h2 id="可取消的cancelctx">可取消的cancelCtx&lt;/h2>
-&lt;h4 id="创建一个带取消的上下文">创建一个带取消的上下文：&lt;/h4>
+&lt;h3 id="创建一个带取消的上下文">创建一个带取消的上下文：&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">withCancel&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;cannot create context from nil parent&amp;#34;&lt;/span>)
@@ -100,10 +98,10 @@ display: block;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">propagateCancel&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span>, &lt;span style="color:#a6e22e">c&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h6 id="propagatecancel">propagateCancel()&lt;/h6>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="propagatecancel">propagateCancel()&lt;/h3>
 &lt;p>
 &lt;details class="toggle">
-&lt;summary markdown="span">propagateCancel&lt;/summary>
+&lt;summary markdown="span">源码&lt;/summary>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">propagateCancel&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">child&lt;/span> &lt;span style="color:#a6e22e">canceler&lt;/span>) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span> = &lt;span style="color:#a6e22e">parent&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
@@ -162,22 +160,23 @@ display: block;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
 &lt;/details>
 &lt;/p>
+&lt;p>将&lt;code>parent&lt;/code>赋值给当前&lt;code>cancelCtx&lt;/code>的&lt;code>Context&lt;/code>字段&lt;/p>
+&lt;p>获取父上下文的&lt;code>Done&lt;/code>通道，如果该通道为空，说明父上下文是不可取消的。则无需执行后续逻辑。&lt;/p>
+&lt;p>如果父上下文是&lt;code>cancelCtx&lt;/code>，则通过err判断父上下文是否被取消。如果父级已被取消那么作为子级的当前上下文也应该执行&lt;code>cancel&lt;/code>操作来取消。如果父级没有被取消，则需要将当前上下文附加到父级的&lt;code>children&lt;/code>字段中,以便父级取消后依次取消所有子级。&lt;/p>
+&lt;p>如果父上下文实现了&lt;code>afterFuncer&lt;/code>,则组合一个&lt;code>stopCtx&lt;/code>并赋值给当前&lt;code>cancelCtx&lt;/code>的&lt;code>Context&lt;/code>字段.&lt;/p>
+&lt;p>既不是&lt;code>cancelCtx&lt;/code>又没有实现&lt;code>afterFuncer&lt;/code>则启动一个go程来分别监听父上下文和子上下文的状态，如果父上下文被取消则取消子上下文。如果子上下文被取消则直接跳过,因为不影响父级。&lt;/p>
 &lt;ul>
-&lt;li>将&lt;code>parent&lt;/code>赋值给当前&lt;code>cancelCtx&lt;/code>的&lt;code>Context&lt;/code>字段&lt;/li>
-&lt;li>获取父上下文的&lt;code>Done&lt;/code>通道，如果该通道为空，说明父上下文是不可取消的。则无需执行后续逻辑。&lt;/li>
-&lt;li>如果父上下文是&lt;code>cancelCtx&lt;/code>，则通过err判断父上下文是否被取消。如果父级已被取消那么作为子级的当前上下文也应该执行&lt;code>cancel&lt;/code>操作来取消。如果父级没有被取消，则需要将当前上下文附加到父级的&lt;code>children&lt;/code>字段中,以便父级取消后依次取消所有子级。&lt;/li>
-&lt;li>如果父上下文实现了&lt;code>afterFuncer&lt;/code>,则组合一个&lt;code>stopCtx&lt;/code>并赋值给当前&lt;code>cancelCtx&lt;/code>的&lt;code>Context&lt;/code>字段.&lt;/li>
-&lt;li>既不是&lt;code>cancelCtx&lt;/code>又没有实现&lt;code>afterFuncer&lt;/code>则启动一个go程来分别监听父上下文和子上下文的状态，如果父上下文被取消则取消子上下文。如果子上下文被取消则直接跳过,因为不影响父级。
-&lt;ul>
-&lt;li>这里监听父上下文done的信号是因为当前parent并不是一个cancel类型的上下文，这在前面的&lt;code>parentCancelCtx&lt;/code>函数中已经被验证过，因此这个parent没有children，无法像cancelCtx那样取消子级上下文。因此，在这里监听parent的done信号来确定是否需要取消子级。&lt;/li>
-&lt;li>这里监听自己是因为，如果自己比父级先取消，那么该goroutine就可以直接退出了，防止内存溢出。&lt;/li>
-&lt;/ul>
+&lt;li>
+&lt;p>这里监听父上下文done的信号是因为当前parent并不是一个cancel类型的上下文，这在前面的&lt;code>parentCancelCtx&lt;/code>函数中已经被验证过，因此这个parent没有children，无法像cancelCtx那样取消子级上下文。因此，在这里监听parent的done信号来确定是否需要取消子级。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>这里监听自己是因为，如果自己比父级先取消，那么该goroutine就可以直接退出了，防止内存溢出。&lt;/p>
 &lt;/li>
 &lt;/ul>
-&lt;h6 id="cancelctxcancel">cancelCtx.cancel()&lt;/h6>
-&lt;p>
+&lt;h3 id="cancelctxcancel">cancelCtx.cancel()&lt;/h3>
+&lt;p>&lt;p>
 &lt;details class="toggle">
-&lt;summary markdown="span">cancelCtx.cancel()&lt;/summary>
+&lt;summary markdown="span">源码&lt;/summary>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">cancel&lt;/span>(&lt;span style="color:#a6e22e">removeFromParent&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span>, &lt;span style="color:#a6e22e">cause&lt;/span> &lt;span style="color:#66d9ef">error&lt;/span>) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;context: internal error: missing cancel error&amp;#34;&lt;/span>)
@@ -213,13 +212,11 @@ display: block;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
 &lt;/details>
 &lt;/p>
-&lt;ul>
-&lt;li>cancel函数有三个入参，&lt;code>removeFromParent&lt;/code>指是否要将当前上下文从其父级的children列表中移除，err和cause是取消的错误信息描述。&lt;/li>
-&lt;li>加载cancelCtx中done的值，done是一个原子变量，其值是一个无缓冲chan struct{}。如果done没有值则为其赋值为closedchan，closedchan也是一个无缓冲的chan struct{},且在init函数中被close。如果done有值则close这个chan struct{}。一旦关闭了该通道，ctx.Done()就能接收到值，然后就可以释放go程了。&lt;/li>
-&lt;li>依次取消子级上下文&lt;/li>
-&lt;li>从父级中移除当前上下文&lt;/li>
-&lt;/ul>
-&lt;h6 id="cancelctxdone">cancelCtx.Done()&lt;/h6>
+cancel函数有三个入参，&lt;code>removeFromParent&lt;/code>指是否要将当前上下文从其父级的children列表中移除，err和cause是取消的错误信息描述。&lt;/p>
+&lt;p>加载cancelCtx中done的值，done是一个原子变量，其值是一个无缓冲chan struct{}。如果done没有值则为其赋值为closedchan，closedchan也是一个无缓冲的chan struct{},且在init函数中被close。如果done有值则close这个chan struct{}。一旦关闭了该通道，ctx.Done()就能接收到值，然后就可以释放go程了。&lt;/p>
+&lt;p>依次取消子级上下文&lt;/p>
+&lt;p>从父级中移除当前上下文&lt;/p>
+&lt;h3 id="cancelctxdone">cancelCtx.Done()&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>) &lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{} {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">d&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">done&lt;/span>.&lt;span style="color:#a6e22e">Load&lt;/span>()
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
@@ -234,11 +231,8 @@ display: block;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">d&lt;/span>.(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>加载cancelCtx中的done值,如果有值直接返回&lt;/li>
-&lt;li>加锁，然后再次加在cancelCtx中的done值,如果done为nil,则初始化done的值。此处使用了双重检测机制保证done只被初始化一次。&lt;/li>
-&lt;/ul>
-&lt;h6 id="parentcancelctx">parentCancelCtx()&lt;/h6>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>加载cancelCtx中的done值,如果有值直接返回。加锁，然后再次加在cancelCtx中的done值,如果done为nil,则初始化done的值。此处使用了双重检测机制保证done只被初始化一次。&lt;/p>
+&lt;h3 id="parentcancelctx">parentCancelCtx()&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">parentCancelCtx&lt;/span>(&lt;span style="color:#a6e22e">parent&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cancelCtx&lt;/span>, &lt;span style="color:#66d9ef">bool&lt;/span>) {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parent&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>()
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">closedchan&lt;/span> &lt;span style="color:#f92672">||&lt;/span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
@@ -269,13 +263,11 @@ display: block;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">value&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">key&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
-&lt;li>查找并返回parent的底层cancelCtx。&lt;/li>
-&lt;li>在context包中只有cancelCtx、emptyCtx、withoutCancelCtx是直接实现了Done方法的,其中只有cancelCtx是实现了非nil的Done方法的。其他的诸如valueCtx、timeCtx等都是通过嵌入实现的，所以其他ctx调用Done方法时实际是调用的cancelCtx、emptyCtx、withoutCancelCtx这些ctx的Done方法。因此&lt;code>done := parent.Done()&lt;/code>其实是从parent的ctx树向上找到的第一个实现了Done方法的父级ctx，这里我们暂时用A称呼这个ctx。当done == nil时说明A不是cancelCtx。当done!=nil时说明A是cancelCtx。如果在ctx树中有自定义的context且也实现了Done方法，A也可能是自定义的context&lt;/li>
-&lt;li>&lt;code>parent.Value(&amp;amp;cancelCtxKey).(*cancelCtx)&lt;/code>查找ctx树中的第一个cancelCtx。这里将变量cancelCtxKey的内存地址作为参数传递给parent的Value方法。假设parent是cancelCtx直接将parent赋值给p，假设parent不是cancelCtx而是其他诸如valueCtx，则将parent的parent和key作为参数传递给&lt;code>value()&lt;/code>来向上递归查找key对应值。参考&lt;a href="#value()">value()方法&lt;/a>&lt;/li>
-&lt;li>如果parent的上下文树中找到了cancelCtx，则取其done值。然后与前面parent的done值对比，如果他们不相等，说明当前上下文树中第一个实现Done的实例不是cancelCtx。反之，直接返回找到的这个cancelCtx&lt;/li>
-&lt;/ul>
-&lt;h6 id="value">value()&lt;/h6>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>查找并返回parent的底层cancelCtx。&lt;/p>
+&lt;p>在context包中只有cancelCtx、emptyCtx、withoutCancelCtx是直接实现了Done方法的,其中只有cancelCtx是实现了非nil的Done方法的。其他的诸如valueCtx、timeCtx等都是通过嵌入实现的，所以其他ctx调用Done方法时实际是调用的cancelCtx、emptyCtx、withoutCancelCtx这些ctx的Done方法。因此&lt;code>done := parent.Done()&lt;/code>其实是从parent的ctx树向上找到的第一个实现了Done方法的父级ctx，这里我们暂时用A称呼这个ctx。当done == nil时说明A不是cancelCtx。当done!=nil时说明A是cancelCtx。如果在ctx树中有自定义的context且也实现了Done方法，A也可能是自定义的context&lt;/p>
+&lt;p>&lt;code>parent.Value(&amp;amp;cancelCtxKey).(*cancelCtx)&lt;/code>查找ctx树中的第一个cancelCtx。这里将变量cancelCtxKey的内存地址作为参数传递给parent的Value方法。假设parent是cancelCtx直接将parent赋值给p，假设parent不是cancelCtx而是其他诸如valueCtx，则将parent的parent和key作为参数传递给&lt;code>value()&lt;/code>来向上递归查找key对应值。参考&lt;a href="#value()">value()方法&lt;/a>&lt;/p>
+&lt;p>如果parent的上下文树中找到了cancelCtx，则取其done值。然后与前面parent的done值对比，如果他们不相等，说明当前上下文树中第一个实现Done的实例不是cancelCtx。反之，直接返回找到的这个cancelCtx&lt;/p>
+&lt;h3 id="value">value()&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">value&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#a6e22e">key&lt;/span> &lt;span style="color:#a6e22e">any&lt;/span>) &lt;span style="color:#a6e22e">any&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> &lt;span style="color:#a6e22e">ctx&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span>.(&lt;span style="color:#66d9ef">type&lt;/span>) {
