@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>game on AXLROSE</title><link>https://echotrue.github.io/blog/game/</link><description>Recent content in game on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Mon, 20 May 2024 09:13:46 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/game/index.xml" rel="self" type="application/rss+xml"/><item><title>Combat System</title><link>https://echotrue.github.io/blog/game/turn-based-combat/combat-system.zh/</link><pubDate>Wed, 08 Sep 2021 14:24:16 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/turn-based-combat/combat-system.zh/</guid><description>&lt;p>加载英雄,怪物,宠物等等到状态机的&lt;code>soldiers&lt;/code>属性&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-php" data-lang="php">&lt;span style="display:flex;">&lt;span>$this&lt;span style="color:#f92672">-&amp;gt;&lt;/span>&lt;span style="color:#a6e22e">loader&lt;/span>&lt;span style="color:#f92672">-&amp;gt;&lt;/span>&lt;span style="color:#a6e22e">load&lt;/span>();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h5 id="逐个初始化soldiers挂载主动被动技能效果并添加监听事件到observers属性">逐个初始化&lt;code>soldiers&lt;/code>.挂载主动,被动技能效果并添加监听事件到&lt;code>observers&lt;/code>属性.&lt;/h5>
+&lt;p>保留原始属性&lt;/p>
+&lt;p>触发&lt;code>EVENT_CREATED&lt;/code>事件.事件id为1的技能效果将会被加载.该类型的技能效果是永久加成效果.&lt;code>observers&lt;/code>的数据格式为:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{&lt;span style="color:#f92672">&amp;#34;3&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53102&lt;/span>,&lt;span style="color:#ae81ff">53103&lt;/span>,&lt;span style="color:#ae81ff">312&lt;/span>],&lt;span style="color:#f92672">&amp;#34;9&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53104&lt;/span>],&lt;span style="color:#f92672">&amp;#34;4&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53105&lt;/span>],&lt;span style="color:#f92672">&amp;#34;5&amp;#34;&lt;/span>:[&lt;span style="color:#ae81ff">53106&lt;/span>]}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>计算英雄被动属性差值&lt;code>diff_addition&lt;/code>&lt;/p>
+&lt;p>计算队伍加成属性,并赋值到&lt;code>soldier&lt;/code>的&lt;code>addition&lt;/code>属性.&lt;/p>
+&lt;p>附加效果加成计算&lt;/p>
+&lt;p>累加加成效果数据到&lt;code>soldier&lt;/code>&lt;/p>
+&lt;p>检查并削弱基础属性&lt;/p>
+&lt;p>处理残血模式下血量&lt;/p>
+&lt;p>处理蓝量&lt;/p>
+&lt;p>保存属性值到英雄基础属性对象&lt;code>base&lt;/code>&lt;/p></description></item><item><title>Game Vocabulary List</title><link>https://echotrue.github.io/blog/game/game-vocabulary-list/</link><pubDate>Tue, 07 Sep 2021 13:46:23 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/game-vocabulary-list/</guid><description/></item><item><title>Turn-Based Game With Go【译】</title><link>https://echotrue.github.io/blog/game/turn-based-game-with-go/</link><pubDate>Mon, 06 Sep 2021 16:32:53 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/turn-based-game-with-go/</guid><description>&lt;blockquote>
+&lt;p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang&lt;/p>
+&lt;/blockquote>
+&lt;p>今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的&lt;code>Interface&lt;/code>,&lt;code>channels&lt;/code>,&lt;code>concurrency&lt;/code>等特性。&lt;/p>
+&lt;blockquote>
+&lt;p>If you don’t have any idea about the turn-based game, it is about the different types of characters with different strengths, and different abilities fight and kill each other one by one. The winner is the survived last person.&lt;/p>
+&lt;/blockquote>
+&lt;p>如果你对回合制游戏一无所知，这里可以简单概括下。回合制游戏就是拥有不同力量，不同能力的各类角色之间互相战斗并逐个杀死对方. 获胜者是最后的幸存者。&lt;/p>
+&lt;h3 id="turn-game-rules">Turn Game Rules&lt;/h3>
+&lt;blockquote>
+&lt;ol>
+&lt;li>Fights mean every Warrier hit only the one Warrier in Turn. Every attacker loses stamina or mana after hit to an opponent.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>战斗意味着每个战士每个回合只能攻击一个战士。每一个攻击者在击中对手后会失去体力值或者魔法值.&lt;/p>
+&lt;blockquote>
+&lt;ol start="2">
+&lt;li>Every Hit damage is changed by Warrier’s Level and his Weapon, Magic, or Animal kind.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>每一次命中的伤害会因战士的等级，武器，法力，或者宠物类型而不同&lt;/p>
+&lt;blockquote>
+&lt;ol start="3">
+&lt;li>When a warrior is damaged by someone else, his or her blood will decreases. If the blood value is zero or less, he will die.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>当一个战士被其他人伤害时，他的血量会减少，如果血量值降到0或者更少，他将会死亡.&lt;/p>
+&lt;blockquote>
+&lt;ol start="4">
+&lt;li>If a warrior’s stamina or mana less than zero, he can’t hit or make magic until the next Turn. Next Turn, his mana or stamina will be full.&lt;/li>
+&lt;/ol>
+&lt;/blockquote>
+&lt;p>如果一个战士的体力或者魔法值少于0，在下一回合之前他将不能施放技能。下一回合他的体力或者魔法值将会充满。&lt;/p>
+&lt;blockquote>
+&lt;p>Firstly let’s create base traits struct of these types of characters.&lt;/p>
+&lt;/blockquote>
+&lt;p>首先,创建不同角色的基础属性结构体&lt;/p>
+&lt;blockquote>
+&lt;p>heroCharacter/heroCharacter.go: All the characters have Name, Level (experience),Attacks(Damage List) and Blood(Energy)&lt;/p>
+&lt;/blockquote>
+&lt;p>所有的角色都有角色名称，等级（经验），攻击力（伤害列表）和血量（能量）&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">heroCharacter&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Hero&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Level&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Attacks&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Blood&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>Let’s Create all Characters Interface. We will list all character’s common Actions in this interface.&lt;/p>
+&lt;/blockquote>
+&lt;p>创建角色&lt;code>interface&lt;/code>,在这个接口中我们将定义所有角色通用的操作行为的方法。&lt;/p>
+&lt;blockquote>
+&lt;p>fightHero/fightHero.go: Every hero Hits the other characters, takes Damage after attacked by someone else. We can get info about him or her healthy, stamina or mana.And finally, we can check he or she died or not. These are the common functions of all Characters.&lt;/p>
+&lt;/blockquote>
+&lt;p>每个英雄角色击中其他角色，或者收到其他人的攻击。我们会获取他的健康，魔法或者体力信息.然后,检查他是否死亡.这是所有角色的通用方法。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">fightHero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">FightHero&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Hit&lt;/span>() &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">TakeDamage&lt;/span>(&lt;span style="color:#a6e22e">damage&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">GetInfo&lt;/span>() (&lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#66d9ef">int&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">IsDeath&lt;/span>() &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="wizard">Wizard&lt;/h3>
+&lt;blockquote>
+&lt;p>Let’s create first character Wizard.&lt;/p>
+&lt;/blockquote>
+&lt;p>创建第一个角色男巫&lt;/p>
+&lt;p>wizard/wizard.go:&lt;/p>
+&lt;h4 id="properties-of-wizard">properties of Wizard&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Wizard&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">hero&lt;/span>.&lt;span style="color:#a6e22e">Hero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Manas&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Mana&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Magic&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>Hero: Common character’s properties.&lt;/p>
+&lt;/blockquote>
+&lt;p>Hero:角色通用属性&lt;/p>
+&lt;blockquote>
+&lt;p>Manas: This is a collection of “string” magic names with their “int” mana costs.Example: “Manas: map[string]int{“FireBall”: 5, “Thunder”: 10, “Ghost Attack”:30}}”&lt;/p>
+&lt;/blockquote>
+&lt;p>Manas：魔法值消耗列表.魔法技能名称作为key,魔法技能消耗的魔法值作为value.示例中火球技能消耗5点魔法值,闪电技能消耗10点,幽灵攻击消耗30点&lt;/p>
+&lt;blockquote>
+&lt;p>Mana: This is integer Wizard’s mana value. Wizard needs mana, for making Magic.Without mana Wizard is nothing :)&lt;/p>
+&lt;/blockquote>
+&lt;p>Mana:魔法值,男巫的魔法值,男巫需要魔法值来施放魔法技能.没有魔法值,男巫啥也不是.&lt;/p>
+&lt;blockquote>
+&lt;p>Magic: This is Wizard’s weapon. He or she can hit an enemy with the Magic.
+Example: “map[string]int{“FireBall”: 25, “Thunder”: 18, “Ghost Attack”: 30}”&lt;/p>
+&lt;/blockquote>
+&lt;p>Magic: 这是男巫的武器,他可以使用魔法技能攻击敌人.&lt;/p>
+&lt;h4 id="action-of-wizard">Action of Wizard&lt;/h4>
+&lt;h5 id="fighthero-interface-methods">FightHero interface Methods:&lt;/h5>
+&lt;p>&lt;code>Hit()&lt;/code>计算魔法技能伤害值,只有法力值足够的前提下才能施放魔法技能,魔法技能的伤害值和等级有关系.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">w&lt;/span> &lt;span style="color:#a6e22e">Wizard&lt;/span>) &lt;span style="color:#a6e22e">Hit&lt;/span>() &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Mana&lt;/span> &lt;span style="color:#f92672">&amp;gt;=&lt;/span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Manas&lt;/span>[&lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Magic&lt;/span>] {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">levelEffect&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> int(&lt;span style="color:#a6e22e">math&lt;/span>.&lt;span style="color:#a6e22e">Ceil&lt;/span>(float64(&lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Level&lt;/span>) &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">0.1&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Attacks&lt;/span>[&lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Magic&lt;/span>] &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">levelEffect&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>TakeDamage&lt;/code> 如果被其他角色攻击,血量将会减少,当血量为0时,男巫就会死亡.此处使用了指针类型&lt;code>*Wizard&lt;/code>,因为当男巫受到伤害时必须及时减少男巫的血量&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">w&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Wizard&lt;/span>) &lt;span style="color:#a6e22e">TakeDamage&lt;/span>(&lt;span style="color:#a6e22e">damage&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Blood&lt;/span> = &lt;span style="color:#a6e22e">w&lt;/span>.&lt;span style="color:#a6e22e">Blood&lt;/span> &lt;span style="color:#f92672">-&lt;/span> &lt;span style="color:#a6e22e">damage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>GetInfo()&lt;/code> 获取男巫的名称和血量&lt;/p>
+&lt;p>&lt;code>IsDeath():&lt;/code> 检测男巫是否死亡&lt;/p>
+&lt;h5 id="wizard-own-methods">Wizard Own Methods:&lt;/h5>
+&lt;p>&lt;code>GetMana():&lt;/code> 获取男巫当前的法力值&lt;/p>
+&lt;p>&lt;code>SpendMana()&lt;/code> 消耗男巫的法力值&lt;/p>
+&lt;p>&lt;code>CreateWizard()&lt;/code> 创建男巫对象&lt;/p>
+&lt;h3 id="fighter-参考男巫">Fighter (参考男巫)&lt;/h3>
+&lt;h3 id="druid-参考男巫">Druid (参考男巫)&lt;/h3>
+&lt;h3 id="hero-战斗">Hero (战斗)&lt;/h3>
+&lt;p>我们已经定义了所有的英雄角色,现在开始让他们之间互相战斗,他们中只有一个能获胜幸存下来.
+定义全局变量和随机函数:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">fighterList&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">fighterNumberList&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">int&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">GetRandomID&lt;/span>(&lt;span style="color:#a6e22e">limit&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Seed&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Now&lt;/span>().&lt;span style="color:#a6e22e">UnixNano&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rndVictim&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Intn&lt;/span>(&lt;span style="color:#a6e22e">limit&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">rndVictim&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">GetRandomBetweenID&lt;/span>(&lt;span style="color:#a6e22e">minLimit&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#a6e22e">maxlimit&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Seed&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Now&lt;/span>().&lt;span style="color:#a6e22e">UnixNano&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rndVictim&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Intn&lt;/span>(&lt;span style="color:#a6e22e">maxlimit&lt;/span>&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#a6e22e">minLimit&lt;/span>) &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">minLimit&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">rndVictim&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">isFighterDead&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">isWizardDead&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">isDruidDead&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">TotalLive&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> = &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">MapRandomKeyGet&lt;/span>(&lt;span style="color:#a6e22e">mapI&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span>{}) &lt;span style="color:#66d9ef">interface&lt;/span>{} {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">keys&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">ValueOf&lt;/span>(&lt;span style="color:#a6e22e">mapI&lt;/span>).&lt;span style="color:#a6e22e">MapKeys&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">keys&lt;/span>[&lt;span style="color:#a6e22e">rand&lt;/span>.&lt;span style="color:#a6e22e">Intn&lt;/span>(len(&lt;span style="color:#a6e22e">keys&lt;/span>))].&lt;span style="color:#a6e22e">Interface&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>fighterList&lt;/code>以英雄的名称保存英雄信息&lt;/li>
+&lt;li>&lt;code>fighterNumberList&lt;/code>根据英雄ID存储英雄名称&lt;/li>
+&lt;li>&lt;code>GetRandomID&lt;/code> 获取随机数&lt;/li>
+&lt;li>&lt;code>GetRandomBetweenID&lt;/code> 给定范围内获取随机数&lt;/li>
+&lt;li>&lt;code>isFighterDead, isWizardDead, isDruidDead&lt;/code> 每个英雄的生死状态&lt;/li>
+&lt;li>&lt;code>TotalLive&lt;/code> 几条生命&lt;/li>
+&lt;li>&lt;code>MapRandomKeyGet&lt;/code> 用来随机获取&lt;code>Wizzard&lt;/code>的魔法技能,&lt;code>Fighter&lt;/code>的武器,&lt;code>Druid&lt;/code>的宠物&lt;/li>
+&lt;/ul>
+&lt;h3 id="heromain">hero/main()&lt;/h3>
+&lt;p>首先我们创建默认的&lt;code>wizard&lt;/code>,&lt;code>fighter&lt;/code>和&lt;code>druid&lt;/code>人物角色。由于每个英雄出手攻击都要等待确保其他英雄的攻击动作已经完成。所以我们使用&lt;code>channels&lt;/code>来达到顺序战斗的效果。攻击动作完成之后才会继续接下来的战斗。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">merlin&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">wizard&lt;/span>.&lt;span style="color:#a6e22e">CreateWizard&lt;/span>(&lt;span style="color:#a6e22e">GetRandomBetweenID&lt;/span>(&lt;span style="color:#ae81ff">50&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>), &lt;span style="color:#a6e22e">GetRandomBetweenID&lt;/span>(&lt;span style="color:#ae81ff">50&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>))
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>如果你注意上面的代码会发现，每个英雄的血量、法力和耐力值都是设置为50到100之间的随机数&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fighterList&lt;/span> = &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>{&lt;span style="color:#e6db74">&amp;#34;fighter&amp;#34;&lt;/span>: &lt;span style="color:#a6e22e">barbar&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;wizard&amp;#34;&lt;/span>: &lt;span style="color:#a6e22e">merlin&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;druid&amp;#34;&lt;/span>: &lt;span style="color:#a6e22e">forest&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fighterNumberList&lt;/span> = &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">int&lt;/span>]&lt;span style="color:#a6e22e">IHero&lt;/span>.&lt;span style="color:#a6e22e">FightHero&lt;/span>{&lt;span style="color:#ae81ff">1&lt;/span>: &lt;span style="color:#a6e22e">barbar&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>: &lt;span style="color:#a6e22e">merlin&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>: &lt;span style="color:#a6e22e">forest&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>我们会将所有英雄名字和英雄对象以键值对的形式保存在&lt;code>fightList&lt;/code> Map中&lt;/li>
+&lt;li>我们会像枚举一样使用&lt;code>fighterNumberList&lt;/code>,随机的从这个map中取英雄&lt;/li>
+&lt;/ul>
+&lt;p>接下来，我们会让角色在一个循环中战斗知道最后只有一个人存活&lt;/p></description></item><item><title>One Nano Request</title><link>https://echotrue.github.io/blog/game/nano/one-nano-request/</link><pubDate>Tue, 31 Aug 2021 16:57:22 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/nano/one-nano-request/</guid><description>&lt;h2 id="websocket-request">Websocket request&lt;/h2>
+&lt;p>一般由网关节点向外部暴露&lt;code>n.ClientAddr&lt;/code>地址并监听，接收客户端发送的请求。以&lt;code>websocket&lt;/code>请求为例。&lt;code>listenAndServeWS&lt;/code>方法负责监听&lt;code>n.ClientAddr&lt;/code>并接收&lt;code>ws&lt;/code>请求。接收到请求后交给节点下的&lt;code>LocalHandler&lt;/code>的&lt;code>handleWs()&lt;/code>方法，&lt;code>handleWs()&lt;/code>会对连接对象封装成&lt;code>wsConn&lt;/code>类型，结构如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">wsConn&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">conn&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">websocket&lt;/span>.&lt;span style="color:#a6e22e">Conn&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">typ&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#75715e">// message type
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">reader&lt;/span> &lt;span style="color:#a6e22e">io&lt;/span>.&lt;span style="color:#a6e22e">Reader&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>然后开辟一个新的&lt;code>goroutine&lt;/code>（&lt;code>LocalHandler.handle()&lt;/code>方法）从连接中持续读取数据。&lt;/p>
+&lt;h3 id="localhandlerhandle">LocalHandler.handle()&lt;/h3>
+&lt;p>实例化一个&lt;code>Agent&lt;/code>对象，相当于&lt;code>User Agent&lt;/code>。它对应一个用户代理，用来存储原始连接信息。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">agent&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// regular agent member
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">session&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">session&lt;/span>.&lt;span style="color:#a6e22e">Session&lt;/span> &lt;span style="color:#75715e">// session会话
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">conn&lt;/span> &lt;span style="color:#a6e22e">net&lt;/span>.&lt;span style="color:#a6e22e">Conn&lt;/span> &lt;span style="color:#75715e">// low-level conn fd
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">lastMid&lt;/span> &lt;span style="color:#66d9ef">uint64&lt;/span> &lt;span style="color:#75715e">// last message id
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">state&lt;/span> &lt;span style="color:#66d9ef">int32&lt;/span> &lt;span style="color:#75715e">// current agent state
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">chDie&lt;/span> &lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{} &lt;span style="color:#75715e">// wait for close
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">chSend&lt;/span> &lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#a6e22e">pendingMessage&lt;/span> &lt;span style="color:#75715e">// push message queue
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">lastAt&lt;/span> &lt;span style="color:#66d9ef">int64&lt;/span> &lt;span style="color:#75715e">// last heartbeat unix time stamp
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">decoder&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">codec&lt;/span>.&lt;span style="color:#a6e22e">Decoder&lt;/span> &lt;span style="color:#75715e">// binary decoder
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">pipeline&lt;/span> &lt;span style="color:#a6e22e">pipeline&lt;/span>.&lt;span style="color:#a6e22e">Pipeline&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rpcHandler&lt;/span> &lt;span style="color:#a6e22e">rpcHandler&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">srv&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">Value&lt;/span> &lt;span style="color:#75715e">// cached session reflect.Value
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>保存当前会话到当前节点。然后开辟一个&lt;code>goroutine&lt;/code>监听&lt;code>channel&lt;/code>消息。监听的消息类型如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>&amp;lt;-ticker.C&lt;/code>类型。每隔30秒检测上一次心跳包的时间距离现在是否超过60秒，如果没超过则发送心跳包响应数据&lt;code>hbd&lt;/code>到&lt;code>chWrite&lt;/code>通道。反之，则&lt;code>return&lt;/code>跳出当前&lt;code>for...select&lt;/code>.进而执行&lt;code>defer&lt;/code>延迟函数：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ticker&lt;/span>.&lt;span style="color:#a6e22e">Stop&lt;/span>() &lt;span style="color:#75715e">//停止心跳包检测定时器
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> close(&lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">chSend&lt;/span>) &lt;span style="color:#75715e">//关闭推送消息队列
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> close(&lt;span style="color:#a6e22e">chWrite&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">Close&lt;/span>() &lt;span style="color:#75715e">//关闭当前User Agent
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">env&lt;/span>.&lt;span style="color:#a6e22e">Debug&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">log&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Sprintf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Session write goroutine exit, SessionID=%d, UID=%d&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">session&lt;/span>.&lt;span style="color:#a6e22e">ID&lt;/span>(), &lt;span style="color:#a6e22e">a&lt;/span>.&lt;span style="color:#a6e22e">session&lt;/span>.&lt;span style="color:#a6e22e">UID&lt;/span>()))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>&amp;lt;-chWrite&lt;/code>类型。主要接收心跳包响应数据，并响应数据到客户端。&lt;/li>
+&lt;li>&lt;code>&amp;lt;-a.chSend&lt;/code>类型。处理推送数据&lt;/li>
+&lt;li>&lt;code>&amp;lt;-a.chDie&lt;/code>类型。&lt;/li>
+&lt;li>&lt;code>&amp;lt;-env.Die&lt;/code>类型。应用退出通知&lt;/li>
+&lt;/ul>
+&lt;p>接着，循环从当前连接中读取网络数据包，并由&lt;code>LocalHandler.processPacket()&lt;/code>方法根据网络数据包的类型处理消息。网络数据包有以下类型：&lt;/p>
+&lt;ul>
+&lt;li>Handshake = 0x01 表示握手：请求（客户端）&amp;lt;===&amp;gt;握手响应（服务端）&lt;/li>
+&lt;li>HandshakeAck = 0x02 表示从客户端到服务端的握手确认&lt;/li>
+&lt;li>Heartbeat = 0x03 心跳数据包&lt;/li>
+&lt;li>Data = 0x04 通用数据包&lt;/li>
+&lt;li>Kick = 0x05 disconnect message from server&lt;/li>
+&lt;/ul>
+&lt;p>其中通用数据包是&lt;code>message.Message&lt;/code>类型的。&lt;code>message&lt;/code>的类型包含：Request/Notify/Response/Push。分别代表请求/通知/响应/推送。&lt;/p>
+&lt;p>&lt;code>Handshake&lt;/code>和&lt;code>HandshakeAck&lt;/code>类型分别为设置当前&lt;code>UserAgent&lt;/code>的状态为&lt;code>statusHandshake&lt;/code>和&lt;code>statusWorking&lt;/code>.&lt;code>Data&lt;/code>类型数据会解码数据包中的&lt;code>Data&lt;/code>字段并交给&lt;code>processMessage()&lt;/code>处理。然后更新&lt;code>agent.lastAt&lt;/code>为当前时间。&lt;/p>
+&lt;p>循环读取消息失败时，会执行defer延迟函数。依次通知其他节点当前连接关闭。然后关闭当前连接。&lt;/p>
+&lt;h3 id="localhandlerprocessmessage">LocalHandler.processMessage()&lt;/h3>
+&lt;p>判断&lt;code>message.Route&lt;/code>是否是本地服务列表中。如果是本地服务进入&lt;code>localProcess()&lt;/code> 反之进入&lt;code>remoteProcess()&lt;/code>。&lt;/p>
+&lt;p>先看&lt;code>localProcess()&lt;/code>&lt;/p></description></item><item><title>Nano Start</title><link>https://echotrue.github.io/blog/game/nano/nano-start/</link><pubDate>Tue, 31 Aug 2021 16:54:27 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/nano/nano-start/</guid><description>&lt;h2 id="基础概念">基础概念&lt;/h2>
+&lt;p>一个&lt;code>nano&lt;/code>应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：&lt;code>node&lt;/code>,&lt;code>cluster&lt;/code>,&lt;code>component&lt;/code>,&lt;code>service&lt;/code>,&lt;code>handler&lt;/code>等等。这里简单介绍各个单元的概念，并概述他们之间的关系。&lt;/p>
+&lt;h3 id="cluster">Cluster&lt;/h3>
+&lt;p>&lt;code>cluster&lt;/code>表示一个&lt;code>nano&lt;/code>的集群，这个集群包含一组节点，每一个节点提供一组不同的服务，所有从客户端发送的服务请求首先会被发送到&lt;code>gate&lt;/code>网关，然后被发送到响应的节点&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">cluster&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// If cluster is not large enough, use slice is OK
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">currentNode&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Node&lt;/span> &lt;span style="color:#75715e">//当前节点对象
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">rpcClient&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">rpcClient&lt;/span> &lt;span style="color:#75715e">// rpc客户端用于和其他节点通信
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">mu&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">RWMutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">members&lt;/span> []&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Member&lt;/span> &lt;span style="color:#75715e">//所有的节点成员，member包含了节点地址，节点下的服务，是否是主节点
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>Node&lt;/code>是&lt;code>nano&lt;/code>集群中的一个节点，该节点提供一组服务，所有这些服务都会注册到集群。消息将会被转发到提供各自服务的节点。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Node&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Options&lt;/span> &lt;span style="color:#75715e">// 节点配置项
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">ServiceAddr&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span> &lt;span style="color:#75715e">// 当前节点的服务地址，主要用于RPC通信
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cluster&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">cluster&lt;/span> &lt;span style="color:#75715e">//集群对象
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">handler&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">LocalHandler&lt;/span> &lt;span style="color:#75715e">//节点本地处理程序
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">server&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">grpc&lt;/span>.&lt;span style="color:#a6e22e">Server&lt;/span> &lt;span style="color:#75715e">//grpc 服务器
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">rpcClient&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">rpcClient&lt;/span> &lt;span style="color:#75715e">//rpc 客户端用于和其他节点通信
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">mu&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">RWMutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">sessions&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">int64&lt;/span>]&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">session&lt;/span>.&lt;span style="color:#a6e22e">Session&lt;/span> &lt;span style="color:#75715e">//会话列表
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>Node.Options&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Options&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Pipeline&lt;/span> &lt;span style="color:#a6e22e">pipeline&lt;/span>.&lt;span style="color:#a6e22e">Pipeline&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">IsMaster&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">AdvertiseAddr&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">RetryInterval&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Duration&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ClientAddr&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Components&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">component&lt;/span>.&lt;span style="color:#a6e22e">Components&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Label&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">IsWebsocket&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">TSLCertificate&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">TSLKey&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="start-node">Start Node&lt;/h2>
+&lt;ul>
+&lt;li>初始化配置
+设置集群的&lt;code>Options&lt;/code>选项。其中&lt;code>Options.Components&lt;/code>类型定义了一个组件切片&lt;code>comps&lt;/code>，这个切片的类型是&lt;code>CompWithOptions&lt;/code>，其中&lt;code>Comp&lt;/code>是组件，&lt;code>Opts&lt;/code>是该组件的属性。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Options.Components
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Components&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">comps&lt;/span> []&lt;span style="color:#a6e22e">CompWithOptions&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">CompWithOptions&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Comp&lt;/span> &lt;span style="color:#a6e22e">Component&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Opts&lt;/span> []&lt;span style="color:#a6e22e">Option&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>而这些&lt;code>Comp&lt;/code>组件则是实现了各种逻辑的单个服务。并且这些组件必须实现&lt;code>Component&lt;/code>接口。&lt;/p>
+&lt;ul>
+&lt;li>初始化节点属性
+初始化&lt;code>Node&lt;/code>的属性：&lt;code>session&lt;/code>用来保存客户端会话,&lt;code>cluster&lt;/code>是nano集群,&lt;code>handler&lt;/code>存储了本地及远程服务.结构如下：&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">cluster&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// If cluster is not large enough, use slice is OK currentNode *Node
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">rpcClient&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">rpcClient&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">mu&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">RWMutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">members&lt;/span> []&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Member&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">LocalHandler&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">localServices&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">component&lt;/span>.&lt;span style="color:#a6e22e">Service&lt;/span> &lt;span style="color:#75715e">// all registered service
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">localHandlers&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">component&lt;/span>.&lt;span style="color:#a6e22e">Handler&lt;/span> &lt;span style="color:#75715e">// all handler method
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">mu&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">RWMutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">remoteServices&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>][]&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">clusterpb&lt;/span>.&lt;span style="color:#a6e22e">MemberInfo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">pipeline&lt;/span> &lt;span style="color:#a6e22e">pipeline&lt;/span>.&lt;span style="color:#a6e22e">Pipeline&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">currentNode&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Node&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="install-service-and-handler">install service and handler&lt;/h3>
+&lt;p>接下来将上面组件切片中组件依次注册到节点的handle中。这里的组件被定义为&lt;code>Service&lt;/code>类型，组件中的方法被定义为&lt;code>Handler&lt;/code>类型。&lt;code>Service&lt;/code>实现了一个特定服务，该服务下的方法将在对应事件触发是被调用。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Service&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span> &lt;span style="color:#75715e">// 服务名称
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#75715e">// 接收者类型
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Receiver&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">Value&lt;/span> &lt;span style="color:#75715e">// 服务下方法的接收者
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Handlers&lt;/span> &lt;span style="color:#66d9ef">map&lt;/span>[&lt;span style="color:#66d9ef">string&lt;/span>]&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Handler&lt;/span> &lt;span style="color:#75715e">// 注册的方法
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">SchedName&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span> &lt;span style="color:#75715e">// name of scheduler variable in session data
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Options&lt;/span> &lt;span style="color:#a6e22e">options&lt;/span> &lt;span style="color:#75715e">// 选项
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Handler&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Receiver&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">Value&lt;/span> &lt;span style="color:#75715e">// receiver of method
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Method&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">Method&lt;/span> &lt;span style="color:#75715e">// method stub
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#a6e22e">reflect&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#75715e">// low-level type of method
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">IsRawArg&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span> &lt;span style="color:#75715e">// whether the data need to serialize
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>注册服务及服务下func部分代码：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">h&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">LocalHandler&lt;/span>) &lt;span style="color:#a6e22e">register&lt;/span>(&lt;span style="color:#a6e22e">comp&lt;/span> &lt;span style="color:#a6e22e">component&lt;/span>.&lt;span style="color:#a6e22e">Component&lt;/span>, &lt;span style="color:#a6e22e">opts&lt;/span> []&lt;span style="color:#a6e22e">component&lt;/span>.&lt;span style="color:#a6e22e">Option&lt;/span>) &lt;span style="color:#66d9ef">error&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">s&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">component&lt;/span>.&lt;span style="color:#a6e22e">NewService&lt;/span>(&lt;span style="color:#a6e22e">comp&lt;/span>, &lt;span style="color:#a6e22e">opts&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">_&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">h&lt;/span>.&lt;span style="color:#a6e22e">localServices&lt;/span>[&lt;span style="color:#a6e22e">s&lt;/span>.&lt;span style="color:#a6e22e">Name&lt;/span>]; &lt;span style="color:#a6e22e">ok&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Errorf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;handler: service already defined: %s&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">s&lt;/span>.&lt;span style="color:#a6e22e">Name&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">s&lt;/span>.&lt;span style="color:#a6e22e">ExtractHandler&lt;/span>(); &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// register all localHandlers
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">h&lt;/span>.&lt;span style="color:#a6e22e">localServices&lt;/span>[&lt;span style="color:#a6e22e">s&lt;/span>.&lt;span style="color:#a6e22e">Name&lt;/span>] = &lt;span style="color:#a6e22e">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">name&lt;/span>, &lt;span style="color:#a6e22e">handler&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">range&lt;/span> &lt;span style="color:#a6e22e">s&lt;/span>.&lt;span style="color:#a6e22e">Handlers&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Sprintf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%s.%s&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">s&lt;/span>.&lt;span style="color:#a6e22e">Name&lt;/span>, &lt;span style="color:#a6e22e">name&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">log&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Register local handler&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">n&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">h&lt;/span>.&lt;span style="color:#a6e22e">localHandlers&lt;/span>[&lt;span style="color:#a6e22e">n&lt;/span>] = &lt;span style="color:#a6e22e">handler&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>根据组件名初始化一个&lt;code>component.Service&lt;/code>对象作为&lt;code>value&lt;/code>，以组件的名称作为&lt;code>key&lt;/code>，赋值给&lt;code>localHandler.localServices&lt;/code>.
+&lt;code>ExtractHandler&lt;/code>检测组件及组件下方法是否导出。并将组件下的方法注册到&lt;code>component.Service.Handlers&lt;/code>.接下来再将这些组件方法注册到&lt;code>localHandler.localHandlers&lt;/code>.&lt;/p>
+&lt;p>&lt;code>cache()&lt;/code>定义了握手响应数据和心跳包数据&lt;/p>
+&lt;h3 id="initnode">initNode&lt;/h3>
+&lt;h4 id="init-grpc-and-register-service">init gRPC and register service&lt;/h4>
+&lt;p>&lt;code>n.server = grpc.NewServer()&lt;/code>创建一个&lt;code>gRPC&lt;/code>服务器。此时该服务器上没有注册任何服务，也没有开始接收请求。&lt;/p>
+&lt;p>&lt;code>clusterpb.RegisterMemberServer(n.server, n)&lt;/code>向&lt;code>gRPC&lt;/code>注册&lt;code>MemberServer&lt;/code>服务。&lt;code>MemberServer&lt;/code>服务包含了一些列&lt;code>API&lt;/code>,而节点&lt;code>n&lt;/code>实现了&lt;code>MemberServer&lt;/code>接口。因此所有启动的节点均提供这些&lt;code>API&lt;/code>服务。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">MemberServer&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandleRequest&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">RequestMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandleNotify&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">NotifyMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandlePush&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">PushMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandleResponse&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ResponseMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">NewMember&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">NewMemberRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">NewMemberResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">DelMember&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">DelMemberRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">DelMemberResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">SessionClosed&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">SessionClosedRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">SessionClosedResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">CloseSession&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">CloseSessionRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">CloseSessionResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>开辟一个&lt;code>goroutine&lt;/code>开始监听&lt;code>n.ServiceAddr&lt;/code>并开始接收&lt;code>rpc&lt;/code>请求。&lt;/p>
+&lt;p>&lt;code>n.rpcClient = newRPCClient()&lt;/code>初始化当前节点的&lt;code>rpc&lt;/code>客户端对象。&lt;/p>
+&lt;p>&lt;code>clusterpb.RegisterMemberServer(n.server, n)&lt;/code>，将当前Node实现了&lt;code>MemberServer&lt;/code>的服务注册到&lt;code>gRPC&lt;/code>服务器。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>如果当前是主服务器&lt;code>Master&lt;/code>,&lt;code>clusterpb.RegisterMasterServer(n.server, n.cluster)&lt;/code>向服务器注册服务实现。&lt;code>n.cluster&lt;/code>实现了&lt;code>Master&lt;/code>接口的&lt;code>Register&lt;/code>和&lt;code>Unregister&lt;/code>两个API。当其他节点启动时会将其所有的服务通过&lt;code>Register&lt;/code>注册到Master主节点。这里的&lt;code>member&lt;/code>描述集群的一个成员，即节点。将节点作为成员添加到集群，设置集群&lt;code>rpcClient&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>如果当前不是主服务器节点，根据主服务器Master的RPC地址&lt;code>node.AdvertiseAddr&lt;/code>创建连接池，并获取连接。然后创建gRPC客户端。将当前节点成员信息通过主服务器的&lt;code>Register&lt;/code>服务发送到集群的主服务器&lt;code>Master&lt;/code>.主服务器节点的&lt;code>cluster.Register()&lt;/code>接收注册请求,然后将新加入的节点成员信息通过&lt;code>NewMember&lt;/code>事件发送到各个非Master节点，并将新加的节点成员信息添加到集群的成员列表，同时将新加节点成员中的所有服务添加到集群的&lt;code>handle&lt;/code>中。并响应此时集群中所有服务给新节点。当前节点拿到集群中所有其他成员信息后，首先将这些远程的服务添加到当前节点&lt;code>handler&lt;/code>的远程服务列表中。然后将这些远程节点成员添加到当前节点的集群的成员列表中&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>因此，Master主服务器节点上注册了&lt;code>MemberServer&lt;/code>和&lt;code>MasterServer&lt;/code>两组服务。而非Master节点服务器上只注册了&lt;code>MemberServer&lt;/code>一组服务。详见&lt;a href="#node%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8">Node实现的服务列表&lt;/a>和&lt;a href="#cluster%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%88%97%E8%A1%A8">Cluster实现的服务列表&lt;/a>&lt;/p>
+&lt;h3 id="initialize-all-components">Initialize all components&lt;/h3>
+&lt;p>依次执行当前节点下所有组件的&lt;code>Init()&lt;/code>和&lt;code>AfterInit()&lt;/code>两个生命周期函数&lt;/p>
+&lt;h3 id="listen-client-address">Listen client address&lt;/h3>
+&lt;p>如果设置了&lt;code>node.ClientAddr&lt;/code>地址，则开始监听并接收请求。&lt;code>node.ClientAddr&lt;/code>是暴露给外部供外部访问的地址。&lt;/p>
+&lt;h3 id="node实现的服务列表">Node实现的服务列表&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">MemberServer&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandleRequest&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">RequestMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandleNotify&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">NotifyMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandlePush&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">PushMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">HandleResponse&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">ResponseMessage&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">MemberHandleResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">NewMember&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">NewMemberRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">NewMemberResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">DelMember&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">DelMemberRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">DelMemberResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">SessionClosed&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">SessionClosedRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">SessionClosedResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">CloseSession&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">CloseSessionRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">CloseSessionResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="cluster实现的服务列表">Cluster实现的服务列表&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">MasterServer&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Register&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">RegisterRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">RegisterResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Unregister&lt;/span>(&lt;span style="color:#a6e22e">context&lt;/span>.&lt;span style="color:#a6e22e">Context&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">UnregisterRequest&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">UnregisterResponse&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nano Binary Protocol</title><link>https://echotrue.github.io/blog/game/nano/nano-binary-protocol/</link><pubDate>Thu, 26 Aug 2021 10:40:25 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/nano/nano-binary-protocol/</guid><description>&lt;h3 id="messageencode">message.Encode&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-GO" data-lang="GO">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">Encode&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Message&lt;/span>) ([]&lt;span style="color:#66d9ef">byte&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">invalidType&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrWrongMessageType&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make([]&lt;span style="color:#66d9ef">byte&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">flag&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> byte(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span>) &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 如果路由压缩 flag|1 为1,3,5,7
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">code&lt;/span>, &lt;span style="color:#a6e22e">compressed&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">routes&lt;/span>[&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Route&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">compressed&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">flag&lt;/span> &lt;span style="color:#f92672">|=&lt;/span> &lt;span style="color:#a6e22e">msgRouteCompressMask&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, &lt;span style="color:#a6e22e">flag&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">Request&lt;/span> &lt;span style="color:#f92672">||&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">Response&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">ID&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// variant length encode
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">//b是n/128余数，然后n按位右移7,相当于n、128。
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">//如果n为0，将b添加到buf，
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">//如果n不为0，b+128 添加到buf，并继续执行相同的逻辑
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">b&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> byte(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#f92672">%&lt;/span> &lt;span style="color:#ae81ff">128&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#f92672">&amp;gt;&amp;gt;=&lt;/span> &lt;span style="color:#ae81ff">7&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, &lt;span style="color:#a6e22e">b&lt;/span>&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">128&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, &lt;span style="color:#a6e22e">b&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 如果有route
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// 如果路由压缩：code 按位右移8，然后与0xff做位与操作，最后code只保留低八位，高八位补零。0xff为11111111
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">routable&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">compressed&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, byte((&lt;span style="color:#a6e22e">code&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">8&lt;/span>)&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#ae81ff">0xFF&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, byte(&lt;span style="color:#a6e22e">code&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#ae81ff">0xFF&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, byte(len(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Route&lt;/span>)))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, []byte(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Route&lt;/span>)&lt;span style="color:#f92672">...&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">buf&lt;/span> = append(&lt;span style="color:#a6e22e">buf&lt;/span>, &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Data&lt;/span>&lt;span style="color:#f92672">...&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">buf&lt;/span>, &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="messagedecode">message.Decode&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Go" data-lang="Go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Decode unmarshal the bytes slice to a message// See ref: https://github.com/lonnng/nano/blob/master/docs/communication_protocol.md
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">Decode&lt;/span>(&lt;span style="color:#a6e22e">data&lt;/span> []&lt;span style="color:#66d9ef">byte&lt;/span>) (&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Message&lt;/span>, &lt;span style="color:#66d9ef">error&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> len(&lt;span style="color:#a6e22e">data&lt;/span>) &amp;lt; &lt;span style="color:#a6e22e">msgHeadLength&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrInvalidMessage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">New&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">flag&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#ae81ff">0&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// 获取type值
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> = &lt;span style="color:#a6e22e">Type&lt;/span>((&lt;span style="color:#a6e22e">flag&lt;/span> &lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#f92672">&amp;amp;&lt;/span> &lt;span style="color:#a6e22e">msgTypeMask&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">invalidType&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrWrongMessageType&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">Request&lt;/span> &lt;span style="color:#f92672">||&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#a6e22e">Response&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> uint64(&lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// little end byte order
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// WARNING: must can be stored in 64 bits integer
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#75715e">// variant length encode
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">offset&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &amp;lt; len(&lt;span style="color:#a6e22e">data&lt;/span>); &lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#f92672">++&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">b&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#a6e22e">i&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">id&lt;/span> &lt;span style="color:#f92672">+=&lt;/span> uint64(&lt;span style="color:#a6e22e">b&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#ae81ff">0x7F&lt;/span>) &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> uint64(&lt;span style="color:#ae81ff">7&lt;/span>&lt;span style="color:#f92672">*&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#a6e22e">offset&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">b&lt;/span> &amp;lt; &lt;span style="color:#ae81ff">128&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">offset&lt;/span> = &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">ID&lt;/span> = &lt;span style="color:#a6e22e">id&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">&amp;gt;=&lt;/span> len(&lt;span style="color:#a6e22e">data&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrWrongMessage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">routable&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Type&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">flag&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">msgRouteCompressMask&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">compressed&lt;/span> = &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">code&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">binary&lt;/span>.&lt;span style="color:#a6e22e">BigEndian&lt;/span>.&lt;span style="color:#a6e22e">Uint16&lt;/span>(&lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#a6e22e">offset&lt;/span>:(&lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>)])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">route&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">codes&lt;/span>[&lt;span style="color:#a6e22e">code&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> !&lt;span style="color:#a6e22e">ok&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrRouteInfoNotFound&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Route&lt;/span> = &lt;span style="color:#a6e22e">route&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">compressed&lt;/span> = &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">rl&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#a6e22e">offset&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">offset&lt;/span>&lt;span style="color:#f92672">++&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">offset&lt;/span>&lt;span style="color:#f92672">+&lt;/span>int(&lt;span style="color:#a6e22e">rl&lt;/span>) &lt;span style="color:#f92672">&amp;gt;=&lt;/span> len(&lt;span style="color:#a6e22e">data&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrWrongMessage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Route&lt;/span> = string(&lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#a6e22e">offset&lt;/span>:(&lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">+&lt;/span> int(&lt;span style="color:#a6e22e">rl&lt;/span>))])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">+=&lt;/span> int(&lt;span style="color:#a6e22e">rl&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">offset&lt;/span> &lt;span style="color:#f92672">&amp;gt;=&lt;/span> len(&lt;span style="color:#a6e22e">data&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>, &lt;span style="color:#a6e22e">ErrWrongMessage&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Data&lt;/span> = &lt;span style="color:#a6e22e">data&lt;/span>[&lt;span style="color:#a6e22e">offset&lt;/span>:]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>, &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nano</title><link>https://echotrue.github.io/blog/game/nano/nano/</link><pubDate>Sat, 14 Aug 2021 16:19:29 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/game/nano/nano/</guid><description>&lt;h2 id="scheduler--todo">Scheduler todo&lt;/h2>
+&lt;p>启动节点后，开启一个&lt;code>goroutine&lt;/code>执行&lt;code>go scheduler.Sched()&lt;/code>.&lt;/p>
+&lt;h2 id="pipeline-todo">Pipeline todo&lt;/h2></description></item></channel></rss>
