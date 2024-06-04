@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Slice on AXLROSE</title><link>https://echotrue.github.io/tags/slice/</link><description>Recent content in Slice on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Wed, 21 Oct 2020 11:49:53 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/slice/index.xml" rel="self" type="application/rss+xml"/><item><title>Array And Slice</title><link>https://echotrue.github.io/blog/golang/array-slice/</link><pubDate>Wed, 21 Oct 2020 11:49:53 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/array-slice/</guid><description>&lt;h3 id="数组">数组&lt;/h3>
 &lt;p>数组类型定义了&lt;code>长度&lt;/code>和&lt;code>元素&lt;/code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。&lt;/p>
-&lt;pre tabindex="0">&lt;code>var arr [4]int // 声明
-fmt.Println(arr[1]) // 不需要显式的初始化
-arr1 := [2]string{&amp;#34;Penn&amp;#34;, &amp;#34;Teller&amp;#34;} // 数组的字面值
-arr2 := [...]string{&amp;#34;Penn&amp;#34;, &amp;#34;Teller&amp;#34;} // 编译器统计数组字面值中的元素数量
-fmt.Println(arr1, len(arr1), cap(arr1))
-fmt.Println(arr2, len(arr2), cap(arr2))
-&lt;/code>&lt;/pre>&lt;p>Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）&lt;/p>
-&lt;pre tabindex="0">&lt;code>func update(arr *[2]string) {
-arr[1] = &amp;#34;axlrose&amp;#34;
-}
-func main() {
-arr1 := [2]string{&amp;#34;Penn&amp;#34;, &amp;#34;Teller&amp;#34;}
-update(&amp;amp;arr1)
-fmt.Println(arr1)
-}
-&lt;/code>&lt;/pre>&lt;h3 id="切片的创建和初始化">切片的创建和初始化&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">arr&lt;/span> [&lt;span style="color:#ae81ff">4&lt;/span>]&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#75715e">// 声明
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">arr&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>]) &lt;span style="color:#75715e">// 不需要显式的初始化
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">arr1&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> [&lt;span style="color:#ae81ff">2&lt;/span>]&lt;span style="color:#66d9ef">string&lt;/span>{&lt;span style="color:#e6db74">&amp;#34;Penn&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Teller&amp;#34;&lt;/span>} &lt;span style="color:#75715e">// 数组的字面值
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">arr2&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> [&lt;span style="color:#f92672">...&lt;/span>]&lt;span style="color:#66d9ef">string&lt;/span>{&lt;span style="color:#e6db74">&amp;#34;Penn&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Teller&amp;#34;&lt;/span>} &lt;span style="color:#75715e">// 编译器统计数组字面值中的元素数量
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">arr1&lt;/span>, len(&lt;span style="color:#a6e22e">arr1&lt;/span>), cap(&lt;span style="color:#a6e22e">arr1&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">arr2&lt;/span>, len(&lt;span style="color:#a6e22e">arr2&lt;/span>), cap(&lt;span style="color:#a6e22e">arr2&lt;/span>))
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Go的数组是值语义。当一个数组变量被赋值或者被传递的时候，实际上会复制整个数组。 （为了避免复制数组，你可以传递一个指向数组的指针，但是数组指针并不是数组。）&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">update&lt;/span>(&lt;span style="color:#a6e22e">arr&lt;/span> &lt;span style="color:#f92672">*&lt;/span>[&lt;span style="color:#ae81ff">2&lt;/span>]&lt;span style="color:#66d9ef">string&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">arr&lt;/span>[&lt;span style="color:#ae81ff">1&lt;/span>] = &lt;span style="color:#e6db74">&amp;#34;axlrose&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">arr1&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> [&lt;span style="color:#ae81ff">2&lt;/span>]&lt;span style="color:#66d9ef">string&lt;/span>{&lt;span style="color:#e6db74">&amp;#34;Penn&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;Teller&amp;#34;&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">update&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">arr1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">arr1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="切片的创建和初始化">切片的创建和初始化&lt;/h3>
 &lt;p>Golang中切片有三种初始化方式：&lt;/p>
 &lt;ul>
 &lt;li>通过下标的方式获得数组或者切片的一部分；&lt;/li>

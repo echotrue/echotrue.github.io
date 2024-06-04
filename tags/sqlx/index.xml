@@ -60,17 +60,18 @@
 大多数情况下，&lt;code>Rows.Scan&lt;/code>会复制其从数据库驱动中获取的数据，因为它不知道数据库驱动将会如何重复使用缓冲区。特殊类型&lt;code>sql.RawBytes&lt;/code>可以用来从数据库驱动返回的实际数据中获取一个零拷贝的字节切片。下次调用&lt;code>Next()&lt;/code>之后，这个值将不再有效，因为这个值所在的内存可能已经被覆盖。
 &lt;code>Query&lt;/code>查询使用的连接会一直保持活跃状态，直到通过&lt;code>Next()&lt;/code>迭代完查询出的所有行，或者&lt;code>rows.Close()&lt;/code>被调用。此时，连接才会被释放。
 &lt;code>Queryx&lt;/code>和&lt;code>Query&lt;/code>用法基本一样，只是他返回一个&lt;code>sqlx.Rows&lt;/code>对象，这个对象拥有更加丰富的&lt;code>scan&lt;/code>行为可供选择。&lt;/p>
-&lt;pre tabindex="0">&lt;code>type Place struct {
-Country string
-City sql.NullString
-TelephoneCode int `db:&amp;#34;telcode&amp;#34;`
-}
-rows, err := db.Queryx(&amp;#34;SELECT * FROM place&amp;#34;)
-for rows.Next() {
-var p Place
-err = rows.StructScan(&amp;amp;p)
-}
-&lt;/code>&lt;/pre>&lt;p>&lt;code>StructScan()&lt;/code>是&lt;code>sql.Rows&lt;/code>主要的扩展行为，他会扫描查询结果并映射到结构体字段中。注意，这些字段必须是导出的（首字母大写），以便&lt;code>sqlx&lt;/code>能够将数据写入，这个规则适用于Go中的所有类型（json,xml）的&lt;code>Marshalling&lt;/code>(编码)和&lt;code>UNMarshalling&lt;/code>(解码)。可以使用结构体标签&lt;code>db&lt;/code>指定数据表列名和结构体字段的映射关系，或者使用&lt;code>db.MapperFunc()&lt;/code>设置新的默认映射关系。默认是使用&lt;code>strings.Lower&lt;/code>将结构体字段转小写来匹配数据表列名。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Country&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">City&lt;/span> &lt;span style="color:#a6e22e">sql&lt;/span>.&lt;span style="color:#a6e22e">NullString&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">TelephoneCode&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#e6db74">`db:&amp;#34;telcode&amp;#34;`&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">rows&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span>.&lt;span style="color:#a6e22e">Queryx&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;SELECT * FROM place&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">Next&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">Place&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">rows&lt;/span>.&lt;span style="color:#a6e22e">StructScan&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">p&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>StructScan()&lt;/code>是&lt;code>sql.Rows&lt;/code>主要的扩展行为，他会扫描查询结果并映射到结构体字段中。注意，这些字段必须是导出的（首字母大写），以便&lt;code>sqlx&lt;/code>能够将数据写入，这个规则适用于Go中的所有类型（json,xml）的&lt;code>Marshalling&lt;/code>(编码)和&lt;code>UNMarshalling&lt;/code>(解码)。可以使用结构体标签&lt;code>db&lt;/code>指定数据表列名和结构体字段的映射关系，或者使用&lt;code>db.MapperFunc()&lt;/code>设置新的默认映射关系。默认是使用&lt;code>strings.Lower&lt;/code>将结构体字段转小写来匹配数据表列名。&lt;/p>
 &lt;h4 id="queryrow">QueryRow&lt;/h4>
 &lt;p>&lt;code>QueryRow&lt;/code>从数据表提取一条记录。它从连接池中获取一个连接，然后通过&lt;code>Query&lt;/code>执行查询，返回一个内部包含&lt;code>Rows&lt;/code>对象的&lt;code>Row&lt;/code>对象。
 与&lt;code>Query&lt;/code>不同，&lt;code>QueryRow&lt;/code>返回没有错误的&lt;code>Row&lt;/code>类型结果，使得对查询结果的链式&lt;code>Scan&lt;/code>操作是安全的。如果执行查询过程中发生错误，错误会通过&lt;code>Scan&lt;/code>返回。如果没有查询到结果，&lt;code>Scan&lt;/code>返回&lt;code>sql.ErrNoRows&lt;/code>错误。如果&lt;code>Scan&lt;/code>本身发生错误（例如：类型不匹配）,错误同样会被返回。
