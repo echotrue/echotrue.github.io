@@ -1,4 +1,920 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on AXLROSE</title><link>https://echotrue.github.io/blog/</link><description>Recent content in Blog on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Tue, 04 Jun 2024 11:30:01 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on AXLROSE</title><link>https://echotrue.github.io/blog/</link><description>Recent content in Blog on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Fri, 14 Jun 2024 10:00:55 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>ASCII</title><link>https://echotrue.github.io/blog/101/ascii/</link><pubDate>Thu, 13 Jun 2024 16:34:06 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/101/ascii/</guid><description>&lt;h3 id="背景">背景&lt;/h3>
+&lt;p>在计算机中，所有的数据在存储和运算时都要使用二进制数表示。例如，像a、b、c、d这样的52个字母（包括大写）以及0、1等数字还有一些常用的符号（例如*、#、@等）在计算机中存储时也要使用二进制数来
+表示，而具体用哪些二进制数字表示哪个符号，这就是编码。如果不同的计算机要想互相通信而不造成混乱，那么每台计算机就必须使用相同的编码规则，于是美国有关的标准化组织就推出了ASCII编码。&lt;/p>
+&lt;p>ASCII是由美国国家标准学会（American National Standard Institute，ANSI）制定的，使用标准的单字节字符编码方案，用于基于文本的数据。方案起始于50年代后期，在1967年定案。它最初是美国的
+标准，供不同计算机在相互通信时需共同遵守的西文字符编码标准。现已被国际标准化组织（International Organization for Standardization，ISO）定为国际标准（ISO/IEC 646），适用于所有拉丁字母。&lt;/p>
+&lt;h3 id="控制字符">控制字符&lt;/h3>
+&lt;p>ASCII控制字符的编号范围是0-31和127（16进制：0x00-0x1F和0x7F），共33个字符。&lt;/p>
+&lt;p>为方便人类用户阅读，各个控制字符均有Unicode表示法和脱出字符表示法：&lt;/p>
+&lt;p>Unicode表示法：当想在画面或纸上表示这些控制字符时，就会显示成这个样子。过于老旧的系统或浏览器可能会看不到。使用微软任一中文输入法，输入&lt;code>U2400即可看到␀，输入&lt;/code>U2401可看到␁，依此类推。
+脱出字符表示法：通常用于终端连线（例如Telnet通信协议），以脱出字符^开头，再接一个符号，用来让这些控制字符得以在画面上显现。虽然看起来是两个字符，但在终端上实际只有一个字符。在绝大部分的终端系统中，包括Windows的命令提示字符（cmd.exe）、Linux和FreeBSD，都可用Ctrl代表脱出字符，输入想要的ASCII控制字符。例如想输入空字符，就要输入Ctrl+2，而非^@，后者会显示成两字符，前者只会显示成一字符。&lt;/p>
+&lt;p>&lt;strong>ASCII控制字符（共33个）&lt;/strong>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>二进制&lt;/th>
+&lt;th>十进制&lt;/th>
+&lt;th>十六进制&lt;/th>
+&lt;th>缩写&lt;/th>
+&lt;th>Unicode&lt;/th>
+&lt;th>脱出字符&lt;/th>
+&lt;th>名称/意义&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>0000 0000&lt;/td>
+&lt;td>0&lt;/td>
+&lt;td>00&lt;/td>
+&lt;td>NUL&lt;/td>
+&lt;td>␀&lt;/td>
+&lt;td>^@&lt;/td>
+&lt;td>空字符（Null）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0001&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>01&lt;/td>
+&lt;td>SOH&lt;/td>
+&lt;td>␁&lt;/td>
+&lt;td>^A&lt;/td>
+&lt;td>标题开始&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0010&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>02&lt;/td>
+&lt;td>STX&lt;/td>
+&lt;td>␂&lt;/td>
+&lt;td>^B&lt;/td>
+&lt;td>本文开始&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0011&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>03&lt;/td>
+&lt;td>ETX&lt;/td>
+&lt;td>␃&lt;/td>
+&lt;td>^C&lt;/td>
+&lt;td>本文结束&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0100&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>04&lt;/td>
+&lt;td>EOT&lt;/td>
+&lt;td>␄&lt;/td>
+&lt;td>^D&lt;/td>
+&lt;td>传输结束&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0101&lt;/td>
+&lt;td>5&lt;/td>
+&lt;td>05&lt;/td>
+&lt;td>ENQ&lt;/td>
+&lt;td>␅&lt;/td>
+&lt;td>^E&lt;/td>
+&lt;td>请求&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0110&lt;/td>
+&lt;td>6&lt;/td>
+&lt;td>06&lt;/td>
+&lt;td>ACK&lt;/td>
+&lt;td>␆&lt;/td>
+&lt;td>^F&lt;/td>
+&lt;td>确认回应&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 0111&lt;/td>
+&lt;td>7&lt;/td>
+&lt;td>07&lt;/td>
+&lt;td>BEL&lt;/td>
+&lt;td>␇&lt;/td>
+&lt;td>^G&lt;/td>
+&lt;td>响铃&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1000&lt;/td>
+&lt;td>8&lt;/td>
+&lt;td>08&lt;/td>
+&lt;td>BS&lt;/td>
+&lt;td>␈&lt;/td>
+&lt;td>^H&lt;/td>
+&lt;td>退格&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1001&lt;/td>
+&lt;td>9&lt;/td>
+&lt;td>09&lt;/td>
+&lt;td>HT&lt;/td>
+&lt;td>␉&lt;/td>
+&lt;td>^I&lt;/td>
+&lt;td>水平定位符号&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1010&lt;/td>
+&lt;td>10&lt;/td>
+&lt;td>0A&lt;/td>
+&lt;td>LF&lt;/td>
+&lt;td>␊&lt;/td>
+&lt;td>^J&lt;/td>
+&lt;td>换行键&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1011&lt;/td>
+&lt;td>11&lt;/td>
+&lt;td>0B&lt;/td>
+&lt;td>VT&lt;/td>
+&lt;td>␋&lt;/td>
+&lt;td>^K&lt;/td>
+&lt;td>垂直定位符号&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1100&lt;/td>
+&lt;td>12&lt;/td>
+&lt;td>0C&lt;/td>
+&lt;td>FF&lt;/td>
+&lt;td>␌&lt;/td>
+&lt;td>^L&lt;/td>
+&lt;td>换页键&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1101&lt;/td>
+&lt;td>13&lt;/td>
+&lt;td>0D&lt;/td>
+&lt;td>CR&lt;/td>
+&lt;td>␍&lt;/td>
+&lt;td>^M&lt;/td>
+&lt;td>CR (字符)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1110&lt;/td>
+&lt;td>14&lt;/td>
+&lt;td>0E&lt;/td>
+&lt;td>SO&lt;/td>
+&lt;td>␎&lt;/td>
+&lt;td>^N&lt;/td>
+&lt;td>取消变换（Shift out）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0000 1111&lt;/td>
+&lt;td>15&lt;/td>
+&lt;td>0F&lt;/td>
+&lt;td>SI&lt;/td>
+&lt;td>␏&lt;/td>
+&lt;td>^O&lt;/td>
+&lt;td>启用变换（Shift in）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0000&lt;/td>
+&lt;td>16&lt;/td>
+&lt;td>10&lt;/td>
+&lt;td>DLE&lt;/td>
+&lt;td>␐&lt;/td>
+&lt;td>^P&lt;/td>
+&lt;td>跳出数据通讯&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0001&lt;/td>
+&lt;td>17&lt;/td>
+&lt;td>11&lt;/td>
+&lt;td>DC1&lt;/td>
+&lt;td>␑&lt;/td>
+&lt;td>^Q&lt;/td>
+&lt;td>设备控制一（XON 激活软件速度控制）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0010&lt;/td>
+&lt;td>18&lt;/td>
+&lt;td>12&lt;/td>
+&lt;td>DC2&lt;/td>
+&lt;td>␒&lt;/td>
+&lt;td>^R&lt;/td>
+&lt;td>设备控制二&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0011&lt;/td>
+&lt;td>19&lt;/td>
+&lt;td>13&lt;/td>
+&lt;td>DC3&lt;/td>
+&lt;td>␓&lt;/td>
+&lt;td>^S&lt;/td>
+&lt;td>设备控制三（XOFF 停用软件速度控制）&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0100&lt;/td>
+&lt;td>20&lt;/td>
+&lt;td>14&lt;/td>
+&lt;td>DC4&lt;/td>
+&lt;td>␔&lt;/td>
+&lt;td>^T&lt;/td>
+&lt;td>设备控制四&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0101&lt;/td>
+&lt;td>21&lt;/td>
+&lt;td>15&lt;/td>
+&lt;td>NAK&lt;/td>
+&lt;td>␕&lt;/td>
+&lt;td>^U&lt;/td>
+&lt;td>确认失败回应&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0110&lt;/td>
+&lt;td>22&lt;/td>
+&lt;td>16&lt;/td>
+&lt;td>SYN&lt;/td>
+&lt;td>␖&lt;/td>
+&lt;td>^V&lt;/td>
+&lt;td>同步用暂停&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 0111&lt;/td>
+&lt;td>23&lt;/td>
+&lt;td>17&lt;/td>
+&lt;td>ETB&lt;/td>
+&lt;td>␗&lt;/td>
+&lt;td>^W&lt;/td>
+&lt;td>区块传输结束&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1000&lt;/td>
+&lt;td>24&lt;/td>
+&lt;td>18&lt;/td>
+&lt;td>CAN&lt;/td>
+&lt;td>␘&lt;/td>
+&lt;td>^X&lt;/td>
+&lt;td>取消&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1001&lt;/td>
+&lt;td>25&lt;/td>
+&lt;td>19&lt;/td>
+&lt;td>EM&lt;/td>
+&lt;td>␙&lt;/td>
+&lt;td>^Y&lt;/td>
+&lt;td>连线介质中断&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1010&lt;/td>
+&lt;td>26&lt;/td>
+&lt;td>1A&lt;/td>
+&lt;td>SUB&lt;/td>
+&lt;td>␚&lt;/td>
+&lt;td>^Z&lt;/td>
+&lt;td>替换&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1011&lt;/td>
+&lt;td>27&lt;/td>
+&lt;td>1B&lt;/td>
+&lt;td>ESC&lt;/td>
+&lt;td>␛&lt;/td>
+&lt;td>^[&lt;/td>
+&lt;td>退出键&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1100&lt;/td>
+&lt;td>28&lt;/td>
+&lt;td>1C&lt;/td>
+&lt;td>FS&lt;/td>
+&lt;td>␜&lt;/td>
+&lt;td>^|&lt;/td>
+&lt;td>文件分割符&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1101&lt;/td>
+&lt;td>29&lt;/td>
+&lt;td>1D&lt;/td>
+&lt;td>GS&lt;/td>
+&lt;td>␝&lt;/td>
+&lt;td>^]&lt;/td>
+&lt;td>组群分隔符&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1110&lt;/td>
+&lt;td>30&lt;/td>
+&lt;td>1E&lt;/td>
+&lt;td>RS&lt;/td>
+&lt;td>␞&lt;/td>
+&lt;td>^^&lt;/td>
+&lt;td>记录分隔符&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0001 1111&lt;/td>
+&lt;td>31&lt;/td>
+&lt;td>1F&lt;/td>
+&lt;td>US&lt;/td>
+&lt;td>␟&lt;/td>
+&lt;td>^_&lt;/td>
+&lt;td>单元分隔符&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1111&lt;/td>
+&lt;td>127&lt;/td>
+&lt;td>7F&lt;/td>
+&lt;td>DEL&lt;/td>
+&lt;td>␡&lt;/td>
+&lt;td>^?&lt;/td>
+&lt;td>Delete字符&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="可显字符">可显字符&lt;/h3>
+&lt;p>可显示字符编号范围是32-126（0x20-0x7E），共95个字符。 32～126(共95个)是字符(32是空格)，其中48～57为0到9十个阿拉伯数字。65～90为26个大写英文字母，
+97～122号为26个小写英文字母，其余为一些标点符号、运算符号等。&lt;/p>
+&lt;p>&lt;strong>ASCII可显示字符（共95个）&lt;/strong>&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>二进制&lt;/th>
+&lt;th>十进制&lt;/th>
+&lt;th>十六进制&lt;/th>
+&lt;th>图形&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>0010 0000&lt;/td>
+&lt;td>32&lt;/td>
+&lt;td>20&lt;/td>
+&lt;td>(space)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0001&lt;/td>
+&lt;td>33&lt;/td>
+&lt;td>21&lt;/td>
+&lt;td>!&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0010&lt;/td>
+&lt;td>34&lt;/td>
+&lt;td>22&lt;/td>
+&lt;td>&amp;quot;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0011&lt;/td>
+&lt;td>35&lt;/td>
+&lt;td>23&lt;/td>
+&lt;td>#&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0100&lt;/td>
+&lt;td>36&lt;/td>
+&lt;td>24&lt;/td>
+&lt;td>$&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0101&lt;/td>
+&lt;td>37&lt;/td>
+&lt;td>25&lt;/td>
+&lt;td>%&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0110&lt;/td>
+&lt;td>38&lt;/td>
+&lt;td>26&lt;/td>
+&lt;td>&amp;amp;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 0111&lt;/td>
+&lt;td>39&lt;/td>
+&lt;td>27&lt;/td>
+&lt;td>'&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1000&lt;/td>
+&lt;td>40&lt;/td>
+&lt;td>28&lt;/td>
+&lt;td>(&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1001&lt;/td>
+&lt;td>41&lt;/td>
+&lt;td>29&lt;/td>
+&lt;td>)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1010&lt;/td>
+&lt;td>42&lt;/td>
+&lt;td>2A&lt;/td>
+&lt;td>*&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1011&lt;/td>
+&lt;td>43&lt;/td>
+&lt;td>2B&lt;/td>
+&lt;td>+&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1100&lt;/td>
+&lt;td>44&lt;/td>
+&lt;td>2C&lt;/td>
+&lt;td>,&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1101&lt;/td>
+&lt;td>45&lt;/td>
+&lt;td>2D&lt;/td>
+&lt;td>-&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1110&lt;/td>
+&lt;td>46&lt;/td>
+&lt;td>2E&lt;/td>
+&lt;td>.&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0010 1111&lt;/td>
+&lt;td>47&lt;/td>
+&lt;td>2F&lt;/td>
+&lt;td>/&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0000&lt;/td>
+&lt;td>48&lt;/td>
+&lt;td>30&lt;/td>
+&lt;td>0&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0001&lt;/td>
+&lt;td>49&lt;/td>
+&lt;td>31&lt;/td>
+&lt;td>1&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0010&lt;/td>
+&lt;td>50&lt;/td>
+&lt;td>32&lt;/td>
+&lt;td>2&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0011&lt;/td>
+&lt;td>51&lt;/td>
+&lt;td>33&lt;/td>
+&lt;td>3&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0100&lt;/td>
+&lt;td>52&lt;/td>
+&lt;td>34&lt;/td>
+&lt;td>4&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0101&lt;/td>
+&lt;td>53&lt;/td>
+&lt;td>35&lt;/td>
+&lt;td>5&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0110&lt;/td>
+&lt;td>54&lt;/td>
+&lt;td>36&lt;/td>
+&lt;td>6&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 0111&lt;/td>
+&lt;td>55&lt;/td>
+&lt;td>37&lt;/td>
+&lt;td>7&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1000&lt;/td>
+&lt;td>56&lt;/td>
+&lt;td>38&lt;/td>
+&lt;td>8&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1001&lt;/td>
+&lt;td>57&lt;/td>
+&lt;td>39&lt;/td>
+&lt;td>9&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1010&lt;/td>
+&lt;td>58&lt;/td>
+&lt;td>3A&lt;/td>
+&lt;td>:&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1011&lt;/td>
+&lt;td>59&lt;/td>
+&lt;td>3B&lt;/td>
+&lt;td>;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1100&lt;/td>
+&lt;td>60&lt;/td>
+&lt;td>3C&lt;/td>
+&lt;td>&amp;lt;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1101&lt;/td>
+&lt;td>61&lt;/td>
+&lt;td>3D&lt;/td>
+&lt;td>=&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1110&lt;/td>
+&lt;td>62&lt;/td>
+&lt;td>3E&lt;/td>
+&lt;td>&amp;gt;&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0011 1111&lt;/td>
+&lt;td>63&lt;/td>
+&lt;td>3F&lt;/td>
+&lt;td>?&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0000&lt;/td>
+&lt;td>64&lt;/td>
+&lt;td>40&lt;/td>
+&lt;td>@&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0001&lt;/td>
+&lt;td>65&lt;/td>
+&lt;td>41&lt;/td>
+&lt;td>A&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0010&lt;/td>
+&lt;td>66&lt;/td>
+&lt;td>42&lt;/td>
+&lt;td>B&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0011&lt;/td>
+&lt;td>67&lt;/td>
+&lt;td>43&lt;/td>
+&lt;td>C&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0100&lt;/td>
+&lt;td>68&lt;/td>
+&lt;td>44&lt;/td>
+&lt;td>D&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0101&lt;/td>
+&lt;td>69&lt;/td>
+&lt;td>45&lt;/td>
+&lt;td>E&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0110&lt;/td>
+&lt;td>70&lt;/td>
+&lt;td>46&lt;/td>
+&lt;td>F&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 0111&lt;/td>
+&lt;td>71&lt;/td>
+&lt;td>47&lt;/td>
+&lt;td>G&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1000&lt;/td>
+&lt;td>72&lt;/td>
+&lt;td>48&lt;/td>
+&lt;td>H&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1001&lt;/td>
+&lt;td>73&lt;/td>
+&lt;td>49&lt;/td>
+&lt;td>I&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1010&lt;/td>
+&lt;td>74&lt;/td>
+&lt;td>4A&lt;/td>
+&lt;td>J&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1011&lt;/td>
+&lt;td>75&lt;/td>
+&lt;td>4B&lt;/td>
+&lt;td>K&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1100&lt;/td>
+&lt;td>76&lt;/td>
+&lt;td>4C&lt;/td>
+&lt;td>L&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1101&lt;/td>
+&lt;td>77&lt;/td>
+&lt;td>4D&lt;/td>
+&lt;td>M&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1110&lt;/td>
+&lt;td>78&lt;/td>
+&lt;td>4E&lt;/td>
+&lt;td>N&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0100 1111&lt;/td>
+&lt;td>79&lt;/td>
+&lt;td>4F&lt;/td>
+&lt;td>O&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0000&lt;/td>
+&lt;td>80&lt;/td>
+&lt;td>50&lt;/td>
+&lt;td>P&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0001&lt;/td>
+&lt;td>81&lt;/td>
+&lt;td>51&lt;/td>
+&lt;td>Q&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0010&lt;/td>
+&lt;td>82&lt;/td>
+&lt;td>52&lt;/td>
+&lt;td>R&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0011&lt;/td>
+&lt;td>83&lt;/td>
+&lt;td>53&lt;/td>
+&lt;td>S&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0100&lt;/td>
+&lt;td>84&lt;/td>
+&lt;td>54&lt;/td>
+&lt;td>T&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0101&lt;/td>
+&lt;td>85&lt;/td>
+&lt;td>55&lt;/td>
+&lt;td>U&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0110&lt;/td>
+&lt;td>86&lt;/td>
+&lt;td>56&lt;/td>
+&lt;td>V&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 0111&lt;/td>
+&lt;td>87&lt;/td>
+&lt;td>57&lt;/td>
+&lt;td>W&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1000&lt;/td>
+&lt;td>88&lt;/td>
+&lt;td>58&lt;/td>
+&lt;td>X&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1001&lt;/td>
+&lt;td>89&lt;/td>
+&lt;td>59&lt;/td>
+&lt;td>Y&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1010&lt;/td>
+&lt;td>90&lt;/td>
+&lt;td>5A&lt;/td>
+&lt;td>Z&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1011&lt;/td>
+&lt;td>91&lt;/td>
+&lt;td>5B&lt;/td>
+&lt;td>[&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1100&lt;/td>
+&lt;td>92&lt;/td>
+&lt;td>5C&lt;/td>
+&lt;td>|&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1101&lt;/td>
+&lt;td>93&lt;/td>
+&lt;td>5D&lt;/td>
+&lt;td>]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1110&lt;/td>
+&lt;td>94&lt;/td>
+&lt;td>5E&lt;/td>
+&lt;td>^&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0101 1111&lt;/td>
+&lt;td>95&lt;/td>
+&lt;td>5F&lt;/td>
+&lt;td>_&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0000&lt;/td>
+&lt;td>96&lt;/td>
+&lt;td>60&lt;/td>
+&lt;td>`&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0001&lt;/td>
+&lt;td>97&lt;/td>
+&lt;td>61&lt;/td>
+&lt;td>a&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0010&lt;/td>
+&lt;td>98&lt;/td>
+&lt;td>62&lt;/td>
+&lt;td>b&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0011&lt;/td>
+&lt;td>99&lt;/td>
+&lt;td>63&lt;/td>
+&lt;td>c&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0100&lt;/td>
+&lt;td>100&lt;/td>
+&lt;td>64&lt;/td>
+&lt;td>d&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0101&lt;/td>
+&lt;td>101&lt;/td>
+&lt;td>65&lt;/td>
+&lt;td>e&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0110&lt;/td>
+&lt;td>102&lt;/td>
+&lt;td>66&lt;/td>
+&lt;td>f&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 0111&lt;/td>
+&lt;td>103&lt;/td>
+&lt;td>67&lt;/td>
+&lt;td>g&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1000&lt;/td>
+&lt;td>104&lt;/td>
+&lt;td>68&lt;/td>
+&lt;td>h&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1001&lt;/td>
+&lt;td>105&lt;/td>
+&lt;td>69&lt;/td>
+&lt;td>i&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1010&lt;/td>
+&lt;td>106&lt;/td>
+&lt;td>6A&lt;/td>
+&lt;td>j&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1011&lt;/td>
+&lt;td>107&lt;/td>
+&lt;td>6B&lt;/td>
+&lt;td>k&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1100&lt;/td>
+&lt;td>108&lt;/td>
+&lt;td>6C&lt;/td>
+&lt;td>l&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1101&lt;/td>
+&lt;td>109&lt;/td>
+&lt;td>6D&lt;/td>
+&lt;td>m&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1110&lt;/td>
+&lt;td>110&lt;/td>
+&lt;td>6E&lt;/td>
+&lt;td>n&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0110 1111&lt;/td>
+&lt;td>111&lt;/td>
+&lt;td>6F&lt;/td>
+&lt;td>o&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0000&lt;/td>
+&lt;td>112&lt;/td>
+&lt;td>70&lt;/td>
+&lt;td>p&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0001&lt;/td>
+&lt;td>113&lt;/td>
+&lt;td>71&lt;/td>
+&lt;td>q&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0010&lt;/td>
+&lt;td>114&lt;/td>
+&lt;td>72&lt;/td>
+&lt;td>r&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0011&lt;/td>
+&lt;td>115&lt;/td>
+&lt;td>73&lt;/td>
+&lt;td>s&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0100&lt;/td>
+&lt;td>116&lt;/td>
+&lt;td>74&lt;/td>
+&lt;td>t&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0101&lt;/td>
+&lt;td>117&lt;/td>
+&lt;td>75&lt;/td>
+&lt;td>u&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0110&lt;/td>
+&lt;td>118&lt;/td>
+&lt;td>76&lt;/td>
+&lt;td>v&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 0111&lt;/td>
+&lt;td>119&lt;/td>
+&lt;td>77&lt;/td>
+&lt;td>w&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1000&lt;/td>
+&lt;td>120&lt;/td>
+&lt;td>78&lt;/td>
+&lt;td>x&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1001&lt;/td>
+&lt;td>121&lt;/td>
+&lt;td>79&lt;/td>
+&lt;td>y&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1010&lt;/td>
+&lt;td>122&lt;/td>
+&lt;td>7A&lt;/td>
+&lt;td>z&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1011&lt;/td>
+&lt;td>123&lt;/td>
+&lt;td>7B&lt;/td>
+&lt;td>{&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1100&lt;/td>
+&lt;td>124&lt;/td>
+&lt;td>7C&lt;/td>
+&lt;td>|&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1101&lt;/td>
+&lt;td>125&lt;/td>
+&lt;td>7D&lt;/td>
+&lt;td>}&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>0111 1110&lt;/td>
+&lt;td>126&lt;/td>
+&lt;td>7E&lt;/td>
+&lt;td>~&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table></description></item><item><title>Character encoding</title><link>https://echotrue.github.io/blog/101/character-encoding/</link><pubDate>Thu, 13 Jun 2024 11:52:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/101/character-encoding/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>c语言中，字符串的长度和所占的字节数一样吗？不一样，字符串是以&lt;code>\0&lt;/code>结尾的，&lt;code>\0&lt;/code>是不计入字符串长度，但是占了一个字节&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>string和’\0’
+Golang的string内部就是字节数组，末尾没有’\0’，对于Golang来说，’\0’也是一个普通的字节。其他语言在传输 字符串 的时候有可能在末尾 加’\0’，那么Golang解析的时候会在末尾多了’\0’字符。 就会出现很尴尬的事情。比如C语言传输了’CHINA\0’，Golang解析后，再用’CHINA’比较，就不会相等了，但是打印出来确是一样。用C语言接收 处理就不会出现问题。&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Deadline&lt;/span>() (&lt;span style="color:#a6e22e">deadline&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{}
