@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on AXLROSE</title><link>https://echotrue.github.io/blog/</link><description>Recent content in Blog on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Fri, 14 Jun 2024 10:00:55 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>ASCII</title><link>https://echotrue.github.io/blog/101/ascii/</link><pubDate>Thu, 13 Jun 2024 16:34:06 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/101/ascii/</guid><description>&lt;h3 id="背景">背景&lt;/h3>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blog on AXLROSE</title><link>https://echotrue.github.io/blog/</link><description>Recent content in Blog on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Thu, 20 Jun 2024 12:24:13 +0000</lastBuildDate><atom:link href="https://echotrue.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>ASCII</title><link>https://echotrue.github.io/blog/101/ascii/</link><pubDate>Thu, 13 Jun 2024 16:34:06 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/101/ascii/</guid><description>&lt;h3 id="背景">背景&lt;/h3>
 &lt;p>在计算机中，所有的数据在存储和运算时都要使用二进制数表示。例如，像a、b、c、d这样的52个字母（包括大写）以及0、1等数字还有一些常用的符号（例如*、#、@等）在计算机中存储时也要使用二进制数来
 表示，而具体用哪些二进制数字表示哪个符号，这就是编码。如果不同的计算机要想互相通信而不造成混乱，那么每台计算机就必须使用相同的编码规则，于是美国有关的标准化组织就推出了ASCII编码。&lt;/p>
 &lt;p>ASCII是由美国国家标准学会（American National Standard Institute，ANSI）制定的，使用标准的单字节字符编码方案，用于基于文本的数据。方案起始于50年代后期，在1967年定案。它最初是美国的
@@ -906,15 +906,87 @@
 &lt;td>~&lt;/td>
 &lt;/tr>
 &lt;/tbody>
-&lt;/table></description></item><item><title>Character encoding</title><link>https://echotrue.github.io/blog/101/character-encoding/</link><pubDate>Thu, 13 Jun 2024 11:52:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/101/character-encoding/</guid><description>&lt;ul>
-&lt;li>
-&lt;p>c语言中，字符串的长度和所占的字节数一样吗？不一样，字符串是以&lt;code>\0&lt;/code>结尾的，&lt;code>\0&lt;/code>是不计入字符串长度，但是占了一个字节&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>string和’\0’
-Golang的string内部就是字节数组，末尾没有’\0’，对于Golang来说，’\0’也是一个普通的字节。其他语言在传输 字符串 的时候有可能在末尾 加’\0’，那么Golang解析的时候会在末尾多了’\0’字符。 就会出现很尴尬的事情。比如C语言传输了’CHINA\0’，Golang解析后，再用’CHINA’比较，就不会相等了，但是打印出来确是一样。用C语言接收 处理就不会出现问题。&lt;/p>
-&lt;/li>
-&lt;/ul></description></item><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
+&lt;/table></description></item><item><title>Charset and encoding</title><link>https://echotrue.github.io/blog/101/charset-and-encoding/</link><pubDate>Thu, 13 Jun 2024 11:52:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/101/charset-and-encoding/</guid><description>&lt;p>&lt;strong>概念：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>characters 字符&lt;/li>
+&lt;li>charset 字符集&lt;/li>
+&lt;li>encoding 编码&lt;/li>
+&lt;li>code point 码位&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Encoding&lt;/strong>(编码)在编程上下文中，是使用二进制数字(0和1)表示字符的过程。这对于计算机上的存储、通信和简单的操作是必需的。字符和字节(或字节组)之间的映射由编码方式或字符编码(简称编码)来定义。&lt;/p>
+&lt;blockquote>
+&lt;p>Encoding = characters -&amp;gt; binary&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;strong>Charset&lt;/strong>(字符集)是一组映射到抽象数字(称为码位)的字符。它包含字母、数字、符号和计算机可以显示或处理的其他字符。Unicode就是一种字符集，它几乎包含了世界上使用的所有所有字母。&lt;/p>
+&lt;blockquote>
+&lt;p>Charset = letter -&amp;gt; code point&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;strong>encoding scheme&lt;/strong>(编码方案)描述了码位表示为字节的方式。例如UTF-8或UTF-16BE&lt;/p>
+&lt;blockquote>
+&lt;p>Encoding scheme = code point -&amp;gt; bytes&lt;/p>
+&lt;/blockquote>
+&lt;p>下面是欧元符号的例子：
+&lt;img src="https://echotrue.github.io/content/20240618193123.png" alt="">&lt;/p>
+&lt;h3 id="unicode码和ascii码区别">unicode码和ascii码区别&lt;/h3>
+&lt;p>Unicode码和ASCII码的主要区别在于它们的字符范围、编码长度、兼容性以及应用场景。具体来说：&lt;/p>
+&lt;p>字符范围：Unicode支持全球范围内的字符，包括各种语言、符号和特殊字符，而ASCII仅涵盖英语和拉丁字母字符集。
+编码长度：ASCII使用固定的7位或8位编码，每个字符占用1个字节。Unicode则使用不同的编码方案，如UTF-8、UTF-16、UTF-32等，其中UTF-8是最常用的编码方案，使用变长编码，可以根据字符的不同范围使用1到4个字节表示字符。
+兼容性：ASCII是Unicode的子集，ASCII编码的字符在Unicode中有相同的编码。这意味着ASCII编码可以被视为Unicode编码的一部分，因此ASCII文本在Unicode环境中可以无缝使用。
+应用场景：ASCII主要用于英语环境下的文本表示和通信。Unicode广泛用于全球化的应用和多语言环境下的文本处理，支持多种语言和字符集的混合使用。
+总的来说，Unicode是一种更加全面和通用的字符编码标准，可以表示世界上几乎所有的字符，而ASCII是一种较为简单和有限的字符编码标准，仅适用于英语和拉丁字母字符集。&lt;/p>
+&lt;h3 id="unicode-list">Unicode List&lt;/h3>
+&lt;p>&lt;a href="https://symbl.cc/cn/unicode-table/">https://symbl.cc/cn/unicode-table/&lt;/a>&lt;/p>
+&lt;h3 id="utf-8">UTF-8&lt;/h3>
+&lt;p>UTF-8是一种变长的编码方式。他可以使用1~4个字节表示一个符号，根据不同的符号而变化字节长度。UTF-8的编码规则有两条：&lt;/p>
+&lt;ul>
+&lt;li>对于单字节的符号，字节的第一位设为0，后面7位为这个符号的Unicode码。因此，对于英文字母，UTF-8和ASCII码是相同的。&lt;/li>
+&lt;li>对于n字节的符号(n &amp;gt; 1)，第一个字节的前n位都设为1，第n+1位设为0，后面的字节前两位一律设为10。剩下的没有使用的二进制位全部为这个符号的Unicode码。&lt;/li>
+&lt;/ul>
+&lt;p>下表总结了编码规则，字母x表示可用的编码位。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>占用字节&lt;/th>
+&lt;th>Unicode符号范围（十六进制）&lt;/th>
+&lt;th>UTF-8编码格式（二进制）&lt;/th>
+&lt;th>十进制范围&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>0000 0000 ~ 0000 007F&lt;/td>
+&lt;td>0xxxxxxx&lt;/td>
+&lt;td>0 ~ 127&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2&lt;/td>
+&lt;td>0000 0080 ~ 0000 07FF&lt;/td>
+&lt;td>110xxxxx 10xxxxxx&lt;/td>
+&lt;td>128 ~ 2047&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>0000 0800 ~ 0000 FFFF&lt;/td>
+&lt;td>1110xxxx 10xxxxxx 10xxxxxx&lt;/td>
+&lt;td>2048 ~ 65535&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>4&lt;/td>
+&lt;td>0001 0000 ~ 0010 FFFF&lt;/td>
+&lt;td>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx&lt;/td>
+&lt;td>65536 ~ 1114111&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>根据上表可以解读UTF-8编码，如果第一个字节的第一位是0，那么这个字节单独就是个字符。如果第一位是1，那么连续有多少个1就表示当前字符占用多少个字节。&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>以中文汉字“黄”演示如何实现UTF-8编码。“黄”的Unicode编码是&lt;code>U+9EC4&lt;/code>。从上表可以看出黄字占用三个字节。所以黄字的UTF-8的编码格式为&lt;code>1110xxxx 10xxxxxx 10xxxxxx&lt;/code>。而&lt;code>9EC4&lt;/code>的二进制为&lt;code>1001111011000100&lt;/code>，将此二进制字符拆成三个部分从右向左一次填充编码格式。三个部分分别是&lt;code>1001&lt;/code>，&lt;code>111011&lt;/code>，&lt;code>000100&lt;/code>，填充后的UTF-8二进制为&lt;code>11101001 10111011 10000100&lt;/code>。转换为十六进制就是&lt;code>E9BB84&lt;/code>,十进制表示数为&lt;code>15317892&lt;/code>,字节数组表示为[233 187 132]&lt;/p>
+&lt;h3 id="go语言中的byte类型和rune类型">Go语言中的byte类型和rune类型&lt;/h3></description></item><item><title>再读Context包</title><link>https://echotrue.github.io/blog/golang/read-context-again/</link><pubDate>Fri, 17 May 2024 16:36:37 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-context-again/</guid><description>&lt;h2 id="context接口">Context接口&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Context&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Deadline&lt;/span>() (&lt;span style="color:#a6e22e">deadline&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Time&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{}
