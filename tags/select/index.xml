@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Select on AXLROSE</title><link>https://echotrue.github.io/tags/select/</link><description>Recent content in Select on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Tue, 30 Jul 2019 19:04:35 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/select/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang Select</title><link>https://echotrue.github.io/blog/golang/golang-select/</link><pubDate>Tue, 30 Jul 2019 19:04:35 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/golang-select/</guid><description>&lt;h3 id="什么是select">什么是select&lt;/h3>
 &lt;p>&lt;code>select&lt;/code>语句用于从多个发送/接收&lt;code>channel&lt;/code>中进行选择的操作。 &lt;code>select&lt;/code>语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于&lt;code>switch&lt;/code>，只是每个&lt;code>case&lt;/code>语句被一个&lt;code>channel&lt;/code>操作取代了。让我们深入研究一些代码，以便更好地理解&lt;/p>
-&lt;pre tabindex="0">&lt;code>func server1(ch chan string) {
-time.Sleep(6 * time.Second)
-ch &amp;lt;- &amp;#34;from server1&amp;#34;
-}
-func server2(ch chan string) {
-time.Sleep(3 * time.Second)
-ch &amp;lt;- &amp;#34;from server2&amp;#34;
-}
-func main() {
-output1 := make(chan string)
-output2 := make(chan string)
-go server1(output1)
-go server2(output2)
-select {
-case s1 := &amp;lt;-output1:
-fmt.Println(s1)
-case s2 := &amp;lt;-output2:
-fmt.Println(s2)
-}
-}
-&lt;/code>&lt;/pre>&lt;p>在上面的程序中，在第 8 行&lt;code>server1&lt;/code>函数休眠 6 秒然后将文本从&lt;code>server1&lt;/code>写入&lt;code>channel ch&lt;/code>。第 12 行&lt;code>server2&lt;/code>函数休眠 3 秒，然后从&lt;code>server2&lt;/code>写入&lt;code>channel ch&lt;/code>。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">server1&lt;/span>(&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#ae81ff">6&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;from server1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">server2&lt;/span>(&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#ae81ff">3&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;from server2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">output1&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">output2&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#a6e22e">server1&lt;/span>(&lt;span style="color:#a6e22e">output1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#a6e22e">server2&lt;/span>(&lt;span style="color:#a6e22e">output2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">s1&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">output1&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">s1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">s2&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">output2&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">s2&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在上面的程序中，在第 8 行&lt;code>server1&lt;/code>函数休眠 6 秒然后将文本从&lt;code>server1&lt;/code>写入&lt;code>channel ch&lt;/code>。第 12 行&lt;code>server2&lt;/code>函数休眠 3 秒，然后从&lt;code>server2&lt;/code>写入&lt;code>channel ch&lt;/code>。&lt;/p>
 &lt;p>&lt;code>main&lt;/code>函数在 20 和 21 行分别调用&lt;code>server1&lt;/code>和&lt;code>server2&lt;/code>。&lt;/p>
 &lt;p>在第 22 行，&lt;code>select&lt;/code>语句将阻塞直到其中一个&lt;code>case&lt;/code>准备就绪。在上面的程序中，&lt;code>server1&lt;/code>在 6 秒后写入&lt;code>output1 channel&lt;/code>，而&lt;code>server2&lt;/code>在 3 秒后写入&lt;code>output2 channel&lt;/code>。因此 select 语句将阻塞 3 秒并等待&lt;code>server2&lt;/code>写入。 3 秒后，程序将打印，&lt;/p>
 &lt;pre tabindex="0">&lt;code>from server2
