@@ -27,27 +27,27 @@
 </span></span><span style=display:flex><span>    }
 </span></span><span style=display:flex><span>}
 </span></span></code></pre></div><p>在上面的程序中，在第 8 行<code>server1</code>函数休眠 6 秒然后将文本从<code>server1</code>写入<code>channel ch</code>。第 12 行<code>server2</code>函数休眠 3 秒，然后从<code>server2</code>写入<code>channel ch</code>。</p><p><code>main</code>函数在 20 和 21 行分别调用<code>server1</code>和<code>server2</code>。</p><p>在第 22 行，<code>select</code>语句将阻塞直到其中一个<code>case</code>准备就绪。在上面的程序中，<code>server1</code>在 6 秒后写入<code>output1 channel</code>，而<code>server2</code>在 3 秒后写入<code>output2 channel</code>。因此 select 语句将阻塞 3 秒并等待<code>server2</code>写入。 3 秒后，程序将打印，</p><pre tabindex=0><code>from server2
-</code></pre><p>然后终止。</p><h3 id=select的用途>select的用途</h3><p>将上述程序中的函数命名为<code>server1</code>和<code>server2</code>的原因是为了说明<code>select</code>的实际用途。</p><p>让我们假设我们有一个关键任务的应用，我们需要尽快将输出返回给用户。该应用程序的数据库被复制并存储在世界各地的不同服务器中。假设函数<code>server1</code>和<code>server2</code>实际上与 2 个这样的服务器通信。每个服务器的响应时间取决于每个服务器的负载和网络延迟。我们将请求发送到两个服务器，然后使用<code>select</code>语句在相应的<code>channel</code>上等待响应。<code>select</code>会选择优先响应的服务器，其他响应被忽略。这样我们就可以向多个服务器发送相同的请求，并将最快的响应返回给用户:)。</p><h3 id=默认case>默认case</h3><p>当其他<code>case</code>都没有准备就绪时，将会执行<code>select</code>语句中的默认<code>case</code>。这通常用于防止<code>select</code>语句阻塞。</p><pre tabindex=0><code>func process(ch chan string) {
-    time.Sleep(10500 * time.Millisecond)
-    ch &lt;- &#34;process successful&#34;
-}
-
-func main() {
-    ch := make(chan string)
-    go process(ch)
-    for {
-        time.Sleep(1000 * time.Millisecond)
-        select {
-        case v := &lt;-ch:
-            fmt.Println(&#34;received value: &#34;, v)
-            return
-        default:
-            fmt.Println(&#34;no value received&#34;)
-        }
-    }
-
-}
-</code></pre><p>在上面的程序中，在第 8 行<code>process</code>函数休眠 10500 毫秒（10.5 秒），然后将<code>process successful</code>写入<code>ch channel</code>。该函数在第 15 行被并发调用。</p><p>在并发调用<code>process Goroutine</code>之后，<code>main Goroutine</code>中启动了无限循环。无限循环在每次迭代开始期间休眠 1000 毫秒（1 秒），并执行<code>select</code>操作。在前 10500 毫秒期间，<code>select</code>语句的第一种情况即<code>case v：= &lt;-ch：</code>将不会准备就绪，因为<code>process Goroutine</code>仅在 10500 毫秒后才写入<code>ch channel</code>。因此，在此期间将执行<code>defualt</code>分支，程序将会打印 10 次<code>no value received</code>。</p><p>在 10.5 秒之后，<code>process Goroutine</code>将<code>process successful</code>写入<code>ch</code>。 现在将执行<code>select</code>语句的第一种情况，程序将打印<code>received value: process successful</code>然后程序终止。该程序将输出，</p><pre tabindex=0><code>no value received
+</code></pre><p>然后终止。</p><h3 id=select的用途>select的用途</h3><p>将上述程序中的函数命名为<code>server1</code>和<code>server2</code>的原因是为了说明<code>select</code>的实际用途。</p><p>让我们假设我们有一个关键任务的应用，我们需要尽快将输出返回给用户。该应用程序的数据库被复制并存储在世界各地的不同服务器中。假设函数<code>server1</code>和<code>server2</code>实际上与 2 个这样的服务器通信。每个服务器的响应时间取决于每个服务器的负载和网络延迟。我们将请求发送到两个服务器，然后使用<code>select</code>语句在相应的<code>channel</code>上等待响应。<code>select</code>会选择优先响应的服务器，其他响应被忽略。这样我们就可以向多个服务器发送相同的请求，并将最快的响应返回给用户:)。</p><h3 id=默认case>默认case</h3><p>当其他<code>case</code>都没有准备就绪时，将会执行<code>select</code>语句中的默认<code>case</code>。这通常用于防止<code>select</code>语句阻塞。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>process</span>(<span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>10500</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Millisecond</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#e6db74>&#34;process successful&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>process</span>(<span style=color:#a6e22e>ch</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>1000</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Millisecond</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>:
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;received value: &#34;</span>, <span style=color:#a6e22e>v</span>)
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>default</span>:
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;no value received&#34;</span>)
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在上面的程序中，在第 8 行<code>process</code>函数休眠 10500 毫秒（10.5 秒），然后将<code>process successful</code>写入<code>ch channel</code>。该函数在第 15 行被并发调用。</p><p>在并发调用<code>process Goroutine</code>之后，<code>main Goroutine</code>中启动了无限循环。无限循环在每次迭代开始期间休眠 1000 毫秒（1 秒），并执行<code>select</code>操作。在前 10500 毫秒期间，<code>select</code>语句的第一种情况即<code>case v：= &lt;-ch：</code>将不会准备就绪，因为<code>process Goroutine</code>仅在 10500 毫秒后才写入<code>ch channel</code>。因此，在此期间将执行<code>defualt</code>分支，程序将会打印 10 次<code>no value received</code>。</p><p>在 10.5 秒之后，<code>process Goroutine</code>将<code>process successful</code>写入<code>ch</code>。 现在将执行<code>select</code>语句的第一种情况，程序将打印<code>received value: process successful</code>然后程序终止。该程序将输出，</p><pre tabindex=0><code>no value received
 no value received
 no value received
 no value received
@@ -58,61 +58,61 @@ no value received
 no value received
 no value received
 received value:  process successful
-</code></pre><h3 id=死锁和默认case>死锁和默认case</h3><pre tabindex=0><code>func main() {
-    ch := make(chan string)
-    select {
-    case &lt;-ch:
-    }
-}
-</code></pre><p>在上面的程序中，我们在第一行创建了一个<code>channel ch</code>。我们尝试从选择的这个<code>channel</code>读取。而这个<code>select</code>语句将一直阻塞，因为没有其他<code>Goroutine</code>写入此<code>channel</code>，因此将导致死锁。该程序将在运行时产生<code>panic</code>同时打印，</p><pre tabindex=0><code>fatal error: all goroutines are asleep - deadlock!
+</code></pre><h3 id=死锁和默认case>死锁和默认case</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>:
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在上面的程序中，我们在第一行创建了一个<code>channel ch</code>。我们尝试从选择的这个<code>channel</code>读取。而这个<code>select</code>语句将一直阻塞，因为没有其他<code>Goroutine</code>写入此<code>channel</code>，因此将导致死锁。该程序将在运行时产生<code>panic</code>同时打印，</p><pre tabindex=0><code>fatal error: all goroutines are asleep - deadlock!
 
 goroutine 1 [chan receive]:
 main.main()
     /tmp/sandbox416567824/main.go:6 +0x80
-</code></pre><p>如果存在默认<code>case</code>，则不会发生此死锁，因为在没有其他<code>case</code>准备就绪时将执行默认<code>case</code>。上面的程序可以重写。</p><pre tabindex=0><code>func main() {
-    ch := make(chan string)
-    select {
-    case &lt;-ch:
-    default:
-        fmt.Println(&#34;default case executed&#34;)
-    }
-}
-</code></pre><p>输出，</p><pre tabindex=0><code>default case executed
-</code></pre><p>类似地，当<code>select</code>只有一个<code>nil channel</code>，也会执行默认<code>case</code>。</p><pre tabindex=0><code>func main() {
-    var ch chan string
-    select {
-    case v := &lt;-ch:
-        fmt.Println(&#34;received value&#34;, v)
-    default:
-        fmt.Println(&#34;default case executed&#34;)
-
-    }
-}
-</code></pre><p>在上面的程序中，<code>ch</code>是<code>nil</code>，我们试图用<code>select</code>从<code>ch</code>中读取。如果没有默认<code>case</code>，则<code>select</code>将一直被阻塞并导致死锁。由于我们在<code>select</code>中有一个默认的<code>case</code>，它将被执行并且程序将打印，</p><pre tabindex=0><code>default case executed
-</code></pre><h3 id=select的随机性>select的随机性</h3><p>当<code>select</code>语句中的多个<code>case</code>准备就绪时，将会随机挑选一个执行。</p><pre tabindex=0><code>func server1(ch chan string) {
-    ch &lt;- &#34;from server1&#34;
-}
-func server2(ch chan string) {
-    ch &lt;- &#34;from server2&#34;
-
-}
-func main() {
-    output1 := make(chan string)
-    output2 := make(chan string)
-    go server1(output1)
-    go server2(output2)
-    time.Sleep(1 * time.Second)
-    select {
-    case s1 := &lt;-output1:
-        fmt.Println(s1)
-    case s2 := &lt;-output2:
-        fmt.Println(s2)
-    }
-}
-</code></pre><p>在上面的程序中，<code>server1</code>和<code>server2</code> 协程在第 18 和 19 行分别被调用，然后<code>main</code>协程休眠 1 秒。当运行到<code>select</code>语句时，<code>server1</code>已将<code>from server1</code>写入<code>output1</code>，<code>server2</code>已将<code>from server2</code>写入<code>output2</code>，因此<code>select</code>语句中的两种情况都准备就绪。如果多次运行此程序，将会随机输出<code>from server1</code>或<code>from server2</code>。</p><h3 id=空select>空select</h3><pre tabindex=0><code>func main() {
-    select {}
-}
-</code></pre><p>你认为上面的程序将会输出什么？</p><p>我们知道<code>select</code>语句将被阻塞，直到执行其中一个<code>case</code>。在这种情况下，<code>select</code>语句没有任何<code>case</code>，因此它将一直阻塞导致死锁。这个程序将会产生<code>panic</code>，并输出，</p><pre tabindex=0><code>fatal error: all goroutines are asleep - deadlock!
+</code></pre><p>如果存在默认<code>case</code>，则不会发生此死锁，因为在没有其他<code>case</code>准备就绪时将执行默认<code>case</code>。上面的程序可以重写。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>default</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;default case executed&#34;</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>输出，</p><pre tabindex=0><code>default case executed
+</code></pre><p>类似地，当<code>select</code>只有一个<code>nil channel</code>，也会执行默认<code>case</code>。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> <span style=color:#a6e22e>v</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>ch</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;received value&#34;</span>, <span style=color:#a6e22e>v</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>default</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;default case executed&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在上面的程序中，<code>ch</code>是<code>nil</code>，我们试图用<code>select</code>从<code>ch</code>中读取。如果没有默认<code>case</code>，则<code>select</code>将一直被阻塞并导致死锁。由于我们在<code>select</code>中有一个默认的<code>case</code>，它将被执行并且程序将打印，</p><pre tabindex=0><code>default case executed
+</code></pre><h3 id=select的随机性>select的随机性</h3><p>当<code>select</code>语句中的多个<code>case</code>准备就绪时，将会随机挑选一个执行。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>server1</span>(<span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#e6db74>&#34;from server1&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>server2</span>(<span style=color:#a6e22e>ch</span> <span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ch</span> <span style=color:#f92672>&lt;-</span> <span style=color:#e6db74>&#34;from server2&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>output1</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>output2</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>string</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>server1</span>(<span style=color:#a6e22e>output1</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>go</span> <span style=color:#a6e22e>server2</span>(<span style=color:#a6e22e>output2</span>)
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>1</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Second</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> <span style=color:#a6e22e>s1</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>output1</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>s1</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> <span style=color:#a6e22e>s2</span> <span style=color:#f92672>:=</span> <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>output2</span>:
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>s2</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在上面的程序中，<code>server1</code>和<code>server2</code> 协程在第 18 和 19 行分别被调用，然后<code>main</code>协程休眠 1 秒。当运行到<code>select</code>语句时，<code>server1</code>已将<code>from server1</code>写入<code>output1</code>，<code>server2</code>已将<code>from server2</code>写入<code>output2</code>，因此<code>select</code>语句中的两种情况都准备就绪。如果多次运行此程序，将会随机输出<code>from server1</code>或<code>from server2</code>。</p><h3 id=空select>空select</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>select</span> {}
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>你认为上面的程序将会输出什么？</p><p>我们知道<code>select</code>语句将被阻塞，直到执行其中一个<code>case</code>。在这种情况下，<code>select</code>语句没有任何<code>case</code>，因此它将一直阻塞导致死锁。这个程序将会产生<code>panic</code>，并输出，</p><pre tabindex=0><code>fatal error: all goroutines are asleep - deadlock!
 
 goroutine 1 [select (no cases)]:
 main.main()

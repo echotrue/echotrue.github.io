@@ -274,16 +274,7 @@ Unsafe()方法说明：&lt;/p>
 &lt;li>确保通过 &lt;code>Next()&lt;/code>对每个Rows对象进行完整迭代或调用&lt;code>Close()&lt;/code>&lt;/li>
 &lt;li>确保每一个事务都通过 &lt;code>Commit()&lt;/code> 或 &lt;code>Rollback()&lt;/code> 返回连接&lt;/li>
 &lt;/ul>
-&lt;p>如果你忘记这些操作，连接将会一直阻塞直到被 &lt;code>GC&lt;/code> 回收，并且你的数据库会立刻停止建立更多的连接，以此抵消当前正在使用的这个链接。注意 &lt;code>Rows.Close()&lt;/code> 可以被多次安全的调用，所以不用担心在不需要的地方调用它。&lt;/p></description></item><item><title>Binary an Bit Operation</title><link>https://echotrue.github.io/blog/golang/binary-an-bit-operation/</link><pubDate>Fri, 27 Aug 2021 10:34:44 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/binary-an-bit-operation/</guid><description>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d（%08b）左移1位：%d ,左移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d右移1位：%d ,右移2位: %d \n&amp;#34;&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Addressable and Unaddressable-Value</title><link>https://echotrue.github.io/blog/golang/addressable/</link><pubDate>Sat, 23 Jan 2021 14:42:12 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/addressable/</guid><description>&lt;h3 id="addressable">Addressable&lt;/h3></description></item><item><title>Lock</title><link>https://echotrue.github.io/blog/golang/lock/</link><pubDate>Fri, 22 Jan 2021 14:56:40 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/lock/</guid><description>&lt;h3 id="检测go程序中按值传递的-locks">检测Go程序中按值传递的 locks&lt;/h3></description></item><item><title>Read Schollz/Progressbar</title><link>https://echotrue.github.io/blog/golang/read-schollz-progressbar/</link><pubDate>Fri, 13 Nov 2020 14:20:35 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-schollz-progressbar/</guid><description>&lt;h3 id="type-progressbar">type ProgressBar&lt;/h3>
+&lt;p>如果你忘记这些操作，连接将会一直阻塞直到被 &lt;code>GC&lt;/code> 回收，并且你的数据库会立刻停止建立更多的连接，以此抵消当前正在使用的这个链接。注意 &lt;code>Rows.Close()&lt;/code> 可以被多次安全的调用，所以不用担心在不需要的地方调用它。&lt;/p></description></item><item><title>Read Schollz/Progressbar</title><link>https://echotrue.github.io/blog/golang/read-schollz-progressbar/</link><pubDate>Fri, 13 Nov 2020 14:20:35 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/read-schollz-progressbar/</guid><description>&lt;h3 id="type-progressbar">type ProgressBar&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">ProgressBar&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">state&lt;/span> &lt;span style="color:#a6e22e">state&lt;/span> &lt;span style="color:#75715e">// 进度条状态
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">config&lt;/span> &lt;span style="color:#a6e22e">config&lt;/span> &lt;span style="color:#75715e">// 进度条配置
@@ -714,99 +705,93 @@ exit status 66
 &lt;p>Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有：
 使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。&lt;/p>
 &lt;h3 id="使用waitgroup">使用WaitGroup&lt;/h3>
-&lt;pre tabindex="0">&lt;code>func main() {
-var i int
-var wg sync.WaitGroup
-wg.Add(1) // 通知程序有一个需要等待完成的任务
-go func() {
-i = 5
-wg.Done() // 告诉程序任务已经执行完成
-}()
-wg.Wait() // 阻塞当前程序直到等待的任务执行完成
-fmt.Println(i)
-}
-&lt;/code>&lt;/pre>&lt;h3 id="使用通道">使用通道&lt;/h3>
-&lt;pre tabindex="0">&lt;code>func main() {
-var i int
-wait := make(chan struct{})
-go func() {
-i = 5
-wait &amp;lt;- struct{}{}
-}()
-&amp;lt;-wait
-fmt.Println(i)
-}
-&lt;/code>&lt;/pre>&lt;h3 id="使用mutex">使用Mutex&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">wg&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">WaitGroup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Add&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span>) &lt;span style="color:#75715e">// 通知程序有一个需要等待完成的任务
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">i&lt;/span> = &lt;span style="color:#ae81ff">5&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>() &lt;span style="color:#75715e">// 告诉程序任务已经执行完成
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Wait&lt;/span>() &lt;span style="color:#75715e">// 阻塞当前程序直到等待的任务执行完成
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="使用通道">使用通道&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wait&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">i&lt;/span> = &lt;span style="color:#ae81ff">5&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wait&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{}{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">wait&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="使用mutex">使用Mutex&lt;/h3>
 &lt;p>以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。
 这种情况下我们应该考虑使用&lt;code>Mutex&lt;/code>互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。&lt;/p>
-&lt;pre tabindex="0">&lt;code>type SafeNumber struct {
-i int
-m sync.Mutex
-}
-func (sn *SafeNumber) Set(n int) {
-sn.m.Lock()
-defer sn.m.Unlock()
-sn.i = n
-}
-func (sn *SafeNumber) Get() int {
-sn.m.Lock()
-defer sn.m.Unlock()
-return sn.i
-}
-func main() {
-sn := new(SafeNumber)
-go func() {
-sn.Set(5)
-}()
-fmt.Println(sn.Get())
-}
-&lt;/code>&lt;/pre></description></item><item><title>Block forever in Go</title><link>https://echotrue.github.io/blog/golang/block-forever-in-go/</link><pubDate>Tue, 08 Sep 2020 15:44:44 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/block-forever-in-go/</guid><description>&lt;h2 id="golang中永久阻塞的不同方法">Golang中永久阻塞的不同方法&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">SafeNumber&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Mutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">sn&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">SafeNumber&lt;/span>) &lt;span style="color:#a6e22e">Set&lt;/span>(&lt;span style="color:#a6e22e">n&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">i&lt;/span> = &lt;span style="color:#a6e22e">n&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">sn&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">SafeNumber&lt;/span>) &lt;span style="color:#a6e22e">Get&lt;/span>() &lt;span style="color:#66d9ef">int&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Unlock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">i&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">sn&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> new(&lt;span style="color:#a6e22e">SafeNumber&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">Set&lt;/span>(&lt;span style="color:#ae81ff">5&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">sn&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Block forever in Go</title><link>https://echotrue.github.io/blog/golang/block-forever-in-go/</link><pubDate>Tue, 08 Sep 2020 15:44:44 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/block-forever-in-go/</guid><description>&lt;h2 id="golang中永久阻塞的不同方法">Golang中永久阻塞的不同方法&lt;/h2>
 &lt;p>The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling &lt;code>os.Exit&lt;/code> or by returning from the &lt;code>main()&lt;/code> function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.&lt;/p>
 &lt;h3 id="1-using-syncwaitgroup">1. Using sync.WaitGroup&lt;/h3>
 &lt;p>Wait blocks until the WaitGroup counter is zero.&lt;/p>
-&lt;pre tabindex="0">&lt;code>package main
-import &amp;#34;sync&amp;#34;
-func main() {
-var wg sync.WaitGroup
-wg.Add(1)
-wg.Wait()
-}
-&lt;/code>&lt;/pre>&lt;h3 id="2-empty-select">2. Empty select&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">wg&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">WaitGroup&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Add&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Wait&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="2-empty-select">2. Empty select&lt;/h3>
 &lt;p>An empty &lt;code>select{}&lt;/code> statement blocks indefinitely i.e. forever. It is similar and in practice equivalent to an empty &lt;code>for{}&lt;/code> statement.&lt;/p>
-&lt;pre tabindex="0">&lt;code>package main
-func main() {
-select{}
-}
-&lt;/code>&lt;/pre>&lt;h3 id="3-infinite-loop">3. Infinite loop&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="3-infinite-loop">3. Infinite loop&lt;/h3>
 &lt;p>The easiest way which will use 100% of CPU.&lt;/p>
-&lt;pre tabindex="0">&lt;code>package main
-func main() {
-for {}
-}
-&lt;/code>&lt;/pre>&lt;h3 id="4-using-syncmutex">4. Using sync.Mutex&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="4-using-syncmutex">4. Using sync.Mutex&lt;/h3>
 &lt;p>If the lock is already in use, the calling goroutine blocks until the mutex is available.&lt;/p>
-&lt;pre tabindex="0">&lt;code>package main
-import &amp;#34;sync&amp;#34;
-func main() {
-var m sync.Mutex
-m.Lock()
-m.Lock()
-}
-&lt;/code>&lt;/pre>&lt;h3 id="5-empty-channel">5. Empty Channel&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Mutex&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">m&lt;/span>.&lt;span style="color:#a6e22e">Lock&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="5-empty-channel">5. Empty Channel&lt;/h3>
 &lt;p>Empty channels will block until there is something to receive.&lt;/p>
-&lt;pre tabindex="0">&lt;code>package main
-func main() {
-c := make(chan struct{})
-&amp;lt;-c
-}
-&lt;/code>&lt;/pre>&lt;h3 id="6-nil-channel">6. Nil Channel&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{})
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="6-nil-channel">6. Nil Channel&lt;/h3>
 &lt;p>Works for channels created without &lt;code>make&lt;/code>.&lt;/p>
-&lt;pre tabindex="0">&lt;code>package main
-func main() {
-var c chan struct
-&amp;lt;-c
-}
-&lt;/code>&lt;/pre>&lt;h3 id="conclusion">Conclusion&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">c&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="conclusion">Conclusion&lt;/h3>
 &lt;p>I have found 6 ways to block a Go program. It can be useful when you start multiple goroutines in a &lt;code>main()&lt;/code> function and don’t want to terminate a whole program after that. But some of these examples are just for fun.&lt;/p>
 &lt;p>If you know another way - please share it in comments, I will add it here.&lt;/p></description></item><item><title>Golang channel</title><link>https://echotrue.github.io/blog/golang/channel/</link><pubDate>Tue, 08 Sep 2020 14:51:55 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/channel/</guid><description>&lt;h3 id="概念">概念&lt;/h3>
 &lt;p>  从字面上看，&lt;code>channel&lt;/code>的意思大概就是管道的意思。&lt;code>channel&lt;/code>是一种&lt;code>goroutine&lt;/code>用以接收或发送消息的安全的消息队列，&lt;code>channel&lt;/code>就像两个&lt;code>goroutine&lt;/code>之间的导管，来实现各种资源的同步。在官方&lt;code>Effective go&lt;/code>文档中有一句非常著名的话可以说明&lt;code>channel&lt;/code>在使用&lt;code>Golang&lt;/code>进行并发编程的时候扮演了极为重要的角色&lt;/p>
@@ -1021,20 +1006,20 @@ var c chan struct
 &lt;/table></description></item><item><title>Panic and Recover</title><link>https://echotrue.github.io/blog/golang/panic-and-recover/</link><pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/panic-and-recover/</guid><description>&lt;h3 id="panic">panic&lt;/h3>
 &lt;p>   &lt;code>Golang&lt;/code> 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。&lt;/p>
 &lt;p>  panic会停掉当前正在执行的程序，与os.Exit(-1)不同的是：panic会有序的撤退，它会先处理完当前goroutine已经defer的任务，然后再退出整个程序。&lt;/p>
-&lt;pre tabindex="0">&lt;code>func main() {
-var user = os.Getenv(&amp;#34;USER_&amp;#34;)
-go func() {
-defer func() {
-fmt.Println(&amp;#34;defer 1&amp;#34;)
-}()
-if user == &amp;#34;&amp;#34;{
-panic(&amp;#34;should set user env.&amp;#34;)
-}
-}()
-time.Sleep(1*time.Second)
-fmt.Println(&amp;#34;get result&amp;#34;)
-}
-&lt;/code>&lt;/pre>&lt;p>  上述代码输出：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">user&lt;/span> = &lt;span style="color:#a6e22e">os&lt;/span>.&lt;span style="color:#a6e22e">Getenv&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;USER_&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;defer 1&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">user&lt;/span> &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> panic(&lt;span style="color:#e6db74">&amp;#34;should set user env.&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;get result&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>  上述代码输出：&lt;/p>
 &lt;pre tabindex="0">&lt;code>defer 1
 panic: should set user env.
 goroutine 19 [running]:

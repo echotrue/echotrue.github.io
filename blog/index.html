@@ -9,12 +9,11 @@
 <small></small><p>背景 在计算机中，所有的数据在存储和运算时都要使用二进制数表示。例如，像a、b、c、d这样的52个字母（包括大写）以及0、1等数字还有一些常用</div></article><article><div class=blog-card><h3><a href=/blog/101/charset-and-encoding/>Charset and encoding</a></h3><p><small>June 13, 2024&nbsp;· 1518 words&nbsp;· 4 min</small>
 <small></small><p>概念 Charset(字符集)也叫character set。是一组字符的集合。每个字符在一个字符集中都有一个唯一的编码值。这个编码值就是码位(</div></article><article><div class=blog-card><h3><a href=/blog/golang/read-context-again/>再读Context包</a></h3><p><small>May 17, 2024&nbsp;· 4023 words&nbsp;· 9 min</small>
 <small>·
-<a href=https://echotrue.github.io/tags/context/>Context</a></small><p>Context接口 type Context interface { Deadline() (deadline time.Time, ok bool) Done() &lt;-chan struct{} Err() error Value(key any) any } Deadline()返回一个截止时间，到了这个时间后正在进行的工作将会终止。这意味着当</div></article><article><div class=blog-card><h3><a href=/blog/golang/struct-interface/>Struct Interface</a></h3><p><small>November 21, 2022&nbsp;· 263 words&nbsp;· One minute</small>
+<a href=https://echotrue.github.io/tags/context/>Context</a></small><p>Context接口 type Context interface { Deadline() (deadline time.Time, ok bool) Done() &lt;-chan struct{} Err() error Value(key any) any } Deadline()返回一个截止时间，到了这个时间后正在进行的工作将会终止。这意味着当</div></article><article><div class=blog-card><h3><a href=/blog/golang/type/>Type Tips</a></h3><p><small>October 31, 2022&nbsp;· 1034 words&nbsp;· 3 min</small>
 <small></small><p>interface struct 能否相互嵌套 struct struct //继承(不能多态), 如果内部struct实现了接口, 它也相当于实现了接口 struct interface //可以多态 interface interface //单纯的导入 interface struct //不允</div></article><article><div class=blog-card><h3><a href=/blog/golang/sqlx/>Sqlx</a></h3><p><small>August 4, 2022&nbsp;· 6453 words&nbsp;· 13 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/sqlx/>Sqlx</a></small><p>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型 sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似</div></article><article><div class=blog-card><h3><a href=/blog/golang/uint-int/>Uint Int</a></h3><p><small>July 19, 2022&nbsp;· 114 words&nbsp;· One minute</small>
-<small></small><p>“一般来说，如果你使用整数，你应该只使用 int 类型。” “uint 通常只用于进行二元运算” “不要使用无符号类型来强制或建议数字必须是正数。这不是它</div></article><article><div class=blog-card><h3><a href=/blog/golang/functional-programming-in-golang/>Functional Programming in Golang</a></h3><p><small>November 16, 2021&nbsp;· 1150 words&nbsp;· 3 min</small>
+<a href=https://echotrue.github.io/tags/sqlx/>Sqlx</a></small><p>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型 sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似</div></article><article><div class=blog-card><h3><a href=/blog/golang/functional-programming-in-golang/>Functional Programming in Golang</a></h3><p><small>November 16, 2021&nbsp;· 1150 words&nbsp;· 3 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/%E5%87%BD%E6%95%B0/>函数</a>
 <a href=https://echotrue.github.io/tags/%E9%97%AD%E5%8C%85/>闭包</a>
@@ -22,7 +21,9 @@
 <small></small><p></div></article><article><div class=blog-card><h3><a href=/blog/game/turn-based-game-with-go/>Turn-Based Game With Go【译】</a></h3><p><small>September 6, 2021&nbsp;· 1996 words&nbsp;· 4 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/game/>Game</a>
-<a href=https://echotrue.github.io/tags/combat/>Combat</a></small><p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang 今天我们将讨论下如何使用Golang编写一个简单的基于</div></article></div><div class=paginator><a class=next href=/blog/page/2/>Next Page&nbsp;&nbsp;&rarr;</a></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/combat/>Combat</a></small><p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang 今天我们将讨论下如何使用Golang编写一个简单的基于</div></article><article><div class=blog-card><h3><a href=/blog/game/nano/one-nano-request/>One Nano Request</a></h3><p><small>August 31, 2021&nbsp;· 1183 words&nbsp;· 3 min</small>
+<small>·
+<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p>Websocket request 一般由网关节点向外部暴露n.ClientAddr地址并监听，接收客户端发送的请求。以websocket请求为例。listenAndSer</div></article></div><div class=paginator><a class=next href=/blog/page/2/>Next Page&nbsp;&nbsp;&rarr;</a></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by

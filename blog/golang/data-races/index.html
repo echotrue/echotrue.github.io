@@ -48,52 +48,52 @@ exit status 66
 间对共享变量访问，并且会记录下每一个读或者写共享变量的goroutine的身份信息。</p><p>竞争检查器会报告所有的已经发生的数据竞争。然而，它只能检测到运行时的竞争条件，并不能证明之后不会发生数据竞争。由于需要额外
 的记录，因此构建时加了竞争检测的程序跑起来会慢一些，且需要更大的内存，即使是这样，这些代价对于很多生产环境的工作来说还是可
 以接受的。对于一些偶发的竞争条件来说，使用附带竞争检查器的应用程序可以节省很多花在Debug上的时间。</p><h3 id=数据竞争解决方案>数据竞争解决方案</h3><p>Go提供了很多解决它的选择。所有这些解决方案的思路都是确保在我们写入变量时阻止对该变量的访问。一般常用的解决数据竞争的方案有：
-使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。</p><h3 id=使用waitgroup>使用WaitGroup</h3><pre tabindex=0><code>func main() {
-    var i int
-    var wg sync.WaitGroup
-    wg.Add(1) // 通知程序有一个需要等待完成的任务
-    go func() {
-        i = 5
-        wg.Done() // 告诉程序任务已经执行完成
-    }()
-    wg.Wait() // 阻塞当前程序直到等待的任务执行完成
-    fmt.Println(i)
-}
-</code></pre><h3 id=使用通道>使用通道</h3><pre tabindex=0><code>func main() {
-    var i int
-    wait := make(chan struct{})
-    go func() {
-        i = 5
-        wait &lt;- struct{}{}
-    }()
-    &lt;-wait
-    fmt.Println(i)
-}
-</code></pre><h3 id=使用mutex>使用Mutex</h3><p>以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。
-这种情况下我们应该考虑使用<code>Mutex</code>互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。</p><pre tabindex=0><code>type SafeNumber struct {
-    i int
-    m sync.Mutex
-}
-
-func (sn *SafeNumber) Set(n int) {
-    sn.m.Lock()
-    defer sn.m.Unlock()
-    sn.i = n
-}
-
-func (sn *SafeNumber) Get() int {
-    sn.m.Lock()
-    defer sn.m.Unlock()
-    return sn.i
-}
-func main() {
-    sn := new(SafeNumber)
-    go func() {
-        sn.Set(5)
-    }()
-    fmt.Println(sn.Get())
-}
-</code></pre></section><div class=paginator><a class=prev href=https://echotrue.github.io/blog/golang/context/><svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.77086 21.1546C11.0491 22.698 21.4339 21.7773 21.4339 16.3608V4.63375c0-.69413-.075800000000001-1.3284-.2422-1.86588M3.77086 21.1546C1.9934 20.7777.973585 18.7264 1.08749 16.688c.17931-3.209.06972-7.25665-.08236-10.47293C.87809 3.52811 3.12891 1.16316 5.51029 1.25008c4.25565.15534 9.86671-.04779 13.28091-.24466 1.2952-.074686 2.0494.62843 2.4005 1.76245M3.77086 21.1546C4.56586 21.4723 5.49168 21.7879 6.5 22.0658M21.1917 2.76787c1.918 1.4143 1.9383 9.65123 1.7087 13.59293-2.0526 7.6586-10.5943 7.3054-16.4004 5.705M21.1917 2.76787C21.7612 4.51192 22.7203 9.67216 22 16.3608 21.2797 23.0494 11.3665 22.9511 6.5 22.0658M9.94496 9C9.28897 9.61644 7.63215 10.997 6.04814 11.7966 5.98257 11.8297 5.98456 11.9753 6.05061 12.0063c1.00435.4716 2.8788 1.9201 3.89435 2.9937M6.44444 11.9667C8.86549 12.0608 14 12 16 11" stroke="currentcolor" stroke-linecap="round"/></svg>
+使用WaitGroup锁，使用通道阻塞以及使用Mutex锁，下面我们一个个来看他们的用法并比较一下这几种方案的不同点。</p><h3 id=使用waitgroup>使用WaitGroup</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>wg</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>WaitGroup</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Add</span>(<span style=color:#ae81ff>1</span>) <span style=color:#75715e>// 通知程序有一个需要等待完成的任务
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>i</span> = <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Done</span>() <span style=color:#75715e>// 告诉程序任务已经执行完成
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    }()
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>wg</span>.<span style=color:#a6e22e>Wait</span>() <span style=color:#75715e>// 阻塞当前程序直到等待的任务执行完成
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=使用通道>使用通道</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> <span style=color:#a6e22e>i</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>wait</span> <span style=color:#f92672>:=</span> make(<span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>struct</span>{})
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>i</span> = <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>wait</span> <span style=color:#f92672>&lt;-</span> <span style=color:#66d9ef>struct</span>{}{}
+</span></span><span style=display:flex><span>    }()
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&lt;-</span><span style=color:#a6e22e>wait</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>i</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=使用mutex>使用Mutex</h3><p>以上两种解决方案都是在确定的读取和写入顺序的情况下来保证数据的一致性。当程序读取和写入的先后顺序不固定的时候，以上方案便不能满足我们。
+这种情况下我们应该考虑使用<code>Mutex</code>互斥锁。使用互斥锁，可以保证读取和写入操作不能同时发生。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>SafeNumber</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>i</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>m</span> <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>Mutex</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>sn</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>SafeNumber</span>) <span style=color:#a6e22e>Set</span>(<span style=color:#a6e22e>n</span> <span style=color:#66d9ef>int</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>i</span> = <span style=color:#a6e22e>n</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>sn</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>SafeNumber</span>) <span style=color:#a6e22e>Get</span>() <span style=color:#66d9ef>int</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Lock</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Unlock</span>()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>i</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>sn</span> <span style=color:#f92672>:=</span> new(<span style=color:#a6e22e>SafeNumber</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>go</span> <span style=color:#66d9ef>func</span>() {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>Set</span>(<span style=color:#ae81ff>5</span>)
+</span></span><span style=display:flex><span>    }()
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fmt</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#a6e22e>sn</span>.<span style=color:#a6e22e>Get</span>())
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></section><div class=paginator><a class=prev href=https://echotrue.github.io/blog/golang/context/><svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.77086 21.1546C11.0491 22.698 21.4339 21.7773 21.4339 16.3608V4.63375c0-.69413-.075800000000001-1.3284-.2422-1.86588M3.77086 21.1546C1.9934 20.7777.973585 18.7264 1.08749 16.688c.17931-3.209.06972-7.25665-.08236-10.47293C.87809 3.52811 3.12891 1.16316 5.51029 1.25008c4.25565.15534 9.86671-.04779 13.28091-.24466 1.2952-.074686 2.0494.62843 2.4005 1.76245M3.77086 21.1546C4.56586 21.4723 5.49168 21.7879 6.5 22.0658M21.1917 2.76787c1.918 1.4143 1.9383 9.65123 1.7087 13.59293-2.0526 7.6586-10.5943 7.3054-16.4004 5.705M21.1917 2.76787C21.7612 4.51192 22.7203 9.67216 22 16.3608 21.2797 23.0494 11.3665 22.9511 6.5 22.0658M9.94496 9C9.28897 9.61644 7.63215 10.997 6.04814 11.7966 5.98257 11.8297 5.98456 11.9753 6.05061 12.0063c1.00435.4716 2.8788 1.9201 3.89435 2.9937M6.44444 11.9667C8.86549 12.0608 14 12 16 11" stroke="currentcolor" stroke-linecap="round"/></svg>
 <span>Context</span></a>
 <a class=next href=https://echotrue.github.io/blog/golang/block-forever-in-go/><span>Block forever in Go</span><svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3.77086 21.1546C11.0491 22.698 21.4339 21.7773 21.4339 16.3608V4.63375c0-.69413-.075800000000001-1.3284-.2422-1.86588M3.77086 21.1546C1.9934 20.7777.973585 18.7264 1.08749 16.688c.17931-3.209.06972-7.25665-.08236-10.47293C.87809 3.52811 3.12891 1.16316 5.51029 1.25008c4.25565.15534 9.86671-.04779 13.28091-.24466 1.2952-.074686 2.0494.62843 2.4005 1.76245M3.77086 21.1546C4.56586 21.4723 5.49168 21.7879 6.5 22.0658M21.1917 2.76787c1.918 1.4143 1.9383 9.65123 1.7087 13.59293-2.0526 7.6586-10.5943 7.3054-16.4004 5.705M21.1917 2.76787C21.7612 4.51192 22.7203 9.67216 22 16.3608 21.2797 23.0494 11.3665 22.9511 6.5 22.0658M12.055 9C12.711 9.61644 14.3679 10.997 15.9519 11.7966 16.0174 11.8297 16.0154 11.9753 15.9494 12.0063 14.945 12.4779 13.0706 13.9264 12.055 15m3.5006-3.0333C13.1345 12.0608 8 12 6 11" stroke="currentcolor" stroke-linecap="round"/></svg></a></div></article></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
