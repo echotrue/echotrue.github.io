@@ -6,7 +6,69 @@
 <span class=toggle-light><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span></button></li></ul></section></nav><div id=content><div class=blog-wrapper><div><div class=blog-list><article><div class=blog-card><h3><a href=/blog/golang/read-schollz-progressbar/>Read Schollz/Progressbar</a></h3><p><small>November 13, 2020&nbsp;· 533 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/progressbar/>Progressbar</a></small><p>type ProgressBar type ProgressBar struct { state state // 进度条状态 config config // 进度条配置 lock sync.Mutex } type state struct { currentNum int64 currentPercent int lastPercent int currentSaucerSize int lastShown time.Time startTime time.Time counterTime time.Time counterNumSinceLast int64 counterLastTenRates []float64 maxLineWidth int currentBytes float64 finished bool } type config struct { max int64 // max number of the counter width int writer io.Writer</div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/progressbar/>Progressbar</a></small><p><h3 id=type-progressbar>type ProgressBar</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>ProgressBar</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>state</span>  <span style=color:#a6e22e>state</span> <span style=color:#75715e>// 进度条状态
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>config</span> <span style=color:#a6e22e>config</span> <span style=color:#75715e>// 进度条配置
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>lock</span>   <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>Mutex</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>state</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentNum</span>        <span style=color:#66d9ef>int64</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentPercent</span>    <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>lastPercent</span>       <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentSaucerSize</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>lastShown</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>startTime</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterTime</span>         <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterNumSinceLast</span> <span style=color:#66d9ef>int64</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterLastTenRates</span> []<span style=color:#66d9ef>float64</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>maxLineWidth</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentBytes</span> <span style=color:#66d9ef>float64</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>finished</span>     <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>config</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>max</span>                  <span style=color:#66d9ef>int64</span> <span style=color:#75715e>// max number of the counter
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>width</span>                <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writer</span>               <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>Writer</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>theme</span>                <span style=color:#a6e22e>Theme</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>renderWithBlankState</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>description</span>          <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ignoreLength</span>         <span style=color:#66d9ef>bool</span> <span style=color:#75715e>// ignoreLength if max bytes not known
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// whether the output is expected to contain color codes
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>colorCodes</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// show rate of change in kB/sec or MB/sec
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>showBytes</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// show the iterations per second
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>showIterationsPerSecond</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>showIterationsCount</span>     <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// whether the progress bar should attempt to predict the finishing
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// time of the progress based on the start time and the average
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// number of seconds between  increments.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>predictTime</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 进度条刷新最短间隔时间
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>throttleDuration</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Duration</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 完成后清除进度条
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>clearOnFinish</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// spinnerType should be a number between 0-75
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>spinnerType</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// fullWidth specifies whether to measure and set the bar to a specific width
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>fullWidth</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 完成时回调函数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>onCompletion</span> <span style=color:#66d9ef>func</span>()             
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=源码分析>源码分析</h3><p>可以通过以下<code>function</code>创建<code>ProgressBar</code>实例，并渲染初始进度为0的进度条</p></div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by

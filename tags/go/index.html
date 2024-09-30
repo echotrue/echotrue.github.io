@@ -6,31 +6,111 @@
 <span class=toggle-light><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span></button></li></ul></section></nav><div id=content><div class=blog-wrapper><div><div class=blog-list><article><div class=blog-card><h3><a href=/blog/golang/sqlx/>Sqlx</a></h3><p><small>August 4, 2022&nbsp;· 6453 words&nbsp;· 13 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/sqlx/>Sqlx</a></small><p>Handle Types (引用类型) sqlx旨在和database/sql具有相同的感觉，他有四种引用类型 sqlx.DB 类似于sql.DB,是数据库的表示 sqlx.Tx类似</div></article><article><div class=blog-card><h3><a href=/blog/golang/read-schollz-progressbar/>Read Schollz/Progressbar</a></h3><p><small>November 13, 2020&nbsp;· 533 words&nbsp;· 2 min</small>
+<a href=https://echotrue.github.io/tags/sqlx/>Sqlx</a></small><p><h3 id=handle-types-引用类型>Handle Types (引用类型)</h3><p><code>sqlx</code>旨在和<code>database/sql</code>具有相同的感觉，他有四种引用类型</p><ul><li><code>sqlx.DB</code> 类似于<code>sql.DB</code>,是数据库的表示</li><li><code>sqlx.Tx</code>类似于<code>sql.Tx</code>,是事务的表示</li><li><code>sqlx.Stmt</code>类似于<code>sql.Stmt</code>,是预处理语句的表示</li><li><code>sqlx.NamedStmt</code>是一种支持命名参数的预处理语句的表示</li></ul><p>引用类型都嵌入了他们在<code>database/sql</code>中的等效物，这就意味着当你调用<code>sqlx.DB.Query()</code>，实际是调用与<code>sql.DB.Query</code>相同的代码。</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/read-schollz-progressbar/>Read Schollz/Progressbar</a></h3><p><small>November 13, 2020&nbsp;· 533 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/progressbar/>Progressbar</a></small><p>type ProgressBar type ProgressBar struct { state state // 进度条状态 config config // 进度条配置 lock sync.Mutex } type state struct { currentNum int64 currentPercent int lastPercent int currentSaucerSize int lastShown time.Time startTime time.Time counterTime time.Time counterNumSinceLast int64 counterLastTenRates []float64 maxLineWidth int currentBytes float64 finished bool } type config struct { max int64 // max number of the counter width int writer io.Writer</div></article><article><div class=blog-card><h3><a href=/blog/golang/array-slice/>Array And Slice</a></h3><p><small>October 21, 2020&nbsp;· 701 words&nbsp;· 2 min</small>
+<a href=https://echotrue.github.io/tags/progressbar/>Progressbar</a></small><p><h3 id=type-progressbar>type ProgressBar</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>ProgressBar</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>state</span>  <span style=color:#a6e22e>state</span> <span style=color:#75715e>// 进度条状态
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>config</span> <span style=color:#a6e22e>config</span> <span style=color:#75715e>// 进度条配置
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>lock</span>   <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>Mutex</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>state</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentNum</span>        <span style=color:#66d9ef>int64</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentPercent</span>    <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>lastPercent</span>       <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentSaucerSize</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>lastShown</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>startTime</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterTime</span>         <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterNumSinceLast</span> <span style=color:#66d9ef>int64</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterLastTenRates</span> []<span style=color:#66d9ef>float64</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>maxLineWidth</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentBytes</span> <span style=color:#66d9ef>float64</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>finished</span>     <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>config</span> <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>max</span>                  <span style=color:#66d9ef>int64</span> <span style=color:#75715e>// max number of the counter
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>width</span>                <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writer</span>               <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>Writer</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>theme</span>                <span style=color:#a6e22e>Theme</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>renderWithBlankState</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>description</span>          <span style=color:#66d9ef>string</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ignoreLength</span>         <span style=color:#66d9ef>bool</span> <span style=color:#75715e>// ignoreLength if max bytes not known
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// whether the output is expected to contain color codes
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>colorCodes</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// show rate of change in kB/sec or MB/sec
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>showBytes</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// show the iterations per second
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>showIterationsPerSecond</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>showIterationsCount</span>     <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// whether the progress bar should attempt to predict the finishing
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// time of the progress based on the start time and the average
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// number of seconds between  increments.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>predictTime</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 进度条刷新最短间隔时间
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>throttleDuration</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Duration</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 完成后清除进度条
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>clearOnFinish</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// spinnerType should be a number between 0-75
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>spinnerType</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// fullWidth specifies whether to measure and set the bar to a specific width
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>fullWidth</span> <span style=color:#66d9ef>bool</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 完成时回调函数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>onCompletion</span> <span style=color:#66d9ef>func</span>()             
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=源码分析>源码分析</h3><p>可以通过以下<code>function</code>创建<code>ProgressBar</code>实例，并渲染初始进度为0的进度条</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/array-slice/>Array And Slice</a></h3><p><small>October 21, 2020&nbsp;· 701 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p>数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会</div></article><article><div class=blog-card><h3><a href=/blog/algorithm/golang-search-slice/>Golang Search Slice</a></h3><p><small>October 3, 2020&nbsp;· 628 words&nbsp;· 2 min</small>
+<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p><h3 id=数组>数组</h3><p>数组类型定义了<code>长度</code>和<code>元素</code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。</p></div></article><article><div class=blog-card><h3><a href=/blog/algorithm/golang-search-slice/>Golang Search Slice</a></h3><p><small>October 3, 2020&nbsp;· 628 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p>题目 假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找</div></article><article><div class=blog-card><h3><a href=/blog/golang/context/>Context</a></h3><p><small>October 3, 2020&nbsp;· 2597 words&nbsp;· 6 min</small>
+<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p><h2 id=题目>题目</h2><blockquote><p>假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值，
+在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]，
+查找的目标值为345，如果切片中存在目标值程序输出:&ldquo;Found it!&ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未
+找到目标值程序输出:&ldquo;Timeout! Not Found&rdquo;，同时立即取消仍在执行查找任务的goroutine。</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/context/>Context</a></h3><p><small>October 3, 2020&nbsp;· 2597 words&nbsp;· 6 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/context/>Context</a></small><p>引言 Golang的Context包是专门用来简化对于处理单个请求的多个goroutine之间与请求域的数据，取消信号，截止时间等相关操作。 一</div></article><article><div class=blog-card><h3><a href=/blog/golang/data-races/>Golang Data Races</a></h3><p><small>October 3, 2020&nbsp;· 1142 words&nbsp;· 3 min</small>
+<a href=https://echotrue.github.io/tags/context/>Context</a></small><p><h3 id=引言>引言</h3><p><code>Golang</code>的<code>Context</code>包是专门用来简化对于处理单个请求的多个<code>goroutine</code>之间与请求域的数据，取消信号，截止时间等相关操作。
+一个实际的例子是：</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/data-races/>Golang Data Races</a></h3><p><small>October 3, 2020&nbsp;· 1142 words&nbsp;· 3 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
 <a href=https://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/>并发</a>
-<a href=https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/>数据竞争</a></small><p>关于Golang并发安全 谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong? 什么是数据竞争 package main import ( "fmt" ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了</div></article><article><div class=blog-card><h3><a href=/blog/golang/block-forever-in-go/>Block forever in Go</a></h3><p><small>September 8, 2020&nbsp;· 283 words&nbsp;· One minute</small>
+<a href=https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/>数据竞争</a></small><p><h3 id=关于golang并发安全>关于Golang并发安全</h3><ol><li><a href=http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html>谈谈go语言编程的并发安全</a></li><li><a href=https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html>Benign Data Races: What Could Possibly Go Wrong?</a></li></ol><h3 id=什么是数据竞争>什么是数据竞争</h3><pre tabindex=0><code>package main
+
+import (
+	&#34;fmt&#34;
+)
+
+func main() {
+	var i int
+	go func() {
+		i = 5
+	}()
+	fmt.Println(i)
+}
+</code></pre><p>先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的<code>goroutine</code>来设置<code>i</code>的值。
+同时，在不知道开启的<code>goroutine</code>是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/block-forever-in-go/>Block forever in Go</a></h3><p><small>September 8, 2020&nbsp;· 283 words&nbsp;· One minute</small>
 <small>·
-<a href=https://echotrue.github.io/tags/go/>Go</a></small><p>Golang中永久阻塞的不同方法 The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling os.Exit or by returning from the main() function. There are a lot of ways of</div></article><article><div class=blog-card><h3><a href=/blog/golang/channel/>Golang channel</a></h3><p><small>September 8, 2020&nbsp;· 2046 words&nbsp;· 5 min</small>
+<a href=https://echotrue.github.io/tags/go/>Go</a></small><p><h2 id=golang中永久阻塞的不同方法>Golang中永久阻塞的不同方法</h2><p>The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling <code>os.Exit</code> or by returning from the <code>main()</code> function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/channel/>Golang channel</a></h3><p><small>September 8, 2020&nbsp;· 2046 words&nbsp;· 5 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/channel/>Channel</a></small><p>概念 从字面上看，channel的意思大概就是管道的意思。channel是一种goroutine用以接收或发送消息的安全的消息队列，chann</div></article><article><div class=blog-card><h3><a href=/blog/golang/panic-and-recover/>Panic and Recover</a></h3><p><small>August 9, 2019&nbsp;· 465 words&nbsp;· One minute</small>
+<a href=https://echotrue.github.io/tags/channel/>Channel</a></small><p><h3 id=概念>概念</h3><p>  从字面上看，<code>channel</code>的意思大概就是管道的意思。<code>channel</code>是一种<code>goroutine</code>用以接收或发送消息的安全的消息队列，<code>channel</code>就像两个<code>goroutine</code>之间的导管，来实现各种资源的同步。在官方<code>Effective go</code>文档中有一句非常著名的话可以说明<code>channel</code>在使用<code>Golang</code>进行并发编程的时候扮演了极为重要的角色</p></div></article><article><div class=blog-card><h3><a href=/blog/golang/panic-and-recover/>Panic and Recover</a></h3><p><small>August 9, 2019&nbsp;· 465 words&nbsp;· One minute</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/panic/>Panic</a></small><p>panic Golang 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic</div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/panic/>Panic</a></small><p><h3 id=panic>panic</h3><p>   <code>Golang</code> 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。</p></div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by

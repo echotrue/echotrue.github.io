@@ -7,7 +7,21 @@
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
 <a href=https://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/>并发</a>
-<a href=https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/>数据竞争</a></small><p>关于Golang并发安全 谈谈go语言编程的并发安全 Benign Data Races: What Could Possibly Go Wrong? 什么是数据竞争 package main import ( "fmt" ) func main() { var i int go func() { i = 5 }() fmt.Println(i) } 先通过以上程序来了</div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/>数据竞争</a></small><p><h3 id=关于golang并发安全>关于Golang并发安全</h3><ol><li><a href=http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html>谈谈go语言编程的并发安全</a></li><li><a href=https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html>Benign Data Races: What Could Possibly Go Wrong?</a></li></ol><h3 id=什么是数据竞争>什么是数据竞争</h3><pre tabindex=0><code>package main
+
+import (
+	&#34;fmt&#34;
+)
+
+func main() {
+	var i int
+	go func() {
+		i = 5
+	}()
+	fmt.Println(i)
+}
+</code></pre><p>先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的<code>goroutine</code>来设置<code>i</code>的值。
+同时，在不知道开启的<code>goroutine</code>是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：</p></div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by

@@ -182,30 +182,30 @@
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">操作&lt;/th>
-&lt;th style="text-align:left">nil的channel&lt;/th>
-&lt;th style="text-align:left">正常channel&lt;/th>
-&lt;th style="text-align:left">已关闭channel&lt;/th>
+&lt;th style="text-align: left">操作&lt;/th>
+&lt;th style="text-align: left">nil的channel&lt;/th>
+&lt;th style="text-align: left">正常channel&lt;/th>
+&lt;th style="text-align: left">已关闭channel&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">&amp;lt;- ch&lt;/td>
-&lt;td style="text-align:left">阻塞&lt;/td>
-&lt;td style="text-align:left">成功或阻塞&lt;/td>
-&lt;td style="text-align:left">读到零值&lt;/td>
+&lt;td style="text-align: left">&amp;lt;- ch&lt;/td>
+&lt;td style="text-align: left">阻塞&lt;/td>
+&lt;td style="text-align: left">成功或阻塞&lt;/td>
+&lt;td style="text-align: left">读到零值&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">ch &amp;lt;-&lt;/td>
-&lt;td style="text-align:left">阻塞&lt;/td>
-&lt;td style="text-align:left">成功或阻塞&lt;/td>
-&lt;td style="text-align:left">panic&lt;/td>
+&lt;td style="text-align: left">ch &amp;lt;-&lt;/td>
+&lt;td style="text-align: left">阻塞&lt;/td>
+&lt;td style="text-align: left">成功或阻塞&lt;/td>
+&lt;td style="text-align: left">panic&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">close(ch)&lt;/td>
-&lt;td style="text-align:left">panic&lt;/td>
-&lt;td style="text-align:left">成功&lt;/td>
-&lt;td style="text-align:left">panic&lt;/td>
+&lt;td style="text-align: left">close(ch)&lt;/td>
+&lt;td style="text-align: left">panic&lt;/td>
+&lt;td style="text-align: left">成功&lt;/td>
+&lt;td style="text-align: left">panic&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table></description></item></channel></rss>

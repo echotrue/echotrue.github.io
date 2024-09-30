@@ -6,10 +6,13 @@
 <span class=toggle-light><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span></button></li></ul></section></nav><div id=content><div class=blog-wrapper><div><div class=blog-list><article><div class=blog-card><h3><a href=/blog/golang/array-slice/>Array And Slice</a></h3><p><small>October 21, 2020&nbsp;· 701 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p>数组 数组类型定义了长度和元素类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会</div></article><article><div class=blog-card><h3><a href=/blog/algorithm/golang-search-slice/>Golang Search Slice</a></h3><p><small>October 3, 2020&nbsp;· 628 words&nbsp;· 2 min</small>
+<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p><h3 id=数组>数组</h3><p>数组类型定义了<code>长度</code>和<code>元素</code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。</p></div></article><article><div class=blog-card><h3><a href=/blog/algorithm/golang-search-slice/>Golang Search Slice</a></h3><p><small>October 3, 2020&nbsp;· 628 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p>题目 假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值， 在找</div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p><h2 id=题目>题目</h2><blockquote><p>假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值，
+在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]，
+查找的目标值为345，如果切片中存在目标值程序输出:&ldquo;Found it!&ldquo;并且立即取消仍在执行查找任务的goroutine。如果在超时时间未
+找到目标值程序输出:&ldquo;Timeout! Not Found&rdquo;，同时立即取消仍在执行查找任务的goroutine。</p></div></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by

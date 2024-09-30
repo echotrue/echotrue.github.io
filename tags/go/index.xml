@@ -977,30 +977,30 @@ exit status 66
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align:left">操作&lt;/th>
-&lt;th style="text-align:left">nil的channel&lt;/th>
-&lt;th style="text-align:left">正常channel&lt;/th>
-&lt;th style="text-align:left">已关闭channel&lt;/th>
+&lt;th style="text-align: left">操作&lt;/th>
+&lt;th style="text-align: left">nil的channel&lt;/th>
+&lt;th style="text-align: left">正常channel&lt;/th>
+&lt;th style="text-align: left">已关闭channel&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align:left">&amp;lt;- ch&lt;/td>
-&lt;td style="text-align:left">阻塞&lt;/td>
-&lt;td style="text-align:left">成功或阻塞&lt;/td>
-&lt;td style="text-align:left">读到零值&lt;/td>
+&lt;td style="text-align: left">&amp;lt;- ch&lt;/td>
+&lt;td style="text-align: left">阻塞&lt;/td>
+&lt;td style="text-align: left">成功或阻塞&lt;/td>
+&lt;td style="text-align: left">读到零值&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">ch &amp;lt;-&lt;/td>
-&lt;td style="text-align:left">阻塞&lt;/td>
-&lt;td style="text-align:left">成功或阻塞&lt;/td>
-&lt;td style="text-align:left">panic&lt;/td>
+&lt;td style="text-align: left">ch &amp;lt;-&lt;/td>
+&lt;td style="text-align: left">阻塞&lt;/td>
+&lt;td style="text-align: left">成功或阻塞&lt;/td>
+&lt;td style="text-align: left">panic&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align:left">close(ch)&lt;/td>
-&lt;td style="text-align:left">panic&lt;/td>
-&lt;td style="text-align:left">成功&lt;/td>
-&lt;td style="text-align:left">panic&lt;/td>
+&lt;td style="text-align: left">close(ch)&lt;/td>
+&lt;td style="text-align: left">panic&lt;/td>
+&lt;td style="text-align: left">成功&lt;/td>
+&lt;td style="text-align: left">panic&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table></description></item><item><title>Panic and Recover</title><link>https://echotrue.github.io/blog/golang/panic-and-recover/</link><pubDate>Fri, 09 Aug 2019 15:55:02 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/panic-and-recover/</guid><description>&lt;h3 id="panic">panic&lt;/h3>
