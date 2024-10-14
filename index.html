@@ -4,285 +4,60 @@
 <label class="menu-button float-right" for=menu-toggle><span></span><span></span><span></span></label><ul class=navigation-list id=navigation-list><li class="navigation-item navigation-menu"><a class=navigation-link href=/blog>Blog</a></li><li class="navigation-item navigation-menu"><a class=navigation-link href=/series>Series</a></li><li class="navigation-item navigation-menu"><a class=navigation-link href=/tags>Tags</a></li><li class="navigation-item navigation-menu"><a class=navigation-link href=/archives>Archive</a></li><li class="navigation-item navigation-menu"><a class=navigation-link href=/book>Book</a></li><li class="navigation-item menu-separator"><span>|</span></li><li class="navigation-item navigation-social"><a class=navigation-link href=https://github.com><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a></li><li class="navigation-item navigation-dark"><button id=mode type=button aria-label="toggle user light or dark theme">
 <span class=toggle-dark><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span>
 <span class=toggle-light><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span></button></li></ul></section></nav><div id=content><div class=home><div class=info><div class=intro><h1>Axlrose</h1><small>理想与现实的沟壑,埋葬了玫瑰的芬芳.</small><p></p></div><div class=avatar><img src=/images/avatar.png alt=avatar></div></div><div class=featured><h2>Featured Posts</h2><div class=featured-list><article class=featured-single><h4><a href=/blog/golang/struct-with-embedded-anonymous-interface/>Golang结构体中的匿名接口</a></h4><p><small>August 28, 2024&nbsp;· 1263 words&nbsp;· 3 min</small>
-<small></small><p><h3 id=struct-embed-interface>Struct embed interface</h3><p>标准库中有很多结构体中内嵌一个匿名的接口这种写法，今天我们来研究并总结下这种写法的意义。以sort包为例：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Interface</span> <span style=color:#66d9ef>interface</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// Len is the number of elements in the collection.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Len</span>() <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// Less reports whether the element with index i
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Less</span>(<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// Swap swaps the elements with indexes i and j.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Swap</span>(<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> <span style=color:#66d9ef>int</span>)
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>reverse</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// This embedded Interface permits Reverse to use the methods of
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// another Interface implementation.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>Interface</span>
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Less returns the opposite of the embedded implementation&#39;s Less method.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> (<span style=color:#a6e22e>r</span> <span style=color:#a6e22e>reverse</span>) <span style=color:#a6e22e>Less</span>(<span style=color:#a6e22e>i</span>, <span style=color:#a6e22e>j</span> <span style=color:#66d9ef>int</span>) <span style=color:#66d9ef>bool</span> {
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>r</span>.<span style=color:#a6e22e>Interface</span>.<span style=color:#a6e22e>Less</span>(<span style=color:#a6e22e>j</span>, <span style=color:#a6e22e>i</span>)
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e>// Reverse returns the reverse order for data.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Reverse</span>(<span style=color:#a6e22e>data</span> <span style=color:#a6e22e>Interface</span>) <span style=color:#a6e22e>Interface</span> {
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#f92672>&amp;</span><span style=color:#a6e22e>reverse</span>{<span style=color:#a6e22e>data</span>}
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p><code>Interface</code>接口定义了三个方法。<code>reverse</code>结构体内嵌了一个名为<code>Interface</code>的匿名的接口，并且提供了单独的<code>Less</code>函数定义，却没有提供<code>Len</code>和<code>Swap</code>的定义。<code>Reverse</code>函数接收任意一个实现了<code>Interface</code>接口的值作为参数,然后实例化一个<code>reverse</code>结构体对象，并将这个参数赋值给该对象的匿名字段<code>Interface</code>。这里的<code>reverse.Less</code>将参数i,j颠倒并传递给<code>reverse</code>结构体中匿名字段<code>Interface</code>的<code>Less()</code>方法。而这里的Less方法则属于<code>Interface</code>接口的另一个实现。因此最终输出的结果肯定是不同的。</p></article><article class=featured-single><h4><a href=/blog/golang/http-response-body/>http.Response.Body未被完全读取的问题</a></h4><p><small>August 9, 2024&nbsp;· 563 words&nbsp;· 2 min</small>
+<small></small><p><h3 id=struct-embed-interface>Struct embed interface</h3><p>标准库中有很多结构体中内嵌一个匿名的接口这种写法，今天我们来研究并总结下这种写法的意义。 …</p></article><article class=featured-single><h4><a href=/blog/golang/http-response-body/>http.Response.Body未被完全读取的问题</a></h4><p><small>August 9, 2024&nbsp;· 563 words&nbsp;· 2 min</small>
 <small>·
-<a href=https://echotrue.github.io/tags/http/>Http</a></small><p><p>经常在一些开源的包中(例如：<code>dghubble/sling</code>)处理http响应体的时候出现这么一段代码：<code>defer io.Copy(io.Discard, resp.Body)</code>。这段代码的作用主要是丢弃掉响应体中的内容。为什么要这么做呢？</p></article><article class=featured-single><h4><a href=/blog/101/ascii/>ASCII</a></h4><p><small>June 13, 2024&nbsp;· 1902 words&nbsp;· 4 min</small>
-<small></small><p><h3 id=背景>背景</h3><p>在计算机中，所有的数据在存储和运算时都要使用二进制数表示。例如，像a、b、c、d这样的52个字母（包括大写）以及0、1等数字还有一些常用的符号（例如*、#、@等）在计算机中存储时也要使用二进制数来
-表示，而具体用哪些二进制数字表示哪个符号，这就是编码。如果不同的计算机要想互相通信而不造成混乱，那么每台计算机就必须使用相同的编码规则，于是美国有关的标准化组织就推出了ASCII编码。</p></article><article class=featured-single><h4><a href=/blog/101/charset-and-encoding/>Charset and encoding</a></h4><p><small>June 13, 2024&nbsp;· 1518 words&nbsp;· 4 min</small>
-<small></small><p><h3 id=概念>概念</h3><p><strong>Charset</strong>(字符集)也叫<code>character set</code>。是一组字符的集合。每个字符在一个字符集中都有一个唯一的编码值。这个编码值就是码位(code point)。常见字符集：ASCII字符集、GB2312字符集、BIG5字符集、GBK字符集、 GB18030字符集、Unicode字符集等。Unicode字符集几乎包含了世界上使用的所有所有字母。</p></article><article class=featured-single><h4><a href=/blog/golang/read-context-again/>再读Context包</a></h4><p><small>May 17, 2024&nbsp;· 4023 words&nbsp;· 9 min</small>
+<a href=https://echotrue.github.io/tags/http/>Http</a></small><p><p>经常在一些开源的包中(例如：<code>dghubble/sling</code>)处理http响应体的时候出现这么一段代码：<code>defer …</code></p></article><article class=featured-single><h4><a href=/blog/101/ascii/>ASCII</a></h4><p><small>June 13, 2024&nbsp;· 1902 words&nbsp;· 4 min</small>
+<small></small><p><h3 id=背景>背景</h3><p>在计算机中，所有的数据在存储和运算时都要使用二进制数表示。例如，像a、b、c、d这样的52个字母（包括大写）以及0、1等数字还有一些常 …</p></article><article class=featured-single><h4><a href=/blog/101/charset-and-encoding/>Charset and encoding</a></h4><p><small>June 13, 2024&nbsp;· 1518 words&nbsp;· 4 min</small>
+<small></small><p><h3 id=概念>概念</h3><p><strong>Charset</strong>(字符集)也叫<code>character set</code>。是一组字符的集合。每个字符在一个字符集中都有一个唯一的编码值。这个编码值就是码 …</p></article><article class=featured-single><h4><a href=/blog/golang/read-context-again/>再读Context包</a></h4><p><small>May 17, 2024&nbsp;· 4023 words&nbsp;· 9 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/context/>Context</a></small><p><h2 id=context接口>Context接口</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>Context</span> <span style=color:#66d9ef>interface</span> {  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Deadline</span>() (<span style=color:#a6e22e>deadline</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>, <span style=color:#a6e22e>ok</span> <span style=color:#66d9ef>bool</span>)  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Done</span>() <span style=color:#f92672>&lt;-</span><span style=color:#66d9ef>chan</span> <span style=color:#66d9ef>struct</span>{}  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Err</span>() <span style=color:#66d9ef>error</span>  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Value</span>(<span style=color:#a6e22e>key</span> <span style=color:#a6e22e>any</span>) <span style=color:#a6e22e>any</span>  
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><p><code>Deadline()</code>返回一个截止时间，到了这个时间后正在进行的工作将会终止。这意味着当前上下文应该被取消。没有设置截止时间则第二个返回值为<code>false</code>，多次调用该方法返回相同的结果。</p></article><article class=featured-single><h4><a href=/blog/golang/type/>Type Tips</a></h4><p><small>October 31, 2022&nbsp;· 1034 words&nbsp;· 3 min</small>
-<small></small><p><h3 id=interface-struct-能否相互嵌套>interface struct 能否相互嵌套</h3><ol><li>struct struct //继承(不能多态), 如果内部struct实现了接口, 它也相当于实现了接口</li><li>struct interface //可以多态</li><li>interface interface //单纯的导入</li><li>interface struct //不允许</li></ol><h3 id=实际动态类型和静态类型>实际/动态类型和静态类型</h3><p>  对于接口类型的变量f来说，<code>Formatter</code>是它的静态类型，并且这是永远不会变的。此时它是没有动态类型。他的动态类型会随着赋给它的动态值而变化，当将一个<code>*Person</code>类型的变量赋值给f时,f的动态类型（也叫实际类型）就是<code>*Persion</code>。</p></article><article class=featured-single><h4><a href=/blog/golang/sqlx/>Sqlx</a></h4><p><small>August 4, 2022&nbsp;· 6453 words&nbsp;· 13 min</small>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>Deadline</span>() (<span style=color:#a6e22e>deadline</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>, …</span></span></span></span></code></pre></div></article><article class=featured-single><h4><a href=/blog/golang/type/>Type Tips</a></h4><p><small>October 31, 2022&nbsp;· 1034 words&nbsp;· 3 min</small>
+<small></small><p><h3 id=interface-struct-能否相互嵌套>interface struct 能否相互嵌套</h3><ol><li>struct struct //继承(不能多态), 如果内部struct实现了接口, 它也 …</li></ol></article><article class=featured-single><h4><a href=/blog/golang/sqlx/>Sqlx</a></h4><p><small>August 4, 2022&nbsp;· 6453 words&nbsp;· 13 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/sqlx/>Sqlx</a></small><p><h3 id=handle-types-引用类型>Handle Types (引用类型)</h3><p><code>sqlx</code>旨在和<code>database/sql</code>具有相同的感觉，他有四种引用类型</p><ul><li><code>sqlx.DB</code> 类似于<code>sql.DB</code>,是数据库的表示</li><li><code>sqlx.Tx</code>类似于<code>sql.Tx</code>,是事务的表示</li><li><code>sqlx.Stmt</code>类似于<code>sql.Stmt</code>,是预处理语句的表示</li><li><code>sqlx.NamedStmt</code>是一种支持命名参数的预处理语句的表示</li></ul><p>引用类型都嵌入了他们在<code>database/sql</code>中的等效物，这就意味着当你调用<code>sqlx.DB.Query()</code>，实际是调用与<code>sql.DB.Query</code>相同的代码。</p></article><article class=featured-single><h4><a href=/blog/golang/functional-programming-in-golang/>Functional Programming in Golang</a></h4><p><small>November 16, 2021&nbsp;· 1150 words&nbsp;· 3 min</small>
+<a href=https://echotrue.github.io/tags/sqlx/>Sqlx</a></small><p><h3 id=handle-types-引用类型>Handle Types (引用类型)</h3><p><code>sqlx</code>旨在和<code>database/sql</code>具有相同的感觉，他有四种引用类型</p><ul><li><code>sqlx.DB …</code></li></ul></article><article class=featured-single><h4><a href=/blog/golang/functional-programming-in-golang/>Functional Programming in Golang</a></h4><p><small>November 16, 2021&nbsp;· 1150 words&nbsp;· 3 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/%E5%87%BD%E6%95%B0/>函数</a>
 <a href=https://echotrue.github.io/tags/%E9%97%AD%E5%8C%85/>闭包</a>
-<a href=https://echotrue.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E9%80%89%E9%A1%B9/>函数式选项</a></small><p><h3 id=higher-order-function>Higher-order function</h3><p><code>Higher-order function</code>又称为高阶函数.高阶函数至少支持以下特性之一:</p><ul><li>将一个或多个函数作为参数（即过程参数）</li><li>返回函数作为其结果</li></ul><p>以下为一个使用高阶函数的限流器Demo:</p></article><article class=featured-single><h4><a href=/blog/game/turn-based-game-with-go/>Turn-Based Game With Go【译】</a></h4><p><small>September 6, 2021&nbsp;· 1996 words&nbsp;· 4 min</small>
+<a href=https://echotrue.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E9%80%89%E9%A1%B9/>函数式选项</a></small><p><h3 id=higher-order-function>Higher-order function</h3><p><code>Higher-order function</code>又称为高阶函数.高阶函数至少支持以下特性之一:</p><ul><li>将一 …</li></ul></article><article class=featured-single><h4><a href=/blog/game/turn-based-game-with-go/>Turn-Based Game With Go【译】</a></h4><p><small>September 6, 2021&nbsp;· 1996 words&nbsp;· 4 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/game/>Game</a>
-<a href=https://echotrue.github.io/tags/combat/>Combat</a></small><p><blockquote><p>Today we will talk about how to write a simple turn-based game engine with Go. While writing our character’s abilities and fights with each other, we will use Interfaces,channels, and concurrency with Golang</p></blockquote><p>今天我们将讨论下如何使用Golang编写一个简单的基于回合制的游戏引擎.在实现角色的能力和与其他角色战斗的功能时，我们会使用到Golang的<code>Interface</code>,<code>channels</code>,<code>concurrency</code>等特性。</p></article><article class=featured-single><h4><a href=/blog/game/nano/one-nano-request/>One Nano Request</a></h4><p><small>August 31, 2021&nbsp;· 1183 words&nbsp;· 3 min</small>
+<a href=https://echotrue.github.io/tags/combat/>Combat</a></small><p><blockquote><p>Today we will talk about how to write a simple turn-based game engine …</p></blockquote></article><article class=featured-single><h4><a href=/blog/game/nano/one-nano-request/>One Nano Request</a></h4><p><small>August 31, 2021&nbsp;· 1183 words&nbsp;· 3 min</small>
 <small>·
-<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h2 id=websocket-request>Websocket request</h2><p>一般由网关节点向外部暴露<code>n.ClientAddr</code>地址并监听，接收客户端发送的请求。以<code>websocket</code>请求为例。<code>listenAndServeWS</code>方法负责监听<code>n.ClientAddr</code>并接收<code>ws</code>请求。接收到请求后交给节点下的<code>LocalHandler</code>的<code>handleWs()</code>方法，<code>handleWs()</code>会对连接对象封装成<code>wsConn</code>类型，结构如下：</p></article><article class=featured-single><h4><a href=/blog/game/nano/nano-start/>Nano Start</a></h4><p><small>August 31, 2021&nbsp;· 2380 words&nbsp;· 5 min</small>
+<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h2 id=websocket-request>Websocket request</h2><p>一般由网关节点向外部暴露<code>n.ClientAddr</code>地址并监听，接收客户端发送的请求。以<code>websocket</code>请 …</p></article><article class=featured-single><h4><a href=/blog/game/nano/nano-start/>Nano Start</a></h4><p><small>August 31, 2021&nbsp;· 2380 words&nbsp;· 5 min</small>
 <small>·
-<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h2 id=基础概念>基础概念</h2><p>一个<code>nano</code>应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：<code>node</code>,<code>cluster</code>,<code>component</code>,<code>service</code>,<code>handler</code>等等。这里简单介绍各个单元的概念，并概述他们之间的关系。</p></article><article class=featured-single><h4><a href=/blog/game/nano/nano-binary-protocol/>Nano Binary Protocol</a></h4><p><small>August 26, 2021&nbsp;· 530 words&nbsp;· 2 min</small>
+<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h2 id=基础概念>基础概念</h2><p>一个<code>nano</code>应用程序由各个不同粒度的单元组成，这其中涉及到一些基础概念。例如：<code>node</code>,<code>cluster</code>,<code>component</code>, …</p></article><article class=featured-single><h4><a href=/blog/game/nano/nano-binary-protocol/>Nano Binary Protocol</a></h4><p><small>August 26, 2021&nbsp;· 530 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h3 id=messageencode>message.Encode</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-GO data-lang=GO><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Encode</span>(<span style=color:#a6e22e>m</span> <span style=color:#f92672>*</span><span style=color:#a6e22e>Message</span>) ([]<span style=color:#66d9ef>byte</span>, <span style=color:#66d9ef>error</span>) {  
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>invalidType</span>(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span>) {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrWrongMessageType</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>buf</span> <span style=color:#f92672>:=</span> make([]<span style=color:#66d9ef>byte</span>, <span style=color:#ae81ff>0</span>)  
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// m.Type 最小时0x00 最大是0x03,左移一位，flag为0,2,4,6  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>flag</span> <span style=color:#f92672>:=</span> byte(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span>) <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>1</span>  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// 如果路由压缩 flag|1 为1,3,5,7  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>code</span>, <span style=color:#a6e22e>compressed</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>routes</span>[<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Route</span>]  
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>compressed</span> {  
-</span></span><span style=display:flex><span>		<span style=color:#a6e22e>flag</span> <span style=color:#f92672>|=</span> <span style=color:#a6e22e>msgRouteCompressMask</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, <span style=color:#a6e22e>flag</span>)  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>Request</span> <span style=color:#f92672>||</span> <span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>Response</span> {  
-</span></span><span style=display:flex><span>		<span style=color:#a6e22e>n</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>ID</span>  
-</span></span><span style=display:flex><span>		<span style=color:#75715e>// variant length encode  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#66d9ef>for</span> {  
-</span></span><span style=display:flex><span>			<span style=color:#75715e>//b是n/128余数，然后n按位右移7,相当于n、128。  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>			<span style=color:#75715e>//如果n为0，将b添加到buf，  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>			<span style=color:#75715e>//如果n不为0，b+128 添加到buf，并继续执行相同的逻辑  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>			<span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> byte(<span style=color:#a6e22e>n</span> <span style=color:#f92672>%</span> <span style=color:#ae81ff>128</span>)  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>n</span> <span style=color:#f92672>&gt;&gt;=</span> <span style=color:#ae81ff>7</span>  
-</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>n</span> <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> {  
-</span></span><span style=display:flex><span>				<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, <span style=color:#a6e22e>b</span><span style=color:#f92672>+</span><span style=color:#ae81ff>128</span>)  
-</span></span><span style=display:flex><span>			} <span style=color:#66d9ef>else</span> {  
-</span></span><span style=display:flex><span>				<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, <span style=color:#a6e22e>b</span>)  
-</span></span><span style=display:flex><span>				<span style=color:#66d9ef>break</span>  
-</span></span><span style=display:flex><span>			}  
-</span></span><span style=display:flex><span>		} 
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// 如果有route  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>// 如果路由压缩：code 按位右移8，然后与0xff做位与操作，最后code只保留低八位，高八位补零。0xff为11111111  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>routable</span>(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span>) {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>compressed</span> {  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, byte((<span style=color:#a6e22e>code</span><span style=color:#f92672>&gt;&gt;</span><span style=color:#ae81ff>8</span>)<span style=color:#f92672>&amp;</span><span style=color:#ae81ff>0xFF</span>))  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, byte(<span style=color:#a6e22e>code</span><span style=color:#f92672>&amp;</span><span style=color:#ae81ff>0xFF</span>))  
-</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> {  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, byte(len(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Route</span>)))  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, []byte(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Route</span>)<span style=color:#f92672>...</span>)  
-</span></span><span style=display:flex><span>		} 
-</span></span><span style=display:flex><span>	}
-</span></span><span style=display:flex><span>	
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>buf</span> = append(<span style=color:#a6e22e>buf</span>, <span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Data</span><span style=color:#f92672>...</span>)  
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>buf</span>, <span style=color:#66d9ef>nil</span>  
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h3 id=messagedecode>message.Decode</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Go data-lang=Go><span style=display:flex><span><span style=color:#75715e>// Decode unmarshal the bytes slice to a message// See ref: https://github.com/lonnng/nano/blob/master/docs/communication_protocol.md  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>Decode</span>(<span style=color:#a6e22e>data</span> []<span style=color:#66d9ef>byte</span>) (<span style=color:#f92672>*</span><span style=color:#a6e22e>Message</span>, <span style=color:#66d9ef>error</span>) {  
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> len(<span style=color:#a6e22e>data</span>) &lt; <span style=color:#a6e22e>msgHeadLength</span> {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrInvalidMessage</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>m</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>New</span>()  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>flag</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>data</span>[<span style=color:#ae81ff>0</span>]  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>offset</span> <span style=color:#f92672>:=</span> <span style=color:#ae81ff>1</span>  
-</span></span><span style=display:flex><span>	<span style=color:#75715e>// 获取type值  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span> = <span style=color:#a6e22e>Type</span>((<span style=color:#a6e22e>flag</span> <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>) <span style=color:#f92672>&amp;</span> <span style=color:#a6e22e>msgTypeMask</span>)  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>invalidType</span>(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span>) {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrWrongMessageType</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>Request</span> <span style=color:#f92672>||</span> <span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span> <span style=color:#f92672>==</span> <span style=color:#a6e22e>Response</span> {  
-</span></span><span style=display:flex><span>		<span style=color:#a6e22e>id</span> <span style=color:#f92672>:=</span> uint64(<span style=color:#ae81ff>0</span>)  
-</span></span><span style=display:flex><span>		<span style=color:#75715e>// little end byte order  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// WARNING: must can be stored in 64 bits integer 
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>// variant length encode 
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#66d9ef>for</span> <span style=color:#a6e22e>i</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>offset</span>; <span style=color:#a6e22e>i</span> &lt; len(<span style=color:#a6e22e>data</span>); <span style=color:#a6e22e>i</span><span style=color:#f92672>++</span> {  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>b</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>i</span>]  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>id</span> <span style=color:#f92672>+=</span> uint64(<span style=color:#a6e22e>b</span><span style=color:#f92672>&amp;</span><span style=color:#ae81ff>0x7F</span>) <span style=color:#f92672>&lt;&lt;</span> uint64(<span style=color:#ae81ff>7</span><span style=color:#f92672>*</span>(<span style=color:#a6e22e>i</span><span style=color:#f92672>-</span><span style=color:#a6e22e>offset</span>))  
-</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>b</span> &lt; <span style=color:#ae81ff>128</span> {  
-</span></span><span style=display:flex><span>				<span style=color:#a6e22e>offset</span> = <span style=color:#a6e22e>i</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>  
-</span></span><span style=display:flex><span>				<span style=color:#66d9ef>break</span>  
-</span></span><span style=display:flex><span>			}  
-</span></span><span style=display:flex><span>		} 
-</span></span><span style=display:flex><span>		<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>ID</span> = <span style=color:#a6e22e>id</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>offset</span> <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>data</span>) {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrWrongMessage</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>routable</span>(<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Type</span>) {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>flag</span><span style=color:#f92672>&amp;</span><span style=color:#a6e22e>msgRouteCompressMask</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> {  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>compressed</span> = <span style=color:#66d9ef>true</span>  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>code</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>binary</span>.<span style=color:#a6e22e>BigEndian</span>.<span style=color:#a6e22e>Uint16</span>(<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>offset</span>:(<span style=color:#a6e22e>offset</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>2</span>)])  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>route</span>, <span style=color:#a6e22e>ok</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>codes</span>[<span style=color:#a6e22e>code</span>]  
-</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> !<span style=color:#a6e22e>ok</span> {  
-</span></span><span style=display:flex><span>				<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrRouteInfoNotFound</span>  
-</span></span><span style=display:flex><span>			}  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Route</span> = <span style=color:#a6e22e>route</span>  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>offset</span> <span style=color:#f92672>+=</span> <span style=color:#ae81ff>2</span>  
-</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> {  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>compressed</span> = <span style=color:#66d9ef>false</span>  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>rl</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>offset</span>]  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>offset</span><span style=color:#f92672>++</span>  
-</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>offset</span><span style=color:#f92672>+</span>int(<span style=color:#a6e22e>rl</span>) <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>data</span>) {  
-</span></span><span style=display:flex><span>				<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrWrongMessage</span>  
-</span></span><span style=display:flex><span>			}  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Route</span> = string(<span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>offset</span>:(<span style=color:#a6e22e>offset</span> <span style=color:#f92672>+</span> int(<span style=color:#a6e22e>rl</span>))])  
-</span></span><span style=display:flex><span>			<span style=color:#a6e22e>offset</span> <span style=color:#f92672>+=</span> int(<span style=color:#a6e22e>rl</span>)  
-</span></span><span style=display:flex><span>		} 
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> <span style=color:#a6e22e>offset</span> <span style=color:#f92672>&gt;=</span> len(<span style=color:#a6e22e>data</span>) {  
-</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#66d9ef>nil</span>, <span style=color:#a6e22e>ErrWrongMessage</span>  
-</span></span><span style=display:flex><span>	}  
-</span></span><span style=display:flex><span>	<span style=color:#a6e22e>m</span>.<span style=color:#a6e22e>Data</span> = <span style=color:#a6e22e>data</span>[<span style=color:#a6e22e>offset</span>:]  
-</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>m</span>, <span style=color:#66d9ef>nil</span>  
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div></article><article class=featured-single><h4><a href=/blog/game/nano/nano/>Nano</a></h4><p><small>August 14, 2021&nbsp;· 28 words&nbsp;· One minute</small>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if …</span></span></span></span></span></code></pre></div></article><article class=featured-single><h4><a href=/blog/game/nano/nano/>Nano</a></h4><p><small>August 14, 2021&nbsp;· 28 words&nbsp;· One minute</small>
 <small>·
-<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h2 id=scheduler--todo>Scheduler todo</h2><p>启动节点后，开启一个<code>goroutine</code>执行<code>go scheduler.Sched()</code>.</p><h2 id=pipeline-todo>Pipeline todo</h2></article><article class=featured-single><h4><a href=/blog/golang/log/>Log</a></h4><p><small>August 4, 2021&nbsp;· 38 words&nbsp;· One minute</small>
+<a href=https://echotrue.github.io/tags/nano/>Nano</a></small><p><h2 id=scheduler--todo>Scheduler todo</h2><p>启动节点后，开启一个<code>goroutine</code>执行<code>go scheduler.Sched()</code>.</p><h2 id=pipeline-todo>Pipeline …</h2></article><article class=featured-single><h4><a href=/blog/golang/log/>Log</a></h4><p><small>August 4, 2021&nbsp;· 38 words&nbsp;· One minute</small>
 <small>·
-<a href=https://echotrue.github.io/tags/log/>Log</a></small><p><h3 id=write-log-to-both-console-and-file>Write log to both console and file</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>consoleWriter</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Stdout</span> <span style=color:#75715e>// os.Stderr  
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>w</span>, <span style=color:#a6e22e>err</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>OpenFile</span>(<span style=color:#e6db74>&#34;./app.log&#34;</span>, <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>O_APPEND</span>|<span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>O_CREATE</span>|<span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>O_RDWR</span>, <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>ModeAppend</span>|<span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>ModePerm</span>)  
-</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#a6e22e>err</span> <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {  
-</span></span><span style=display:flex><span> <span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Fatal</span>(<span style=color:#a6e22e>err</span>)  
-</span></span><span style=display:flex><span>}  
-</span></span><span style=display:flex><span><span style=color:#a6e22e>logWriter</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>MultiWriter</span>(<span style=color:#a6e22e>consoleWriter</span>, <span style=color:#a6e22e>w</span>)  
-</span></span><span style=display:flex><span><span style=color:#a6e22e>l</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>New</span>(<span style=color:#a6e22e>logWriter</span>, <span style=color:#e6db74>&#34;---&gt;&#34;</span>, <span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>LstdFlags</span>|<span style=color:#a6e22e>log</span>.<span style=color:#a6e22e>Lshortfile</span>)  
-</span></span><span style=display:flex><span><span style=color:#a6e22e>l</span>.<span style=color:#a6e22e>Println</span>(<span style=color:#e6db74>&#34;this is a log&#34;</span>)
-</span></span></code></pre></div></article><article class=featured-single><h4><a href=/blog/golang/read-schollz-progressbar/>Read Schollz/Progressbar</a></h4><p><small>November 13, 2020&nbsp;· 533 words&nbsp;· 2 min</small>
+<a href=https://echotrue.github.io/tags/log/>Log</a></small><p><h3 id=write-log-to-both-console-and-file>Write log to both console and file</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#a6e22e>consoleWriter</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>os</span>.<span style=color:#a6e22e>Stdout</span> <span style=color:#75715e>// …</span></span></span></code></pre></div></article><article class=featured-single><h4><a href=/blog/golang/read-schollz-progressbar/>Read Schollz/Progressbar</a></h4><p><small>November 13, 2020&nbsp;· 533 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
 <a href=https://echotrue.github.io/tags/progressbar/>Progressbar</a></small><p><h3 id=type-progressbar>type ProgressBar</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>ProgressBar</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>state</span>  <span style=color:#a6e22e>state</span> <span style=color:#75715e>// 进度条状态
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>config</span> <span style=color:#a6e22e>config</span> <span style=color:#75715e>// 进度条配置
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>lock</span>   <span style=color:#a6e22e>sync</span>.<span style=color:#a6e22e>Mutex</span>
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>state</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentNum</span>        <span style=color:#66d9ef>int64</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentPercent</span>    <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>lastPercent</span>       <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentSaucerSize</span> <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>lastShown</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>startTime</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterTime</span>         <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Time</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterNumSinceLast</span> <span style=color:#66d9ef>int64</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>counterLastTenRates</span> []<span style=color:#66d9ef>float64</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>maxLineWidth</span> <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>currentBytes</span> <span style=color:#66d9ef>float64</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>finished</span>     <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>}
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#66d9ef>type</span> <span style=color:#a6e22e>config</span> <span style=color:#66d9ef>struct</span> {
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>max</span>                  <span style=color:#66d9ef>int64</span> <span style=color:#75715e>// max number of the counter
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>width</span>                <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>writer</span>               <span style=color:#a6e22e>io</span>.<span style=color:#a6e22e>Writer</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>theme</span>                <span style=color:#a6e22e>Theme</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>renderWithBlankState</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>description</span>          <span style=color:#66d9ef>string</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ignoreLength</span>         <span style=color:#66d9ef>bool</span> <span style=color:#75715e>// ignoreLength if max bytes not known
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// whether the output is expected to contain color codes
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>colorCodes</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// show rate of change in kB/sec or MB/sec
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>showBytes</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// show the iterations per second
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>showIterationsPerSecond</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    <span style=color:#a6e22e>showIterationsCount</span>     <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// whether the progress bar should attempt to predict the finishing
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// time of the progress based on the start time and the average
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>// number of seconds between  increments.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>predictTime</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// 进度条刷新最短间隔时间
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>throttleDuration</span> <span style=color:#a6e22e>time</span>.<span style=color:#a6e22e>Duration</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// 完成后清除进度条
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>clearOnFinish</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// spinnerType should be a number between 0-75
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>spinnerType</span> <span style=color:#66d9ef>int</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// fullWidth specifies whether to measure and set the bar to a specific width
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>fullWidth</span> <span style=color:#66d9ef>bool</span>
-</span></span><span style=display:flex><span>    
-</span></span><span style=display:flex><span>    <span style=color:#75715e>// 完成时回调函数
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#a6e22e>onCompletion</span> <span style=color:#66d9ef>func</span>()             
-</span></span><span style=display:flex><span>}
-</span></span></code></pre></div><h3 id=源码分析>源码分析</h3><p>可以通过以下<code>function</code>创建<code>ProgressBar</code>实例，并渲染初始进度为0的进度条</p></article><article class=featured-single><h4><a href=/blog/golang/array-slice/>Array And Slice</a></h4><p><small>October 21, 2020&nbsp;· 701 words&nbsp;· 2 min</small>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>state</span>  <span style=color:#a6e22e>state</span> <span style=color:#75715e>// …</span></span></span></span></span></code></pre></div></article><article class=featured-single><h4><a href=/blog/golang/array-slice/>Array And Slice</a></h4><p><small>October 21, 2020&nbsp;· 701 words&nbsp;· 2 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p><h3 id=数组>数组</h3><p>数组类型定义了<code>长度</code>和<code>元素</code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素会自动初始化为其对应类型的零值。</p></article><article class=featured-single><h4><a href=/blog/golang/context/>Context</a></h4><p><small>October 3, 2020&nbsp;· 2597 words&nbsp;· 6 min</small>
+<a href=https://echotrue.github.io/tags/slice/>Slice</a></small><p><h3 id=数组>数组</h3><p>数组类型定义了<code>长度</code>和<code>元素</code>类型。数组的长度是固定的，长度是数组类型的一部分。数组不需要显式的初始化；数组的零值是可以直接使用的，数组元素 …</p></article><article class=featured-single><h4><a href=/blog/golang/context/>Context</a></h4><p><small>October 3, 2020&nbsp;· 2597 words&nbsp;· 6 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/context/>Context</a></small><p><h3 id=引言>引言</h3><p><code>Golang</code>的<code>Context</code>包是专门用来简化对于处理单个请求的多个<code>goroutine</code>之间与请求域的数据，取消信号，截止时间等相关操作。
-一个实际的例子是：</p></article><article class=featured-single><h4><a href=/blog/golang/data-races/>Golang Data Races</a></h4><p><small>October 3, 2020&nbsp;· 1142 words&nbsp;· 3 min</small>
+<a href=https://echotrue.github.io/tags/context/>Context</a></small><p><h3 id=引言>引言</h3><p><code>Golang</code>的<code>Context</code>包是专门用来简化对于处理单个请求的多个<code>goroutine</code>之间与请求域的数据，取消信号，截止时间等相关操作。 …</p></article><article class=featured-single><h4><a href=/blog/golang/data-races/>Golang Data Races</a></h4><p><small>October 3, 2020&nbsp;· 1142 words&nbsp;· 3 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
 <a href=https://echotrue.github.io/tags/%E5%B9%B6%E5%8F%91/>并发</a>
-<a href=https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/>数据竞争</a></small><p><h3 id=关于golang并发安全>关于Golang并发安全</h3><ol><li><a href=http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html>谈谈go语言编程的并发安全</a></li><li><a href=https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html>Benign Data Races: What Could Possibly Go Wrong?</a></li></ol><h3 id=什么是数据竞争>什么是数据竞争</h3><pre tabindex=0><code>package main
-
-import (
-	&#34;fmt&#34;
-)
-
-func main() {
-	var i int
-	go func() {
-		i = 5
-	}()
-	fmt.Println(i)
-}
-</code></pre><p>先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的<code>goroutine</code>来设置<code>i</code>的值。
-同时，在不知道开启的<code>goroutine</code>是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：</p></article><article class=featured-single><h4><a href=/blog/golang/block-forever-in-go/>Block forever in Go</a></h4><p><small>September 8, 2020&nbsp;· 283 words&nbsp;· One minute</small>
+<a href=https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/>数据竞争</a></small><p><h3 id=关于golang并发安全>关于Golang并发安全</h3><ol><li><a href=http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html>谈谈go语言编程的并发安全</a></li><li><a href=https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html>Benign Data Races: What Could Possibly Go …</a></li></ol></article><article class=featured-single><h4><a href=/blog/golang/block-forever-in-go/>Block forever in Go</a></h4><p><small>September 8, 2020&nbsp;· 283 words&nbsp;· One minute</small>
 <small>·
-<a href=https://echotrue.github.io/tags/go/>Go</a></small><p><h2 id=golang中永久阻塞的不同方法>Golang中永久阻塞的不同方法</h2><p>The current design of Go’s runtime assumes that the programmer is responsible for detecting when to terminate a goroutine and when to terminate the program. A program can be terminated in a normal way by calling <code>os.Exit</code> or by returning from the <code>main()</code> function. There are a lot of ways of blocking runtime forever, I will show all of them for better understanding of blocking in Go.</p></article><article class=featured-single><h4><a href=/blog/golang/channel/>Golang channel</a></h4><p><small>September 8, 2020&nbsp;· 2046 words&nbsp;· 5 min</small>
+<a href=https://echotrue.github.io/tags/go/>Go</a></small><p><h2 id=golang中永久阻塞的不同方法>Golang中永久阻塞的不同方法</h2><p>The current design of Go’s runtime assumes that the …</p></article><article class=featured-single><h4><a href=/blog/golang/channel/>Golang channel</a></h4><p><small>September 8, 2020&nbsp;· 2046 words&nbsp;· 5 min</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/channel/>Channel</a></small><p><h3 id=概念>概念</h3><p>  从字面上看，<code>channel</code>的意思大概就是管道的意思。<code>channel</code>是一种<code>goroutine</code>用以接收或发送消息的安全的消息队列，<code>channel</code>就像两个<code>goroutine</code>之间的导管，来实现各种资源的同步。在官方<code>Effective go</code>文档中有一句非常著名的话可以说明<code>channel</code>在使用<code>Golang</code>进行并发编程的时候扮演了极为重要的角色</p></article><article class=featured-single><h4><a href=/blog/golang/panic-and-recover/>Panic and Recover</a></h4><p><small>August 9, 2019&nbsp;· 465 words&nbsp;· One minute</small>
+<a href=https://echotrue.github.io/tags/channel/>Channel</a></small><p><h3 id=概念>概念</h3><p>  从字面上看，<code>channel</code>的意思大概就是管道的意思。<code>channel</code>是一种<code>goroutine</code>用以接收或发送消息的安全的消息队列， …</p></article><article class=featured-single><h4><a href=/blog/golang/panic-and-recover/>Panic and Recover</a></h4><p><small>August 9, 2019&nbsp;· 465 words&nbsp;· One minute</small>
 <small>·
 <a href=https://echotrue.github.io/tags/go/>Go</a>
-<a href=https://echotrue.github.io/tags/panic/>Panic</a></small><p><h3 id=panic>panic</h3><p>   <code>Golang</code> 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的错误，可以选择使用panic。panic可以主动触发。也可以被动触发（例如：数组越界）。</p></article><article class=featured-single><h4><a href=/blog/golang/golang-select/>Golang Select</a></h4><p><small>July 30, 2019&nbsp;· 2080 words&nbsp;· 5 min</small>
+<a href=https://echotrue.github.io/tags/panic/>Panic</a></small><p><h3 id=panic>panic</h3><p>   <code>Golang</code> 中常见的错误处理方式是返回error给调用者。通常error使用场景是发生了逻辑错误。但是，如果是无法恢复的 …</p></article><article class=featured-single><h4><a href=/blog/golang/golang-select/>Golang Select</a></h4><p><small>July 30, 2019&nbsp;· 2080 words&nbsp;· 5 min</small>
 <small>·
-<a href=https://echotrue.github.io/tags/select/>Select</a></small><p><h3 id=什么是select>什么是select</h3><p><code>select</code>语句用于从多个发送/接收<code>channel</code>中进行选择的操作。 <code>select</code>语句将阻塞直到其中一个发送/接收操作准备就绪。如果有多个操作就绪，则随机选择其中一个操作。语法类似于<code>switch</code>，只是每个<code>case</code>语句被一个<code>channel</code>操作取代了。让我们深入研究一些代码，以便更好地理解</p></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
+<a href=https://echotrue.github.io/tags/select/>Select</a></small><p><h3 id=什么是select>什么是select</h3><p><code>select</code>语句用于从多个发送/接收<code>channel</code>中进行选择的操作。 <code>select</code>语句将阻塞直到其中一个发送/接收操作准 …</p></article></div></div></div></div><footer class=footer><p>&copy; 2024 <a href=https://echotrue.github.io/>AXLROSE</a>
 Powered by
 <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo️️</a>
 Theme by
