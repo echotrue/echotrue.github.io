@@ -42,36 +42,36 @@
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">占用字节&lt;/th>
-&lt;th style="text-align: left">Unicode符号范围（十六进制）&lt;/th>
-&lt;th style="text-align: left">UTF-8编码格式（二进制）&lt;/th>
-&lt;th style="text-align: left">十进制范围&lt;/th>
+&lt;th>占用字节&lt;/th>
+&lt;th>Unicode符号范围（十六进制）&lt;/th>
+&lt;th>UTF-8编码格式（二进制）&lt;/th>
+&lt;th>十进制范围&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">1&lt;/td>
-&lt;td style="text-align: left">0000 0000 ~ 0000 007F&lt;/td>
-&lt;td style="text-align: left">0xxxxxxx&lt;/td>
-&lt;td style="text-align: left">0 ~ 127&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>0000 0000 ~ 0000 007F&lt;/td>
+&lt;td>0xxxxxxx&lt;/td>
+&lt;td>0 ~ 127&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">2&lt;/td>
-&lt;td style="text-align: left">0000 0080 ~ 0000 07FF&lt;/td>
-&lt;td style="text-align: left">110xxxxx 10xxxxxx&lt;/td>
-&lt;td style="text-align: left">128 ~ 2047&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>0000 0080 ~ 0000 07FF&lt;/td>
+&lt;td>110xxxxx 10xxxxxx&lt;/td>
+&lt;td>128 ~ 2047&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">3&lt;/td>
-&lt;td style="text-align: left">0000 0800 ~ 0000 FFFF&lt;/td>
-&lt;td style="text-align: left">1110xxxx 10xxxxxx 10xxxxxx&lt;/td>
-&lt;td style="text-align: left">2048 ~ 65535&lt;/td>
+&lt;td>3&lt;/td>
+&lt;td>0000 0800 ~ 0000 FFFF&lt;/td>
+&lt;td>1110xxxx 10xxxxxx 10xxxxxx&lt;/td>
+&lt;td>2048 ~ 65535&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">4&lt;/td>
-&lt;td style="text-align: left">0001 0000 ~ 0010 FFFF&lt;/td>
-&lt;td style="text-align: left">11110xxx 10xxxxxx 10xxxxxx 10xxxxxx&lt;/td>
-&lt;td style="text-align: left">65536 ~ 1114111&lt;/td>
+&lt;td>4&lt;/td>
+&lt;td>0001 0000 ~ 0010 FFFF&lt;/td>
+&lt;td>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx&lt;/td>
+&lt;td>65536 ~ 1114111&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>

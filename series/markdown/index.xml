@@ -39,26 +39,26 @@
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">Table Header 1&lt;/th>
-&lt;th style="text-align: left">Table Header 2&lt;/th>
-&lt;th style="text-align: left">Table Header 3&lt;/th>
+&lt;th>Table Header 1&lt;/th>
+&lt;th>Table Header 2&lt;/th>
+&lt;th>Table Header 3&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">Division 1&lt;/td>
-&lt;td style="text-align: left">Division 2&lt;/td>
-&lt;td style="text-align: left">Division 3&lt;/td>
+&lt;td>Division 1&lt;/td>
+&lt;td>Division 2&lt;/td>
+&lt;td>Division 3&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">Division 1&lt;/td>
-&lt;td style="text-align: left">Division 2&lt;/td>
-&lt;td style="text-align: left">Division 3&lt;/td>
+&lt;td>Division 1&lt;/td>
+&lt;td>Division 2&lt;/td>
+&lt;td>Division 3&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">Division 1&lt;/td>
-&lt;td style="text-align: left">Division 2&lt;/td>
-&lt;td style="text-align: left">Division 3&lt;/td>
+&lt;td>Division 1&lt;/td>
+&lt;td>Division 2&lt;/td>
+&lt;td>Division 3&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -462,26 +462,26 @@ But let&amp;#39;s throw in a &amp;lt;b&amp;gt;tag&amp;lt;/b&amp;gt;.
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">&lt;/th>
-&lt;th style="text-align: left">ASCII&lt;/th>
-&lt;th style="text-align: left">HTML&lt;/th>
+&lt;th>&lt;/th>
+&lt;th>ASCII&lt;/th>
+&lt;th>HTML&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">Single backticks&lt;/td>
-&lt;td style="text-align: left">&lt;code>'Isn't this fun?'&lt;/code>&lt;/td>
-&lt;td style="text-align: left">&amp;lsquo;Isn&amp;rsquo;t this fun?&amp;rsquo;&lt;/td>
+&lt;td>Single backticks&lt;/td>
+&lt;td>&lt;code>'Isn't this fun?'&lt;/code>&lt;/td>
+&lt;td>&amp;lsquo;Isn&amp;rsquo;t this fun?&amp;rsquo;&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">Quotes&lt;/td>
-&lt;td style="text-align: left">&lt;code>&amp;quot;Isn't this fun?&amp;quot;&lt;/code>&lt;/td>
-&lt;td style="text-align: left">&amp;ldquo;Isn&amp;rsquo;t this fun?&amp;rdquo;&lt;/td>
+&lt;td>Quotes&lt;/td>
+&lt;td>&lt;code>&amp;quot;Isn't this fun?&amp;quot;&lt;/code>&lt;/td>
+&lt;td>&amp;ldquo;Isn&amp;rsquo;t this fun?&amp;rdquo;&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">Dashes&lt;/td>
-&lt;td style="text-align: left">&lt;code>-- is en-dash, --- is em-dash&lt;/code>&lt;/td>
-&lt;td style="text-align: left">&amp;ndash; is en-dash, &amp;mdash; is em-dash&lt;/td>
+&lt;td>Dashes&lt;/td>
+&lt;td>&lt;code>-- is en-dash, --- is em-dash&lt;/code>&lt;/td>
+&lt;td>&amp;ndash; is en-dash, &amp;mdash; is em-dash&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
@@ -494,24 +494,24 @@ But let&amp;#39;s throw in a &amp;lt;b&amp;gt;tag&amp;lt;/b&amp;gt;.
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">Tables&lt;/th>
+&lt;th>Tables&lt;/th>
 &lt;th style="text-align: center">Are&lt;/th>
 &lt;th style="text-align: right">Cool&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">col 3 is&lt;/td>
+&lt;td>col 3 is&lt;/td>
 &lt;td style="text-align: center">right-aligned&lt;/td>
 &lt;td style="text-align: right">&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">col 2 is&lt;/td>
+&lt;td>col 2 is&lt;/td>
 &lt;td style="text-align: center">centered&lt;/td>
 &lt;td style="text-align: right">&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">zebra stripes&lt;/td>
+&lt;td>zebra stripes&lt;/td>
 &lt;td style="text-align: center">are neat&lt;/td>
 &lt;td style="text-align: right">&lt;/td>
 &lt;/tr>
@@ -525,21 +525,21 @@ But let&amp;#39;s throw in a &amp;lt;b&amp;gt;tag&amp;lt;/b&amp;gt;.
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">Markdown&lt;/th>
-&lt;th style="text-align: left">Less&lt;/th>
-&lt;th style="text-align: left">Pretty&lt;/th>
+&lt;th>Markdown&lt;/th>
+&lt;th>Less&lt;/th>
+&lt;th>Pretty&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">&lt;em>Still&lt;/em>&lt;/td>
-&lt;td style="text-align: left">&lt;code>renders&lt;/code>&lt;/td>
-&lt;td style="text-align: left">&lt;strong>nicely&lt;/strong>&lt;/td>
+&lt;td>&lt;em>Still&lt;/em>&lt;/td>
+&lt;td>&lt;code>renders&lt;/code>&lt;/td>
+&lt;td>&lt;strong>nicely&lt;/strong>&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">1&lt;/td>
-&lt;td style="text-align: left">2&lt;/td>
-&lt;td style="text-align: left">3&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>3&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>

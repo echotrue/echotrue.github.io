@@ -39,26 +39,26 @@
 &lt;table>
 &lt;thead>
 &lt;tr>
-&lt;th style="text-align: left">Table Header 1&lt;/th>
-&lt;th style="text-align: left">Table Header 2&lt;/th>
-&lt;th style="text-align: left">Table Header 3&lt;/th>
+&lt;th>Table Header 1&lt;/th>
+&lt;th>Table Header 2&lt;/th>
+&lt;th>Table Header 3&lt;/th>
 &lt;/tr>
 &lt;/thead>
 &lt;tbody>
 &lt;tr>
-&lt;td style="text-align: left">Division 1&lt;/td>
-&lt;td style="text-align: left">Division 2&lt;/td>
-&lt;td style="text-align: left">Division 3&lt;/td>
+&lt;td>Division 1&lt;/td>
+&lt;td>Division 2&lt;/td>
+&lt;td>Division 3&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">Division 1&lt;/td>
-&lt;td style="text-align: left">Division 2&lt;/td>
-&lt;td style="text-align: left">Division 3&lt;/td>
+&lt;td>Division 1&lt;/td>
+&lt;td>Division 2&lt;/td>
+&lt;td>Division 3&lt;/td>
 &lt;/tr>
 &lt;tr>
-&lt;td style="text-align: left">Division 1&lt;/td>
-&lt;td style="text-align: left">Division 2&lt;/td>
-&lt;td style="text-align: left">Division 3&lt;/td>
+&lt;td>Division 1&lt;/td>
+&lt;td>Division 2&lt;/td>
+&lt;td>Division 3&lt;/td>
 &lt;/tr>
 &lt;/tbody>
 &lt;/table>
