@@ -1,211 +1,211 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Channel on AXLROSE</title><link>https://echotrue.github.io/tags/channel/</link><description>Recent content in Channel on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Tue, 08 Sep 2020 14:51:55 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/channel/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang channel</title><link>https://echotrue.github.io/blog/golang/channel/</link><pubDate>Tue, 08 Sep 2020 14:51:55 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/channel/</guid><description>&lt;h3 id="概念">概念&lt;/h3>
-&lt;p>  从字面上看，&lt;code>channel&lt;/code>的意思大概就是管道的意思。&lt;code>channel&lt;/code>是一种&lt;code>goroutine&lt;/code>用以接收或发送消息的安全的消息队列，&lt;code>channel&lt;/code>就像两个&lt;code>goroutine&lt;/code>之间的导管，来实现各种资源的同步。在官方&lt;code>Effective go&lt;/code>文档中有一句非常著名的话可以说明&lt;code>channel&lt;/code>在使用&lt;code>Golang&lt;/code>进行并发编程的时候扮演了极为重要的角色&lt;/p>
-&lt;blockquote>
-&lt;p>&lt;em>Do not communicate by sharing memory; instead, share memory by communicating.&lt;/em>&lt;/p>
-&lt;/blockquote>
-&lt;h3 id="channel类型">Channel类型&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">readOnlyCh&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)&lt;span style="color:#75715e">//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">writeOnlyCh&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span>&lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)&lt;span style="color:#75715e">//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">readWriteCh&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)&lt;span style="color:#75715e">//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="阻塞">阻塞&lt;/h3>
-&lt;p>  根据&lt;code>Channel&lt;/code>缓冲区的大小，我们又可以将&lt;code>Channel&lt;/code>分为&lt;code>Unbuffered channels&lt;/code>与&lt;code>Buffered channels&lt;/code>。其中，&lt;code>Unbuffered channels&lt;/code>的缓冲区大小为0，这种&lt;code>channel&lt;/code>的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个&lt;code>goroutine&lt;/code>进行状态同步。&lt;code>Buffered channels&lt;/code>拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用&lt;a href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html">The Nature Of Channels In Go&lt;/a>中的两张图片来说明两种&lt;code>channel&lt;/code>的特性。&lt;/p>
-&lt;ul>
-&lt;li>&lt;code>Unbuffered Channels&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;!-- raw HTML omitted -->
-&lt;ul>
-&lt;li>&lt;code>Buffered Channels&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;!-- raw HTML omitted -->
-&lt;h3 id="a-idcode1基本用法a">&lt;!-- raw HTML omitted -->基本用法&lt;!-- raw HTML omitted -->&lt;/h3>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;hello&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">msg&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">ch&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">msg&lt;/span>)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>  以上代码，利用不带缓冲的&lt;code>channel&lt;/code>双向阻塞的特性。主&lt;code>goroutine&lt;/code>(就是main函数)会阻塞直到接收到子&lt;code>goroutine&lt;/code>向&lt;code>ch&lt;/code>中写入的值。所以保证了&lt;code>hello&lt;/code>一定会输出。&lt;/p>
-&lt;h3 id="利用channel实现并发的同步">利用&lt;code>Channel&lt;/code>实现并发的同步&lt;/h3>
-&lt;p>  &lt;a href="#code1">基本用法&lt;/a>中的代码片段使用阻塞接收的方式，实现了主&lt;code>goroutine&lt;/code>等待子&lt;code>goroutine&lt;/code>完成。最终达到了两个&lt;code>goroutine&lt;/code>的同步。使用&lt;code>WaitGroup&lt;/code>同样能达到多个&lt;code>goroutine&lt;/code>的同步，尤其是需要等待多个协程的情况下，&lt;code>WaitGroup&lt;/code>会是更好的选择。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">worker&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>, &lt;span style="color:#a6e22e">wg&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">WaitGroup&lt;/span>) {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Done&lt;/span>()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;worker %d stared\n&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">i&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">wg&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">WaitGroup&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">&amp;lt;=&lt;/span> &lt;span style="color:#ae81ff">5&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#f92672">++&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Add&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#a6e22e">worker&lt;/span>(&lt;span style="color:#a6e22e">i&lt;/span>, &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">wg&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">wg&lt;/span>.&lt;span style="color:#a6e22e">Wait&lt;/span>()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>执行结果：&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>worker &lt;span style="color:#ae81ff">1&lt;/span> stared
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>worker &lt;span style="color:#ae81ff">5&lt;/span> stared
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>worker &lt;span style="color:#ae81ff">4&lt;/span> stared
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>worker &lt;span style="color:#ae81ff">3&lt;/span> stared
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>worker &lt;span style="color:#ae81ff">2&lt;/span> stared
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="channel-选择器">Channel 选择器&lt;/h3>
-&lt;p>  &lt;code>select&lt;/code>语句主要用在从多个读或者写&lt;code>channel&lt;/code>的操作中进行选择。&lt;code>select&lt;/code>语句会一直阻塞直到，有至少一个读或者写&lt;code>channel&lt;/code>操作就绪。如果同时有多个操作准备就绪，&lt;code>select&lt;/code>语句会随机选择其中一个执行。&lt;code>select&lt;/code>语法类似&lt;code>switch&lt;/code>，每个&lt;code>case&lt;/code>相当于一个通道操作。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">c1&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">c2&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c1&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;one&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#ae81ff">1&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Second&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">c2&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;two&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &amp;lt; &lt;span style="color:#ae81ff">2&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#f92672">++&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">msg1&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">c1&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;接到消息：%s\n&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">msg1&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">msg2&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">c2&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;接到消息：%s\n&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">msg2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>以上代码会输出：接到消息one，接到消息two。&lt;/p>
-&lt;h3 id="channel遍历">Channel遍历&lt;/h3>
-&lt;p>&lt;code>for...range&lt;/code>可以用来遍历通道，它会反复从通道接收数据直到通道关闭。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#ae81ff">2&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;one&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;two&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>close(&lt;span style="color:#a6e22e">queue&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">elem&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">range&lt;/span> &lt;span style="color:#a6e22e">queue&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#a6e22e">elem&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="channel-的关闭">Channel 的关闭&lt;/h3>
-&lt;p>  内置函数&lt;code>close()&lt;/code>可以用来关闭&lt;code>channel&lt;/code>,&lt;code>close()&lt;/code>函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>) &lt;span style="color:#75715e">//可以关闭的通道
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span>&lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>) &lt;span style="color:#75715e">//可以关闭的通道
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>) &lt;span style="color:#75715e">//不能关闭的通道
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>1、关闭 一个通道意味着不能再向这个通道发送值了。 该特性可以向通道的接收方传达工作已经完成的信息。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">msg&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">bool&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">m&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">msg&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">ok&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#a6e22e">m&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;All message has received.&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">done&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> &lt;span style="color:#a6e22e">i&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span> &amp;lt; &lt;span style="color:#ae81ff">4&lt;/span>; &lt;span style="color:#a6e22e">i&lt;/span>&lt;span style="color:#f92672">++&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">msg&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Sprintf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Message %d\n&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">i&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>close(&lt;span style="color:#a6e22e">msg&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">done&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>2、向一个已经关闭的&lt;code>channel&lt;/code>发送数据会&lt;code>panic&lt;/code>&lt;/p>
-&lt;p>3、从一个已经关闭的通道中读数据，依然可以读到数据。读到的内容是通道元素类型所对应的的零值。（例如：int类型channel读到的是0）。&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">dataCh&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dataCh&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;str one&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dataCh&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;str two&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> close(&lt;span style="color:#a6e22e">dataCh&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Millisecond&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">500&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">str&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">dataCh&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;--&amp;gt;&amp;#34;&lt;/span>,&lt;span style="color:#a6e22e">str&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">ch&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//输出：
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#f92672">--&lt;/span>&amp;gt; &lt;span style="color:#a6e22e">str&lt;/span> &lt;span style="color:#a6e22e">one&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">--&lt;/span>&amp;gt; &lt;span style="color:#a6e22e">str&lt;/span> &lt;span style="color:#a6e22e">two&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">--&lt;/span>&amp;gt;
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">--&lt;/span>&amp;gt;
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>4、当发送者关闭通道后，通道接收器可以通过向接收表达式分配第二个参数来判断通道是否关闭。&lt;code>c,ok := &amp;lt;-ch&lt;/code>，如果没有更多的值要接受且通道已经关闭，&lt;code>ok&lt;/code>为&lt;code>false&lt;/code>&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">dataCh&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> make(&lt;span style="color:#66d9ef">chan&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dataCh&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;str one&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dataCh&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#e6db74">&amp;#34;str two&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> close(&lt;span style="color:#a6e22e">dataCh&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">go&lt;/span> &lt;span style="color:#66d9ef">func&lt;/span>() {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Sleep&lt;/span>(&lt;span style="color:#a6e22e">time&lt;/span>.&lt;span style="color:#a6e22e">Millisecond&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">500&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">select&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#a6e22e">str&lt;/span>, &lt;span style="color:#a6e22e">ok&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">dataCh&lt;/span>:
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">ok&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;--&amp;gt;&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">str&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } &lt;span style="color:#66d9ef">else&lt;/span> {
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;通道已关闭&amp;#34;&lt;/span>)
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ch&lt;/span> &lt;span style="color:#f92672">&amp;lt;-&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}()
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">&amp;lt;-&lt;/span>&lt;span style="color:#a6e22e">ch&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="channel的基本操作和注意事项">channel的基本操作和注意事项&lt;/h3>
-&lt;p>channel存在&lt;code>3种状态&lt;/code>：&lt;/p>
-&lt;ol>
-&lt;li>nil，未初始化的状态，只进行了声明，或者手动赋值为&lt;code>nil&lt;/code>&lt;/li>
-&lt;li>active，正常的channel，可读或者可写&lt;/li>
-&lt;li>closed，已关闭，&lt;strong>千万不要误认为关闭channel后，channel的值是nil&lt;/strong>&lt;/li>
-&lt;/ol>
-&lt;p>channel可进行&lt;code>3种操作&lt;/code>：&lt;/p>
-&lt;ol>
-&lt;li>读&lt;/li>
-&lt;li>写&lt;/li>
-&lt;li>关闭&lt;/li>
-&lt;/ol>
-&lt;p>把这3种操作和3种channel状态可以组合出&lt;code>9种情况&lt;/code>：&lt;/p>
-&lt;table>
-&lt;thead>
-&lt;tr>
-&lt;th style="text-align: left">操作&lt;/th>
-&lt;th style="text-align: left">nil的channel&lt;/th>
-&lt;th style="text-align: left">正常channel&lt;/th>
-&lt;th style="text-align: left">已关闭channel&lt;/th>
-&lt;/tr>
-&lt;/thead>
-&lt;tbody>
-&lt;tr>
-&lt;td style="text-align: left">&amp;lt;- ch&lt;/td>
-&lt;td style="text-align: left">阻塞&lt;/td>
-&lt;td style="text-align: left">成功或阻塞&lt;/td>
-&lt;td style="text-align: left">读到零值&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align: left">ch &amp;lt;-&lt;/td>
-&lt;td style="text-align: left">阻塞&lt;/td>
-&lt;td style="text-align: left">成功或阻塞&lt;/td>
-&lt;td style="text-align: left">panic&lt;/td>
-&lt;/tr>
-&lt;tr>
-&lt;td style="text-align: left">close(ch)&lt;/td>
-&lt;td style="text-align: left">panic&lt;/td>
-&lt;td style="text-align: left">成功&lt;/td>
-&lt;td style="text-align: left">panic&lt;/td>
-&lt;/tr>
-&lt;/tbody>
-&lt;/table></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Channel on AXLROSE</title><link>https://echotrue.github.io/tags/channel/</link><description>Recent content in Channel on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Tue, 08 Sep 2020 14:51:55 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/channel/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang channel</title><link>https://echotrue.github.io/blog/golang/channel/</link><pubDate>Tue, 08 Sep 2020 14:51:55 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/channel/</guid><description>&lt;h3 id="概念"&gt;概念&lt;/h3&gt;
+&lt;p&gt;  从字面上看，&lt;code&gt;channel&lt;/code&gt;的意思大概就是管道的意思。&lt;code&gt;channel&lt;/code&gt;是一种&lt;code&gt;goroutine&lt;/code&gt;用以接收或发送消息的安全的消息队列，&lt;code&gt;channel&lt;/code&gt;就像两个&lt;code&gt;goroutine&lt;/code&gt;之间的导管，来实现各种资源的同步。在官方&lt;code&gt;Effective go&lt;/code&gt;文档中有一句非常著名的话可以说明&lt;code&gt;channel&lt;/code&gt;在使用&lt;code&gt;Golang&lt;/code&gt;进行并发编程的时候扮演了极为重要的角色&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Do not communicate by sharing memory; instead, share memory by communicating.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="channel类型"&gt;Channel类型&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;readOnlyCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;)&lt;span style="color:#75715e"&gt;//表示一个元素类型为T的单向接收通道类型。 编译器不允许向此类型的值中发送数据。&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;writeOnlyCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;)&lt;span style="color:#75715e"&gt;//表示一个元素类型为T的单向发送通道类型。 编译器不允许从此类型的值中接收数据&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;readWriteCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;)&lt;span style="color:#75715e"&gt;//表示一个元素类型为T的双向通道类型。 编译器允许从此类型的值中接收和向此类型的值中发送数据&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="阻塞"&gt;阻塞&lt;/h3&gt;
+&lt;p&gt;  根据&lt;code&gt;Channel&lt;/code&gt;缓冲区的大小，我们又可以将&lt;code&gt;Channel&lt;/code&gt;分为&lt;code&gt;Unbuffered channels&lt;/code&gt;与&lt;code&gt;Buffered channels&lt;/code&gt;。其中，&lt;code&gt;Unbuffered channels&lt;/code&gt;的缓冲区大小为0，这种&lt;code&gt;channel&lt;/code&gt;的接收者会阻塞直至接收到消息，发送者会阻塞直至接收者接收到消息，这种机制可以用于两个&lt;code&gt;goroutine&lt;/code&gt;进行状态同步。&lt;code&gt;Buffered channels&lt;/code&gt;拥有缓冲区，当缓冲区已满时，发送者会阻塞；当缓冲区为空时，接收者会阻塞。引用&lt;a href="https://www.ardanlabs.com/blog/2014/02/the-nature-of-channels-in-go.html"&gt;The Nature Of Channels In Go&lt;/a&gt;中的两张图片来说明两种&lt;code&gt;channel&lt;/code&gt;的特性。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Unbuffered Channels&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Buffered Channels&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h3 id="基本用法"&gt;&lt;!-- raw HTML omitted --&gt;基本用法&lt;!-- raw HTML omitted --&gt;&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;hello&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;  以上代码，利用不带缓冲的&lt;code&gt;channel&lt;/code&gt;双向阻塞的特性。主&lt;code&gt;goroutine&lt;/code&gt;(就是main函数)会阻塞直到接收到子&lt;code&gt;goroutine&lt;/code&gt;向&lt;code&gt;ch&lt;/code&gt;中写入的值。所以保证了&lt;code&gt;hello&lt;/code&gt;一定会输出。&lt;/p&gt;
+&lt;h3 id="利用channel实现并发的同步"&gt;利用&lt;code&gt;Channel&lt;/code&gt;实现并发的同步&lt;/h3&gt;
+&lt;p&gt;  &lt;a href="#code1"&gt;基本用法&lt;/a&gt;中的代码片段使用阻塞接收的方式，实现了主&lt;code&gt;goroutine&lt;/code&gt;等待子&lt;code&gt;goroutine&lt;/code&gt;完成。最终达到了两个&lt;code&gt;goroutine&lt;/code&gt;的同步。使用&lt;code&gt;WaitGroup&lt;/code&gt;同样能达到多个&lt;code&gt;goroutine&lt;/code&gt;的同步，尤其是需要等待多个协程的情况下，&lt;code&gt;WaitGroup&lt;/code&gt;会是更好的选择。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;worker&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;wg&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;sync&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;WaitGroup&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;defer&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;wg&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Done&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sleep&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Second&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Printf&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;worker %d stared\n&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;func&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;var&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;wg&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;sync&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;WaitGroup&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt;; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;&lt;span style="color:#f92672"&gt;++&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;wg&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Add&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;worker&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;, &lt;span style="color:#f92672"&gt;&amp;amp;&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;wg&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;wg&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Wait&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;执行结果：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;worker &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; stared
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;worker &lt;span style="color:#ae81ff"&gt;5&lt;/span&gt; stared
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;worker &lt;span style="color:#ae81ff"&gt;4&lt;/span&gt; stared
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;worker &lt;span style="color:#ae81ff"&gt;3&lt;/span&gt; stared
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;worker &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt; stared
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="channel-选择器"&gt;Channel 选择器&lt;/h3&gt;
+&lt;p&gt;  &lt;code&gt;select&lt;/code&gt;语句主要用在从多个读或者写&lt;code&gt;channel&lt;/code&gt;的操作中进行选择。&lt;code&gt;select&lt;/code&gt;语句会一直阻塞直到，有至少一个读或者写&lt;code&gt;channel&lt;/code&gt;操作就绪。如果同时有多个操作准备就绪，&lt;code&gt;select&lt;/code&gt;语句会随机选择其中一个执行。&lt;code&gt;select&lt;/code&gt;语法类似&lt;code&gt;switch&lt;/code&gt;，每个&lt;code&gt;case&lt;/code&gt;相当于一个通道操作。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;c1&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;c2&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sleep&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Second&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;c1&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;one&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sleep&lt;/span&gt;(&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Second&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;c2&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;two&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &amp;lt; &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;&lt;span style="color:#f92672"&gt;++&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;case&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;msg1&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;c1&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Printf&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;接到消息：%s\n&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;msg1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;case&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;msg2&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;c2&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Printf&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;接到消息：%s\n&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;msg2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;以上代码会输出：接到消息one，接到消息two。&lt;/p&gt;
+&lt;h3 id="channel遍历"&gt;Channel遍历&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;for...range&lt;/code&gt;可以用来遍历通道，它会反复从通道接收数据直到通道关闭。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;queue&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;queue&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;one&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;queue&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;two&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close(&lt;span style="color:#a6e22e"&gt;queue&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;elem&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;range&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;queue&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;elem&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="channel-的关闭"&gt;Channel 的关闭&lt;/h3&gt;
+&lt;p&gt;  内置函数&lt;code&gt;close()&lt;/code&gt;可以用来关闭&lt;code&gt;channel&lt;/code&gt;,&lt;code&gt;close()&lt;/code&gt;函数只能关闭可读写或者只写的通道。通道的关闭通常应该遵循一定的原则：由生产者（发送者）来关闭，保证不关闭已关闭的通道(或向已关闭的通道发送值)。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;) &lt;span style="color:#75715e"&gt;//可以关闭的通道&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;) &lt;span style="color:#75715e"&gt;//可以关闭的通道&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;) &lt;span style="color:#75715e"&gt;//不能关闭的通道&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;1、关闭 一个通道意味着不能再向这个通道发送值了。 该特性可以向通道的接收方传达工作已经完成的信息。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;done&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;bool&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;case&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;m&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;ok&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ok&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Printf&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;m&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; } &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;All message has received.&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;done&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt; &amp;lt; &lt;span style="color:#ae81ff"&gt;4&lt;/span&gt;; &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;&lt;span style="color:#f92672"&gt;++&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sprintf&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;Message %d\n&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;close(&lt;span style="color:#a6e22e"&gt;msg&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;done&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;2、向一个已经关闭的&lt;code&gt;channel&lt;/code&gt;发送数据会&lt;code&gt;panic&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;3、从一个已经关闭的通道中读数据，依然可以读到数据。读到的内容是通道元素类型所对应的的零值。（例如：int类型channel读到的是0）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;str one&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;str two&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; close(&lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sleep&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Millisecond&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;500&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;case&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;str&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;--&amp;gt;&amp;#34;&lt;/span&gt;,&lt;span style="color:#a6e22e"&gt;str&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;//输出：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;--&lt;/span&gt;&amp;gt; &lt;span style="color:#a6e22e"&gt;str&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;one&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;--&lt;/span&gt;&amp;gt; &lt;span style="color:#a6e22e"&gt;str&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;two&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;--&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;--&lt;/span&gt;&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;4、当发送者关闭通道后，通道接收器可以通过向接收表达式分配第二个参数来判断通道是否关闭。&lt;code&gt;c,ok := &amp;lt;-ch&lt;/code&gt;，如果没有更多的值要接受且通道已经关闭，&lt;code&gt;ok&lt;/code&gt;为&lt;code&gt;false&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;int&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; make(&lt;span style="color:#66d9ef"&gt;chan&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;string&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;str one&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;str two&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; close(&lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;go&lt;/span&gt; &lt;span style="color:#66d9ef"&gt;func&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Sleep&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;time&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Millisecond&lt;/span&gt; &lt;span style="color:#f92672"&gt;*&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;500&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;select&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;case&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;str&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;ok&lt;/span&gt; &lt;span style="color:#f92672"&gt;:=&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;dataCh&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;ok&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;--&amp;gt;&amp;#34;&lt;/span&gt;, &lt;span style="color:#a6e22e"&gt;str&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; } &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fmt&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;Println&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#34;通道已关闭&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt; &lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; }
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;&amp;lt;-&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;ch&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="channel的基本操作和注意事项"&gt;channel的基本操作和注意事项&lt;/h3&gt;
+&lt;p&gt;channel存在&lt;code&gt;3种状态&lt;/code&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;nil，未初始化的状态，只进行了声明，或者手动赋值为&lt;code&gt;nil&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;active，正常的channel，可读或者可写&lt;/li&gt;
+&lt;li&gt;closed，已关闭，&lt;strong&gt;千万不要误认为关闭channel后，channel的值是nil&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;channel可进行&lt;code&gt;3种操作&lt;/code&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;读&lt;/li&gt;
+&lt;li&gt;写&lt;/li&gt;
+&lt;li&gt;关闭&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;把这3种操作和3种channel状态可以组合出&lt;code&gt;9种情况&lt;/code&gt;：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;操作&lt;/th&gt;
+&lt;th style="text-align: left"&gt;nil的channel&lt;/th&gt;
+&lt;th style="text-align: left"&gt;正常channel&lt;/th&gt;
+&lt;th style="text-align: left"&gt;已关闭channel&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;&amp;lt;- ch&lt;/td&gt;
+&lt;td style="text-align: left"&gt;阻塞&lt;/td&gt;
+&lt;td style="text-align: left"&gt;成功或阻塞&lt;/td&gt;
+&lt;td style="text-align: left"&gt;读到零值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;ch &amp;lt;-&lt;/td&gt;
+&lt;td style="text-align: left"&gt;阻塞&lt;/td&gt;
+&lt;td style="text-align: left"&gt;成功或阻塞&lt;/td&gt;
+&lt;td style="text-align: left"&gt;panic&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;close(ch)&lt;/td&gt;
+&lt;td style="text-align: left"&gt;panic&lt;/td&gt;
+&lt;td style="text-align: left"&gt;成功&lt;/td&gt;
+&lt;td style="text-align: left"&gt;panic&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;</description></item></channel></rss>
