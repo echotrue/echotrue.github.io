@@ -14,7 +14,10 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;s&lt;/code&gt; 的元素是 &lt;code&gt;[20, 30, 40]&lt;/code&gt;，长度为 &lt;code&gt;3&lt;/code&gt;，容量为 &lt;code&gt;4&lt;/code&gt;。它的起始位置对应 &lt;code&gt;arr[1]&lt;/code&gt;，而不是底层数组的开头。&lt;/p&gt;
 &lt;p&gt;Go 运行时中有 &lt;code&gt;reflect.SliceHeader&lt;/code&gt; 这一结构可用于描述切片头部，但它属于反射实现细节，不应当视为可依赖的语言规范。&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://echotrue.github.io/content/Go_Slice_%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="切片的内存结构示意图"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure class="slice-diagram"&gt;&lt;img src="https://echotrue.github.io/content/Go_Slice_%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png"
+alt="切片的内存结构示意图"&gt;
+&lt;/figure&gt;
+&lt;em&gt;图 1：Go 语言切片（Slice）的底层内存结构示意图&lt;/em&gt;&lt;/p&gt;
 &lt;h3 id="声明与初始化"&gt;声明与初始化&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// 声明切片；零值为 nil&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;var&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;s1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;// len=0, cap=0, s1 == nil&lt;/span&gt;&lt;span class="w"&gt;
