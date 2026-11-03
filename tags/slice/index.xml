@@ -53,7 +53,8 @@
 &lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;s2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;:=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;arr&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;此时 &lt;code&gt;len(s2) == 2&lt;/code&gt; 且 &lt;code&gt;cap(s2) == 2&lt;/code&gt;。对 &lt;code&gt;s2&lt;/code&gt; 追加元素时会分配新的底层数组，不会覆盖 &lt;code&gt;arr[5]&lt;/code&gt;。&lt;/p&gt;
 &lt;h3 id="数组与切片的截取"&gt;数组与切片的截取&lt;/h3&gt;
-&lt;p&gt;切片表达式使用 &lt;code&gt;[low:high]&lt;/code&gt; 形式，结果是一个切片。&lt;code&gt;high&lt;/code&gt; 是边界而非最后一个元素的索引，因此结果包含索引 &lt;code&gt;low&lt;/code&gt; 到 &lt;code&gt;high-1&lt;/code&gt; 的元素。对于二索引截取，结果长度和容量按以下规则计算：&lt;/p&gt;
+&lt;p&gt;切片表达式使用 &lt;code&gt;[low:high]&lt;/code&gt; 形式，结果是一个切片。&lt;code&gt;high&lt;/code&gt; 是边界而非最后一个元素的索引，因此结果包含索引 &lt;code&gt;low&lt;/code&gt; 到 &lt;code&gt;high-1&lt;/code&gt; 的元素。
+对于二索引截取，结果长度和容量按以下规则计算：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;len(result) = high - low&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;cap(result) = cap(a) - low&lt;/code&gt;&lt;/li&gt;
