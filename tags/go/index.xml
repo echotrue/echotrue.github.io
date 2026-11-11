@@ -6,7 +6,7 @@
 &lt;p&gt;提醒：pprof 的具体选项可能随 Go 版本及 pprof
 实现版本变化。使用前可执行 &lt;code&gt;go version&lt;/code&gt;、&lt;code&gt;go tool pprof -h&lt;/code&gt;，并查看
 &lt;code&gt;go doc net/http/pprof&lt;/code&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;</description></item><item><title>Sqlx</title><link>https://echotrue.github.io/blog/golang/sqlx/</link><pubDate>Thu, 04 Aug 2022 14:50:30 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/sqlx/</guid><description>&lt;h3 id="handle-types-引用类型"&gt;Handle Types (引用类型)&lt;/h3&gt;
+&lt;/blockquote&gt;</description></item><item><title>Sqlx包使用</title><link>https://echotrue.github.io/blog/golang/sqlx/</link><pubDate>Thu, 04 Aug 2022 14:50:30 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/sqlx/</guid><description>&lt;h3 id="handle-types-引用类型"&gt;Handle Types (引用类型)&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;sqlx&lt;/code&gt;旨在和&lt;code&gt;database/sql&lt;/code&gt;具有相同的感觉，他有四种引用类型&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;sqlx.DB&lt;/code&gt; 类似于&lt;code&gt;sql.DB&lt;/code&gt;,是数据库的表示&lt;/li&gt;
@@ -78,7 +78,7 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;onCompletion&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id="源码分析"&gt;源码分析&lt;/h3&gt;
-&lt;p&gt;可以通过以下&lt;code&gt;function&lt;/code&gt;创建&lt;code&gt;ProgressBar&lt;/code&gt;实例，并渲染初始进度为0的进度条&lt;/p&gt;</description></item><item><title>Golang Search Slice</title><link>https://echotrue.github.io/blog/algorithm/golang-search-slice/</link><pubDate>Sat, 03 Oct 2020 14:45:11 +0000</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/algorithm/golang-search-slice/</guid><description>&lt;h2 id="题目"&gt;题目&lt;/h2&gt;
+&lt;p&gt;可以通过以下&lt;code&gt;function&lt;/code&gt;创建&lt;code&gt;ProgressBar&lt;/code&gt;实例，并渲染初始进度为0的进度条&lt;/p&gt;</description></item><item><title>Golang 搜索切片</title><link>https://echotrue.github.io/blog/algorithm/golang-search-slice/</link><pubDate>Sat, 03 Oct 2020 14:45:11 +0000</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/algorithm/golang-search-slice/</guid><description>&lt;h2 id="题目"&gt;题目&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;假设有一个超长的切片，切片的元素类型为int，切片中的元素为乱序排列。限时5秒，使用多个goroutine查找切片中是否存在给定值，
 在找到目标值或者超时后立刻结束所有goroutine的执行。比如切片为：[23, 32, 78, 43, 76, 65, 345, 762, …… 915, 86]，
