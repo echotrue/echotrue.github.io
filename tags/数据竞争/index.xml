@@ -1,19 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数据竞争 on AXLROSE</title><link>https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/</link><description>Recent content in 数据竞争 on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Sat, 03 Oct 2020 11:12:05 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang Data Races</title><link>https://echotrue.github.io/blog/golang/data-races/</link><pubDate>Sat, 03 Oct 2020 11:12:05 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/data-races/</guid><description>&lt;h3 id="关于golang并发安全"&gt;关于Golang并发安全&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href="http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html"&gt;谈谈go语言编程的并发安全&lt;/a&gt;&lt;/li&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数据竞争 on AXLROSE</title><link>https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/</link><description>Recent content in 数据竞争 on AXLROSE</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>axlrose.huang@gmail.com (Axlrose)</managingEditor><webMaster>axlrose.huang@gmail.com (Axlrose)</webMaster><copyright>2023 Axlrose rights reserved</copyright><lastBuildDate>Sat, 03 Oct 2020 11:12:05 +0800</lastBuildDate><atom:link href="https://echotrue.github.io/tags/%E6%95%B0%E6%8D%AE%E7%AB%9E%E4%BA%89/index.xml" rel="self" type="application/rss+xml"/><item><title>Go 中的数据竞争</title><link>https://echotrue.github.io/blog/golang/data-races/</link><pubDate>Sat, 03 Oct 2020 11:12:05 +0800</pubDate><author>axlrose.huang@gmail.com (Axlrose)</author><guid>https://echotrue.github.io/blog/golang/data-races/</guid><description>&lt;h2 id="并发安全参考"&gt;并发安全参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://yanyiwu.com/work/2015/02/07/golang-concurrency-safety.html"&gt;谈谈 Go 语言编程的并发安全&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://software.intel.com/content/www/us/en/develop/blogs/benign-data-races-what-could-possibly-go-wrong.html"&gt;Benign Data Races: What Could Possibly Go Wrong?&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="什么是数据竞争"&gt;什么是数据竞争&lt;/h3&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;package main
-import (
-&amp;#34;fmt&amp;#34;
-)
-func main() {
-var i int
-go func() {
-i = 5
-}()
-fmt.Println(i)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;先通过以上程序来了解什么是数据竞争。首先声明一个变量i，默认值为0。然后开启一个单独的&lt;code&gt;goroutine&lt;/code&gt;来设置&lt;code&gt;i&lt;/code&gt;的值。
-同时，在不知道开启的&lt;code&gt;goroutine&lt;/code&gt;是否已经执行完成的情况下打印i的值。所以，当前正在发生两个操作：&lt;/p&gt;</description></item></channel></rss>
+&lt;/ul&gt;
+&lt;h2 id="什么是数据竞争"&gt;什么是数据竞争&lt;/h2&gt;
+&lt;p&gt;下面的程序在主 &lt;code&gt;goroutine&lt;/code&gt; 和新启动的 &lt;code&gt;goroutine&lt;/code&gt; 中并发访问变量 &lt;code&gt;i&lt;/code&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-go" data-lang="go"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;go&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;func&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;}()&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;fmt&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;Println&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;程序启动一个 &lt;code&gt;goroutine&lt;/code&gt; 将 &lt;code&gt;i&lt;/code&gt; 设置为 &lt;code&gt;5&lt;/code&gt;，与此同时，主 &lt;code&gt;goroutine&lt;/code&gt; 读取并打印 &lt;code&gt;i&lt;/code&gt;。两个操作可能同时发生：&lt;/p&gt;</description></item></channel></rss>
